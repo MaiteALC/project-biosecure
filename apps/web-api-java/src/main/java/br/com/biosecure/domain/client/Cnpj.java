@@ -6,9 +6,9 @@ public class Cnpj {
 
     public static final int size = 14;
     
-    public Cnpj(String number) throws CnpjValidationException {
+    public Cnpj(String number) {
         if (!isValid(number)) {
-            throw new CnpjValidationException();
+            throw new InvalidCnpjException("The entered CNPJ isn't valid");
         }
 
         this.number = clearFormat(number);
