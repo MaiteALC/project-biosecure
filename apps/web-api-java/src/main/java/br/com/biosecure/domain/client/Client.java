@@ -20,11 +20,6 @@ public class  Client {
         this.email = email;
     } 
     
-    public void updateAdress(Adress newAdress) {
-        // TODO implement the logic
-        this.adress = newAdress;
-    }
-    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -49,7 +44,7 @@ public class  Client {
     
         Client other = (Client) obj;
         
-        if (!id.equals(other.id) && !cnpj.equals(other.cnpj)) {
+        if (!id.equals(other.id) || !cnpj.equals(other.cnpj)) {
             return false;
         }
         
@@ -58,14 +53,28 @@ public class  Client {
 
     @Override
     public String toString() {
-        String str = "Corporate Name: " + corporateName + "\nCNPJ: " + cnpj + "\nID: " + id + "\nAdress: " + adress + "\nEmail: " + email;
+        String str = "Corporate Name: " + corporateName + "\nCNPJ: " + cnpj.getFormattedNumber() + "\nID: " + id + "\nAdress: " + adress + "\nEmail: " + email;
 
         return str;
     }
 
-    public String getCorporateName() {return corporateName;}
-    public UUID getId() {return id;}
-    public Cnpj getCnpj() {return cnpj;}
-    public Adress getAdress() {return adress;}
-    public String getEmail() {return email;} 
+    public String getCorporateName() {
+        return corporateName;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public Cnpj getCnpj() {
+        return cnpj;
+    }
+
+    public Adress getAdress() {
+        return adress;
+    }
+
+    public String getEmail() {
+        return email;
+    } 
 }

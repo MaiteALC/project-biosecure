@@ -1,10 +1,10 @@
 package br.com.biosecure.domain.client;
 
 public class Cnpj {
-    public final String number; 
-    public final String formatedNumber;
+    private final String number; 
+    private final String formattedNumber;
 
-    public static final int size = 14;
+    public static final int SIZE = 14;
     
     public Cnpj(String number) {
         if (!isValid(number)) {
@@ -12,7 +12,7 @@ public class Cnpj {
         }
 
         this.number = clearFormat(number);
-        this.formatedNumber = number;
+        this.formattedNumber = number;
     }
 
     private String clearFormat(String formatted) {
@@ -24,7 +24,7 @@ public class Cnpj {
 
         String unformated = clearFormat(number);
 
-        if (unformated.equals("") || unformated == null || unformated.length() != 14) {
+        if (unformated.equals("") || unformated == null || unformated.length() != SIZE) {
             return false;
         }
 
@@ -41,7 +41,7 @@ public class Cnpj {
         int rest = 0;
         int digit = 0;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < SIZE; i++) {
             cnpjInts[i] =  unformated.charAt(i) - '0'; // Fast way to convert char to int (using the numeric values of characters in ASCII table)
         }
 
@@ -90,5 +90,13 @@ public class Cnpj {
         }
 
         return true;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public String getFormattedNumber() {
+        return formattedNumber;
     }
 }
