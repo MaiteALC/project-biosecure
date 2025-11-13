@@ -28,10 +28,9 @@ public class ClientFactory {
             return false;
         }
 
-        final String REGEX_CORPORATIVO = 
-        "^[A-Za-z0-9._%+-]+@(?!(gmail\\.com|hotmail\\.com|outlook\\.com|yahoo\\.com|live\\.com)$)[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        final String REGEX = "^[A-Za-z0-9._%+-]+@(?!(gmail\\.com|hotmail\\.com|outlook\\.com|yahoo\\.com|live\\.com)$)[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
-        Pattern pattern = Pattern.compile(REGEX_CORPORATIVO, Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
 
         Matcher matcher = pattern.matcher(email);
 
