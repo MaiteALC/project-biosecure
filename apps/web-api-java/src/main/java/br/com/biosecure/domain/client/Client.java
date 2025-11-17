@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import br.com.biosecure.domain.client.Adress;
 import br.com.biosecure.domain.client.Cnpj;
+import br.com.biosecure.domain.client.InvalidClientAttributeException;
 
 public class  Client {
     private String corporateName;
@@ -14,12 +15,12 @@ public class  Client {
     private String email;
     
     Client(String corporateName, UUID id, Cnpj cnpj, Adress adress, String email) {
-        if (corporateName == null || corporateName.equals("")) {
-            throw new IllegalArgumentException("Please enter corporate name");
+        if (corporateName == null || corporateName.trim().isBlank()) {
+            throw new InvalidClientAttributeException("corporate name");
         }
         
         if (!validateEmail(email)) {
-            throw new IllegalArgumentException("Please enter valid corporate email");
+            throw new InvalidClientAttributeException("email");
         }
 
         this.corporateName = corporateName;
