@@ -1,42 +1,52 @@
 package br.com.biosecure.domain.product;
 
 public class SKU {
-    private String code;
+    private final String code;
 
-    private SKU(String code) {
-        this.code = code;
+    public SKU(Product product) {
+        this.code = generateFor(product);
     }
 
-    public static SKU generateFor(Product product) {
-        String classStr = product.getClass().getSimpleName().toUpperCase();
+    private String generateFor(Product product) {
+        String value = product.getName().substring(0, 4) + "-";
 
-        String value = String.valueOf(classStr.toCharArray(), 0, 2);
+        if (product instanceof Sanitizer sanitizer) {
+            value += sanitizer.getActiveIngredient().substring(0, 3);
 
-        // Obtaining the ASCII value of the first and last characters (in upper case)
-        String n1 = String.valueOf((int) classStr.charAt(0));
-        String n2 = String.valueOf((int) classStr.charAt(classStr.length() -1));
+            value += String.valueOf(sanitizer.getQtdPerPackage());
 
-        value += n1 + n2 + "-";
+            value += String.valueOf(sanitizer.getMeasureUnity());
+        }
 
-        // TODO finish the implementation of this method (based on their another atributes)
-        
-        return new SKU(value);
+        if (product instanceof CultureMedia cultureMedia) {
+            value += cultureMedia.isReadyToUse() ? "1" : "0";
+
+            value += String.valueOf(cultureMedia.getPhysicalForm().getPhysicalFormCode());
+
+            value += String.valueOf(cultureMedia.getStorageConditions());
+        }
+
+        // TODO finish the implementation of this method (based on another attributes of product subclasses)
+
+        return value.toUpperCase();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
 
-        SKU sku = (SKU) o;
+        SKU otherSku = (SKU) obj;
 
-        return code.equals(sku.code);
+        return code.equals(otherSku.code);
     }
 
-    public String getCode() {
+    public String getSkuCode() {
         return code;
     }
 }

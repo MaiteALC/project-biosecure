@@ -1,20 +1,19 @@
 package br.com.biosecure.domain.product;
 
-import java.util.Date;
-import br.com.biosecure.domain.product.InvalidProductAttributeException;
+import java.time.LocalDate;
 
 public abstract class Product {
-    private String name;
+    private final String name;
     private double price;
     private SKU sku;
-    private String manufacturer;
-    private String batchNumber;
-    private Date expirationDate;
-    private PackagingType packagingType;
-    private MeasureUnity measureUnity;
-    private int qtdPerPackage;
+    private final String manufacturer;
+    private final String batchNumber;
+    private final LocalDate expirationDate;
+    private final PackagingType packagingType;
+    private final MeasureUnity measureUnity;
+    private final int qtdPerPackage;
 
-    public Product(String name, double price, String manufacturer, String batchNumber, Date expirationDate, PackagingType packagingType, MeasureUnity measureUnity, int qtdPerPackage) {
+    public Product(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnity measureUnity, int qtdPerPackage) {
         validateString(name, "name");
         validateString(manufacturer, "manufacturer");
         validateString(batchNumber, "batch number");
@@ -25,6 +24,10 @@ public abstract class Product {
 
         if (price < 1.0) {
             throw new InvalidProductAttributeException("price");
+        }
+
+        if (LocalDate.now().isAfter(expirationDate)) {
+            throw new InvalidProductAttributeException("expiration date");
         }
 
         this.name = name;
@@ -47,15 +50,25 @@ public abstract class Product {
     }
 
     public enum PackagingType {
-        BOX,
-        PACKAGE,
-        BOTTLE,
-        GALLON,
-        INDIVIDUAL
+        BOX("B"),
+        PACKAGE("P"),
+        BOTTLE("T"),
+        GALLON("G"),
+        INDIVIDUAL("I");
+
+        private final String code;
+
+        private PackagingType(String code) {
+            this.code = code;
+        }
+
+        public String getPackagingTypeCode() {
+            return code;
+        }
     }
 
     private void validateString(String value, String attributeName) {
-        if (value == null || value.trim().isEmpty()) {
+        if (value == null || value.trim().isBlank()) {
             throw new InvalidProductAttributeException(attributeName);
         }
     }
@@ -76,7 +89,7 @@ public abstract class Product {
         return batchNumber;
     }
 
-    public Date getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
@@ -95,10 +108,10 @@ public abstract class Product {
     public SKU getSku() {
         // Lazy initialization of SKU
         if (this.sku == null) {
-            this.sku = SKU.generateFor(this); 
+            this.sku = new SKU(this);
         }
 
-        return this.sku;
+        return sku;
     }
 
     public void setPrice(double newPrice) {
@@ -107,14 +120,6 @@ public abstract class Product {
         }
 
         this.price = newPrice;
-    }
-
-    public void setQtdPerPackage(int newQtd) {
-        if (newQtd < 1 || newQtd >= 9999) {
-            throw new InvalidProductAttributeException("quantity per package");
-        }
- 
-        this.qtdPerPackage = newQtd;
     }
 
     @Override
@@ -134,10 +139,6 @@ public abstract class Product {
 
         Product obj = (Product) o;
 
-        if (!sku.equals(obj.sku) || manufacturer != obj.manufacturer || name != obj.name) {
-            return false;
-        }
-
-        return true;
+        return sku.equals(obj.sku) && manufacturer.equals(obj.manufacturer) && name.equals(obj.name);
     }
 }
