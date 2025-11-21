@@ -11,14 +11,14 @@ public abstract class Product {
     private final LocalDate expirationDate;
     private final PackagingType packagingType;
     private final MeasureUnity measureUnity;
-    private final int qtdPerPackage;
+    private final double qtdPerPackage;
 
     public Product(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnity measureUnity, int qtdPerPackage) {
         validateString(name, "name");
         validateString(manufacturer, "manufacturer");
         validateString(batchNumber, "batch number");
 
-        if (qtdPerPackage < 1) {
+        if (qtdPerPackage < 1.0) {
             throw new InvalidProductAttributeException("quantity per package");
         }
 
@@ -28,6 +28,10 @@ public abstract class Product {
 
         if (LocalDate.now().isAfter(expirationDate)) {
             throw new InvalidProductAttributeException("expiration date");
+        }
+
+        if (packagingType == PackagingType.INDIVIDUAL && qtdPerPackage != 1.0) {
+            throw new InvalidProductAttributeException("quantity per package and packaging type has incoherent");
         }
 
         this.name = name;
@@ -58,7 +62,7 @@ public abstract class Product {
 
         private final String code;
 
-        private PackagingType(String code) {
+        PackagingType(String code) {
             this.code = code;
         }
 
@@ -101,7 +105,7 @@ public abstract class Product {
         return measureUnity;
     }
 
-    public int getQtdPerPackage() {
+    public double getQtdPerPackage() {
         return qtdPerPackage;
     }
 
