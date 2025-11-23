@@ -6,15 +6,21 @@ public abstract class SampleContainer extends  Product {
     private final ClosingMethod closingMethod;
     private final SterilizationMethod sterilizationMethod;
     private final Material material;
+    private final double capacity;
 
-    public SampleContainer(String name, double price, String manufacturer, SterilizationMethod sterilizationMethod, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnity measureUnity, int qtdPerPackage, ClosingMethod closingMethod, Material materialType) {
+    public SampleContainer(String name, double price, String manufacturer, SterilizationMethod sterilizationMethod, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnity measureUnity, int qtdPerPackage, ClosingMethod closingMethod, Material materialType, double capacity) {
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnity, qtdPerPackage);
+
+        if (capacity < 1) {
+            throw new InvalidProductAttributeException("capacity");
+        }
 
         validateBioSafetyRules(materialType, sterilizationMethod);
 
         this.sterilizationMethod = sterilizationMethod;
         this.closingMethod = closingMethod;
         this.material = materialType;
+        this.capacity = capacity;
     }
 
     private void validateBioSafetyRules(Material material, SterilizationMethod sterilization) {
@@ -57,7 +63,7 @@ public abstract class SampleContainer extends  Product {
         CELLULOSE_STOPPER(false),
         ZIP_LOCK(true),
         HEAT_SEALABLE(true),
-        SNAP_LID(false);
+        LID_OVERLAY(false);
 
         private final boolean hermetic;
 
@@ -92,5 +98,9 @@ public abstract class SampleContainer extends  Product {
 
     public boolean isSterile() {
         return this.sterilizationMethod != SterilizationMethod.NO_STERILE;
+    }
+
+    public double getCapacity() {
+        return capacity;
     }
 }

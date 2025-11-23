@@ -9,8 +9,8 @@ public class SampleBag extends SampleContainer {
     private final double thickness;
     private final ThicknessUnity thicknessUnity;
 
-    public SampleBag(String name, double price, String manufacturer, SterilizationMethod sterilizationMethod, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnity measureUnity, int qtdPerPackage, ClosingMethod closingMethod, Material materialType, boolean hasFilter, boolean hasIdentificationTag, boolean isStandUp, double thickness, ThicknessUnity thicknessUnity) {
-        super(name, price, manufacturer, sterilizationMethod, batchNumber, expirationDate, packagingType, measureUnity, qtdPerPackage, closingMethod, materialType);
+    public SampleBag(String name, double price, String manufacturer, SterilizationMethod sterilizationMethod, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnity measureUnity, int qtdPerPackage, ClosingMethod closingMethod, Material materialType, boolean hasFilter, boolean hasIdentificationTag, boolean isStandUp, double thickness, ThicknessUnity thicknessUnity, double capacity) {
+        super(name, price, manufacturer, sterilizationMethod, batchNumber, expirationDate, packagingType, measureUnity, qtdPerPackage, closingMethod, materialType, capacity);
 
         this.filter = hasFilter;
         this.identificationTag = hasIdentificationTag;

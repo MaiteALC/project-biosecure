@@ -6,21 +6,21 @@ public class PetriDishes extends SampleContainer {
     private final int divNum;
     private final boolean grid;
     private final boolean ventilated;
-    private final double diameter;
-    private final double height;
+    private final double diameterMm;
+    private final double heightMm;
 
-    public PetriDishes(String name, double price, String manufacturer, SterilizationMethod sterilizationMethod, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnity measureUnity, int qtdPerPackage, ClosingMethod closingMethod, Material materialType, int divisionsNumber, boolean hasGrid, boolean isVentilated, double diameter, double height) {
-        super(name, price, manufacturer, sterilizationMethod, batchNumber, expirationDate, packagingType, measureUnity, qtdPerPackage, closingMethod, materialType);
+    public PetriDishes(String name, double price, String manufacturer, SterilizationMethod sterilizationMethod, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int qtdPerPackage, ClosingMethod closingMethod, Material materialType, int divisionsNumber, boolean hasGrid, boolean isVentilated, double diameterMm, double heightMm) {
+        super(name, price, manufacturer, sterilizationMethod, batchNumber, expirationDate, packagingType, MeasureUnity.ML, qtdPerPackage, closingMethod, materialType, calculateNominalCapacity(diameterMm, heightMm));
 
-        if (divisionsNumber < 1) {
+        if (divisionsNumber < 1 || divisionsNumber > 4) {
             throw new InvalidProductAttributeException("divisions number");
         }
 
         this.divNum = divisionsNumber;
         this.grid = hasGrid;
         this.ventilated = isVentilated;
-        this.diameter = diameter;
-        this.height = height;
+        this.diameterMm = diameterMm;
+        this.heightMm = heightMm;
     }
 
     public int getDivisionsNumber() {
@@ -36,10 +36,27 @@ public class PetriDishes extends SampleContainer {
     }
 
     public double getDiameter() {
-        return diameter;
+        return diameterMm;
     }
 
     public double getHeight() {
-        return height;
+        return heightMm;
+    }
+
+    public static double calculateSurfaceAreaPerDiv(double diameter, int divNum) {
+        double radius = diameter / 2.0;
+
+        return (Math.PI * Math.pow(radius, 2)) / divNum;
+    }
+
+    public static double calculateNominalCapacity(double diameter, double height) {
+        // V = pi * r^2 * h
+        double radius = diameter / 2.0;
+
+        double usefulHeight = height / 2.0;
+
+        double volumeCubicMm = Math.PI * Math.pow(radius, 2) * usefulHeight;
+
+        return Math.round(volumeCubicMm / 1000.0); // Conversion of mm^3 to mL
     }
 }

@@ -49,6 +49,7 @@ public abstract class Product {
         L,
         KG,
         G,
+        MG,
         UN,
         MM,
         PAIR
