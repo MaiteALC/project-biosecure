@@ -1,5 +1,6 @@
 package br.com.biosecure.model.product;
 
+import java.util.ArrayList;
 import java.time.LocalDate;
 
 public abstract class SampleContainer extends  Product {
@@ -25,7 +26,14 @@ public abstract class SampleContainer extends  Product {
 
     private void validateBioSafetyRules(Material material, SterilizationMethod sterilization) {
         if (!material.isSupportsAutoclave() && sterilization == SterilizationMethod.AUTOCLAVE) {
-            throw new InvalidProductAttributeException("material and sterilization method (autoclave) has incoherent");
+            ArrayList<String> invalids = new ArrayList<>();
+
+            invalids.add("Supports autoclave");
+            invalids.add("Sterilization method");
+
+            throw new BioSecurityException(
+                    "Material and sterilization method (autoclave) has incoherent", invalids
+            );
         }
     }
 

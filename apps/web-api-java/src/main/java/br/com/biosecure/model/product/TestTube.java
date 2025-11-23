@@ -1,19 +1,22 @@
 package br.com.biosecure.model.product;
 
+import java.util.ArrayList;
 import java.time.LocalDate;
 
 public class TestTube extends SampleContainer {
-    private final int maxRcf;
+    private final int maxRCF;
     private final BottomType bottomType;
     private final boolean graduated;
     private final CapColor capColor;
     private final double diameterMm;
     private final double heightMm;
 
-    public TestTube(String name, double price, String manufacturer, SterilizationMethod sterilizationMethod, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int qtdPerPackage, ClosingMethod closingMethod, Material materialType, int maxRcf, BottomType bottomType, boolean isGraduated, CapColor capColor, double diameterMm, double heightMm) {
-        super(name, price, manufacturer, sterilizationMethod, batchNumber, expirationDate, packagingType, MeasureUnity.ML, qtdPerPackage, closingMethod, materialType, calculateNominalCapacity(diameterMm, heightMm));
+    public TestTube(String name, double price, String manufacturer, SterilizationMethod sterilizationMethod, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int qtdPerPackage, ClosingMethod closingMethod, Material materialType, int maxRCF, BottomType bottomType, boolean isGraduated, CapColor capColor, double diameterMm, double heightMm) {
+        super(name, price, manufacturer, sterilizationMethod, batchNumber, expirationDate, packagingType, MeasureUnity.UN, qtdPerPackage, closingMethod, materialType, calculateNominalCapacity(diameterMm, heightMm));
 
-        this.maxRcf = maxRcf;
+        validateBioSecuritySafety(materialType, bottomType, maxRCF);
+
+        this.maxRCF = maxRCF;
         this.bottomType = bottomType;
         this.graduated = isGraduated;
         this.capColor = capColor;
@@ -22,8 +25,8 @@ public class TestTube extends SampleContainer {
     }
 
     public enum BottomType {
-        CONIC,
-        PLAN,
+        CONICAL,
+        FLAT,
         ROUND,
         SKIRTED
     }
@@ -48,8 +51,30 @@ public class TestTube extends SampleContainer {
         }
     }
 
-    public int getMaxRcf() {
-        return maxRcf;
+    private void validateBioSecuritySafety(Material material, BottomType bottomType, int maxRCF) {
+        ArrayList<String> invalids = new ArrayList<>();
+
+        invalids.add("maximum RCF");
+
+        if (material == Material.BOROSILICATE_GLASS && maxRCF > 5000) {
+            invalids.add("Material");
+
+            throw new BioSecurityException(
+                    "Glass tubes rarely supports RCF greater than 5000g. Verify the specifications.", invalids
+            );
+        }
+
+        if (bottomType == BottomType.FLAT && maxRCF > 10000) {
+            invalids.add("Bottom type");
+
+            throw new BioSecurityException(
+                    "Flat bottoms concentrate the tension. RCF greater than 10.000g is uncommon for flat bottoms. Verify the specifications", invalids
+            );
+        }
+    }
+
+    public int getMaxRCF() {
+        return maxRCF;
     }
 
     public BottomType getBottomType() {
