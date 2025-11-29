@@ -2,11 +2,19 @@
 
 anotacoes-projeto/
 
+*.log
+
 *.iml
 *.iws
+
 .idea/
+.vscode/
 
 target/
+build/
+out/
+
+lib/
 
 .DS_Store
 Thumbs.db
