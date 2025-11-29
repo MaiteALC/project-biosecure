@@ -14,7 +14,6 @@ public class Sanitizer extends Product {
     private final boolean flammable;
     private final boolean requiresDilution;
 
-
     public Sanitizer(String name, double price, ChemicalBase activeIngredient, PhysicalForm form, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int qtdPerPackage, String registerNumber, String useIndications, double phLevel, boolean isFlammable, double concentration, ConcentrationUnit concentrationUnit, boolean requiresDilution) {
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, qtdPerPackage);
 

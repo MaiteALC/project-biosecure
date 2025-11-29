@@ -6,7 +6,7 @@ public record Address(String state, String city, String neighborhood, String str
             throw new InvalidAddressException("postal code");
         }
 
-        if (1 < number) {
+        if (number < 1 || number > 99999) {
             throw new InvalidAddressException("number");
         }
     }
