@@ -11,14 +11,14 @@ public abstract class Product {
     private final LocalDate expirationDate;
     private final PackagingType packagingType;
     private final MeasureUnit measureUnit;
-    private final double qtdPerPackage;
+    private final double quantityPerPackage;
 
-    public Product(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int qtdPerPackage) {
+    public Product(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int quantityPerPackage) {
         validateString(name, "name");
         validateString(manufacturer, "manufacturer");
         validateString(batchNumber, "batch number");
 
-        if (qtdPerPackage < 1.0) {
+        if (quantityPerPackage < 1.0) {
             throw new InvalidProductAttributeException("quantity per package");
         }
 
@@ -30,8 +30,9 @@ public abstract class Product {
             throw new InvalidProductAttributeException("expiration date");
         }
 
-        if (packagingType == PackagingType.INDIVIDUAL && qtdPerPackage != 1.0) {
-            throw new InvalidProductAttributeException("quantity per package and packaging type has incoherent");
+        if (packagingType == PackagingType.INDIVIDUAL && 
+            (measureUnit != MeasureUnit.UN && measureUnit != MeasureUnit.PAIR)) {
+                throw new InvalidProductAttributeException("packaging type and measure unit has incoherent");
         }
 
         this.name = name;
@@ -41,7 +42,7 @@ public abstract class Product {
         this.expirationDate = expirationDate;
         this.packagingType = packagingType;
         this.measureUnit = measureUnit;
-        this.qtdPerPackage = qtdPerPackage;
+        this.quantityPerPackage = packagingType == PackagingType.INDIVIDUAL ? 1 : quantityPerPackage;
     }
 
     public enum MeasureUnit {
@@ -74,7 +75,7 @@ public abstract class Product {
     }
 
     private void validateString(String value, String attributeName) {
-        if (value == null || value.trim().isBlank()) {
+        if (value == null || value.isBlank()) {
             throw new InvalidProductAttributeException(attributeName);
         }
     }
@@ -107,8 +108,8 @@ public abstract class Product {
         return measureUnit;
     }
 
-    public double getQtdPerPackage() {
-        return qtdPerPackage;
+    public double getQuantityPerPackage() {
+        return quantityPerPackage;
     }
 
     public SKU getSku() {
@@ -126,11 +127,6 @@ public abstract class Product {
         }
 
         this.price = newPrice;
-    }
-
-    @Override
-    public String toString() {
-        return "Product [name:" + name + ", price:" + price + ", sku:" + sku + ", manufacturer:" + manufacturer + ", batchNumber:" + batchNumber + ", expirationDate:" + expirationDate + ", qtdPerPackage:" + qtdPerPackage + "]";
     }
 
     @Override
