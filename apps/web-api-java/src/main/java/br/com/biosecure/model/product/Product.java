@@ -13,7 +13,7 @@ public abstract class Product {
     private final MeasureUnit measureUnit;
     private final double quantityPerPackage;
 
-    public Product(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int quantityPerPackage) {
+    public Product(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, double quantityPerPackage) {
         validateString(name, "name");
         validateString(manufacturer, "manufacturer");
         validateString(batchNumber, "batch number");

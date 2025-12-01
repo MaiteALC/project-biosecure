@@ -14,8 +14,8 @@ public class Sanitizer extends Product {
     private final boolean flammable;
     private final boolean requiresDilution;
 
-    public Sanitizer(String name, double price, ChemicalBase activeIngredient, PhysicalForm form, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int qtdPerPackage, String registerNumber, String useIndications, double phLevel, boolean isFlammable, double concentration, ConcentrationUnit concentrationUnit, boolean requiresDilution) {
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, qtdPerPackage);
+    public Sanitizer(String name, double price, ChemicalBase activeIngredient, PhysicalForm form, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, double quantityPerPackage, String registerNumber, String useIndications, double phLevel, boolean isFlammable, double concentration, ConcentrationUnit concentrationUnit, boolean requiresDilution) {
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage);
 
         if (phLevel < 0 || phLevel > 14) {
             throw new InvalidProductAttributeException("ph level");
@@ -91,6 +91,7 @@ public class Sanitizer extends Product {
 
         if ((chemicalBase == ChemicalBase.ETHANOL || chemicalBase == ChemicalBase.ALCOHOL_ISOPROPYL) && this.concentration > 40 && !isFlammable) {
             invalids.add("Concentration");
+            invalids.add("Is flammable");
 
             throw new BioSecurityException(
                     "Alcohols with 40% (or more concentration) MUST be flammable.", invalids
