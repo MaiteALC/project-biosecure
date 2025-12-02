@@ -74,7 +74,7 @@ public abstract class Product {
         }
     }
 
-    private void validateString(String value, String attributeName) {
+    protected void validateString(String value, String attributeName) {
         if (value == null || value.isBlank()) {
             throw new InvalidProductAttributeException(attributeName);
         }

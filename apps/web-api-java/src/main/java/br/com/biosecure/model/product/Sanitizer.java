@@ -16,17 +16,31 @@ public class Sanitizer extends Product {
     private final double densityGramsPerMiliLiter;
 
     public Sanitizer(String name, double price, ChemicalBase activeIngredient, PhysicalForm form, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, double quantityPerPackage, String registerNumber, String useIndications, double phLevel, boolean isFlammable, double concentration, ConcentrationUnit concentrationUnit, boolean requiresDilution, double densityGramsPerMiliLiter) {
+        
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage);
 
         if (phLevel < 0 || phLevel > 14) {
             throw new InvalidProductAttributeException("ph level");
         }
 
-        if (concentration < 0 || (concentrationUnit == ConcentrationUnit.PERCENTAGE && concentration > 100) || (concentrationUnit == ConcentrationUnit.PARTS_PER_MILION && concentration > 1000000) ){
+        if (concentration < 0 || (concentration > 100 && 
+        (concentrationUnit == ConcentrationUnit.PERCENTAGE || concentrationUnit == ConcentrationUnit.GAY_LUSSAC)) || 
+        (concentrationUnit == ConcentrationUnit.PARTS_PER_MILION && concentration > 1000000) ){
             throw new InvalidProductAttributeException("concentration");
+        }
+        
+        if (densityGramsPerMiliLiter < 0 || densityGramsPerMiliLiter > 23) { 
+            throw new InvalidProductAttributeException("density (grams per mili liter"); // 23 is (a bit greater than) the value of density of the "Osmium", the most dense substance in the world
+        } 
+
+        if (activeIngredient != ChemicalBase.ALCOHOL_ISOPROPYL && activeIngredient != ChemicalBase.ETHANOL && concentrationUnit == ConcentrationUnit.GAY_LUSSAC) {
+            throw new InvalidProductAttributeException("concentration unit");
         }
 
         validateBioSafetyRules(activeIngredient, isFlammable, phLevel, concentration, concentrationUnit);
+
+        validateString(registerNumber, "register number");
+        validateString(useIndications, "use indications");
 
         this.activeIngredient = activeIngredient;
         this.form = form;
