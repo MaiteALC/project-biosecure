@@ -13,19 +13,20 @@ public class Sanitizer extends Product {
     private final ConcentrationUnit concentrationUnit;
     private final boolean flammable;
     private final boolean requiresDilution;
+    private final double densityGramsPerMiliLiter;
 
-    public Sanitizer(String name, double price, ChemicalBase activeIngredient, PhysicalForm form, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, double quantityPerPackage, String registerNumber, String useIndications, double phLevel, boolean isFlammable, double concentration, ConcentrationUnit concentrationUnit, boolean requiresDilution) {
+    public Sanitizer(String name, double price, ChemicalBase activeIngredient, PhysicalForm form, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, double quantityPerPackage, String registerNumber, String useIndications, double phLevel, boolean isFlammable, double concentration, ConcentrationUnit concentrationUnit, boolean requiresDilution, double densityGramsPerMiliLiter) {
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage);
 
         if (phLevel < 0 || phLevel > 14) {
             throw new InvalidProductAttributeException("ph level");
         }
 
-        if (concentration < 0 || (concentrationUnit == ConcentrationUnit.PERCENTAGE && concentration > 100) || (concentrationUnit == ConcentrationUnit.PPM && concentration > 1000000) ){
+        if (concentration < 0 || (concentrationUnit == ConcentrationUnit.PERCENTAGE && concentration > 100) || (concentrationUnit == ConcentrationUnit.PARTS_PER_MILION && concentration > 1000000) ){
             throw new InvalidProductAttributeException("concentration");
         }
 
-        validateBioSafetyRules(activeIngredient, isFlammable, phLevel);
+        validateBioSafetyRules(activeIngredient, isFlammable, phLevel, concentration, concentrationUnit);
 
         this.activeIngredient = activeIngredient;
         this.form = form;
@@ -36,6 +37,7 @@ public class Sanitizer extends Product {
         this.concentration = concentration;
         this.concentrationUnit = concentrationUnit;
         this.requiresDilution = requiresDilution;
+        this.densityGramsPerMiliLiter = densityGramsPerMiliLiter;
     }
 
     public enum ChemicalBase {
@@ -70,9 +72,9 @@ public class Sanitizer extends Product {
 
     public enum ConcentrationUnit {
         PERCENTAGE("%"),
-        PPM("ppm"),
-        GL("°GL"),
-        MG_L("mg/L");
+        PARTS_PER_MILION("ppm"),
+        GAY_LUSSAC("°GL"),
+        MILIGRAMS_PER_LITER("mg/L");
 
         private final String symbol;
 
@@ -85,17 +87,23 @@ public class Sanitizer extends Product {
         }
     }
 
-    private void validateBioSafetyRules(ChemicalBase chemicalBase, boolean isFlammable, double phLevel) {
+    private void validateBioSafetyRules(ChemicalBase chemicalBase, boolean isFlammable, double phLevel, double concentration, ConcentrationUnit unit) {
         ArrayList<String> invalids = new ArrayList<>();
+        
         invalids.add("Active ingredient");
 
-        if ((chemicalBase == ChemicalBase.ETHANOL || chemicalBase == ChemicalBase.ALCOHOL_ISOPROPYL) && this.concentration > 40 && !isFlammable) {
-            invalids.add("Concentration");
-            invalids.add("Is flammable");
+        if ((chemicalBase == ChemicalBase.ETHANOL || chemicalBase == ChemicalBase.ALCOHOL_ISOPROPYL) && !isFlammable) {
+            if (concentration > 40 && 
+            (unit == ConcentrationUnit.PERCENTAGE || unit == ConcentrationUnit.GAY_LUSSAC ) || 
+            (concentration > 400000 && unit == ConcentrationUnit.PARTS_PER_MILION)) {
 
-            throw new BioSecurityException(
+                invalids.add("Concentration");
+                invalids.add("Is flammable");
+
+                throw new BioSecurityException(
                     "Alcohols with 40% (or more concentration) MUST be flammable.", invalids
-            );
+                );
+            }
         }
 
         if (chemicalBase == ChemicalBase.SODIUM_HYPOCHLORITE && phLevel < 8.0) {
@@ -139,6 +147,74 @@ public class Sanitizer extends Product {
         return concentration;
     }
 
+    public double convertConcentration(ConcentrationUnit fromUnit) {
+        if (this.concentrationUnit == fromUnit) {
+            return concentration;
+        }
+
+        ConcentrationUnit objConcentrationUnit = this.concentrationUnit;
+
+        final int PERC_TO_PPM = 10000;
+
+        switch (fromUnit) {
+            case ConcentrationUnit.MILIGRAMS_PER_LITER:
+                if (objConcentrationUnit == ConcentrationUnit.PERCENTAGE || objConcentrationUnit == ConcentrationUnit.GAY_LUSSAC) {
+                    return this.concentration * PERC_TO_PPM * this.densityGramsPerMiliLiter;
+                }
+        
+                else if (objConcentrationUnit == ConcentrationUnit.PARTS_PER_MILION) {
+                    return this.concentration * this.densityGramsPerMiliLiter;
+                }
+
+                break;
+        
+            case ConcentrationUnit.PARTS_PER_MILION:
+                if ((objConcentrationUnit == ConcentrationUnit.PERCENTAGE || objConcentrationUnit == ConcentrationUnit.GAY_LUSSAC)) {
+                    return this.concentration * PERC_TO_PPM;
+                }
+
+                else if (objConcentrationUnit == ConcentrationUnit.MILIGRAMS_PER_LITER) {
+                    return this.concentration / this.densityGramsPerMiliLiter;
+                }
+                
+                break;
+
+            case ConcentrationUnit.PERCENTAGE:
+                if (objConcentrationUnit == ConcentrationUnit.PARTS_PER_MILION) {
+                    return this.concentration / PERC_TO_PPM;
+                }
+
+                else if (objConcentrationUnit == ConcentrationUnit.MILIGRAMS_PER_LITER) {
+                    return this.concentration / (this.densityGramsPerMiliLiter * PERC_TO_PPM);
+                }
+
+                else if (objConcentrationUnit == ConcentrationUnit.GAY_LUSSAC) {
+                    return this.concentration; // Direct conversion °GL -> %
+                }
+                
+                break;
+
+            case ConcentrationUnit.GAY_LUSSAC:
+                if (objConcentrationUnit == ConcentrationUnit.PARTS_PER_MILION) {
+                    return this.concentration / PERC_TO_PPM;
+                }
+
+                else if (objConcentrationUnit == ConcentrationUnit.MILIGRAMS_PER_LITER) {
+                    return this.concentration / (this.densityGramsPerMiliLiter * PERC_TO_PPM);
+                }
+                
+                else if (objConcentrationUnit == ConcentrationUnit.PERCENTAGE) {
+                    return this.concentration; // Direct conversion % -> °GL
+                }
+
+                break;
+        }
+        
+        throw new IllegalArgumentException(
+            "Unsupported conversion: " + this.concentrationUnit + " to " + fromUnit
+        );
+    }
+
     public ConcentrationUnit getConcentrationUnit() {
         return concentrationUnit;
     }
@@ -149,5 +225,9 @@ public class Sanitizer extends Product {
 
     public boolean isRequiresDilution() {
         return requiresDilution;
+    }
+    
+    public double getDensity() {
+        return densityGramsPerMiliLiter;
     }
 }

@@ -29,6 +29,7 @@ public class SanitizerBuilder {
     private ConcentrationUnit concentrationUnit = ConcentrationUnit.PERCENTAGE;
     private boolean flammable = false;
     private boolean requiresDilution = false;
+    private double density = 1;
 
     public static SanitizerBuilder aSanitizer() {
         return new SanitizerBuilder();
@@ -76,7 +77,13 @@ public class SanitizerBuilder {
         return this;
     }
 
+    public SanitizerBuilder withDensity(double density) {
+        this.density = density;
+
+        return this;
+    }
+
     public Sanitizer build() {
-        return new Sanitizer(name, price, activeIngredient, form, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage, registerNumber, useIndications, phLevel, flammable, concentration, concentrationUnit, requiresDilution);
+        return new Sanitizer(name, price, activeIngredient, form, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage, registerNumber, useIndications, phLevel, flammable, concentration, concentrationUnit, requiresDilution, density);
     }
 }
