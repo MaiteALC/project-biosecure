@@ -1,6 +1,7 @@
 package br.com.biosecure.model.product;
 
 import java.util.ArrayList;
+import java.util.OptionalDouble;
 import java.time.LocalDate;
 
 public class CultureMedia extends Product {
@@ -8,12 +9,12 @@ public class CultureMedia extends Product {
     private final StorageConditions storageConditions;
     private final PhysicalUnit physicalUnit;
     private final boolean protectOfLight;
-    private final double preparationGramsPerLiter;
+    private final OptionalDouble preparationGramsPerLiter;
     private final double finalPhLevel;
-    private final double qtdPerUnit;
+    private final double quantityPerUnit;
     private final QuantificationUnit quantificationUnit;
 
-    public CultureMedia(String name, double price, PhysicalUnit physicalUnit, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int quantityPerPackage, CultureMediaFinality finality, StorageConditions storageConditions, boolean protectOfLight, double quantityPerUnit, QuantificationUnit quantificationUnit, double preparationGramsPerLiter, double finalPhLevel) {
+    public CultureMedia(String name, double price, PhysicalUnit physicalUnit, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, double quantityPerPackage, CultureMediaFinality finality, StorageConditions storageConditions, boolean protectOfLight, double quantityPerUnit, QuantificationUnit quantificationUnit, double preparationGramsPerLiter, double finalPhLevel) {
         
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage);
 
@@ -35,11 +36,11 @@ public class CultureMedia extends Product {
         this.storageConditions = storageConditions;
         this.physicalUnit = physicalUnit;
         this.protectOfLight = protectOfLight;
-        this.qtdPerUnit = quantityPerUnit;
+        this.quantityPerUnit = quantityPerUnit;
         this.quantificationUnit = quantificationUnit;
-        this.preparationGramsPerLiter = preparationGramsPerLiter;
+        this.preparationGramsPerLiter = physicalUnit.isRTU() ? OptionalDouble.empty(): OptionalDouble.of(preparationGramsPerLiter);
         this.finalPhLevel = finalPhLevel;
-    }
+    } 
 
     private void validateBioSafetyRules(PhysicalUnit format, StorageConditions storageTemp) {
         ArrayList<String> invalids = new ArrayList<>();
@@ -47,15 +48,15 @@ public class CultureMedia extends Product {
         invalids.add("Storage conditions");
         invalids.add("Physical unit");
 
-        if (!format.isRTU() && (storageTemp == StorageConditions.AMBIENT_TEMP || storageTemp == StorageConditions.FRESH) ) {
+        if (format.isRTU() && (storageTemp == StorageConditions.AMBIENT_TEMP || storageTemp == StorageConditions.FRESH) ) {
             throw new BioSecurityException(
-                    "Preparated plates/tubes/bottles requires refrigeration (8°C or less) to don't contaminate or dry out.", invalids
+                "Preparated plates/tubes/bottles requires refrigeration (8°C or less) to don't contaminate or dry out.", invalids
             );
         }
 
-        if (format.isRTU() && (storageTemp != StorageConditions.AMBIENT_TEMP && storageTemp != StorageConditions.FRESH) ) {
+        if (!format.isRTU() && (storageTemp != StorageConditions.AMBIENT_TEMP && storageTemp != StorageConditions.FRESH) ) {
             throw new BioSecurityException(
-                    "Dehydrated powder requires ambient temperature to don't compromise effectiveness.", invalids
+                "Dehydrated powder requires ambient temperature to don't compromise effectiveness.", invalids
             );
         }
     }
@@ -134,6 +135,7 @@ public class CultureMedia extends Product {
     public enum QuantificationUnit {
         ML(true),
         L(true),
+        MG(false),
         G(false),
         KG(false);
 
@@ -164,8 +166,8 @@ public class CultureMedia extends Product {
         return protectOfLight;
     }
 
-    public double getQtdPerUnit() {
-        return qtdPerUnit;
+    public double getQuantityPerUnit() {
+        return quantityPerUnit;
     }
 
     public QuantificationUnit getQuantityUnit() {
@@ -176,7 +178,7 @@ public class CultureMedia extends Product {
         return finalPhLevel;
     }
 
-    public double getPreparationGramsPerLiter() {
+    public OptionalDouble getPreparationGramsPerLiter() {
         return preparationGramsPerLiter;
     }
 }
