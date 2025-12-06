@@ -8,9 +8,9 @@ public class FaceProtection extends PersonalProtectiveEquipment {
     private final boolean hasValve;
     private final boolean isAntiFog;
 
-    public FaceProtection(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int quantityPerPackage, Size size, String certificateOfApproval, boolean isDisposable, ProtectionType type, String standardRating, boolean isAntiFog) {
+    public FaceProtection(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, Size size, String certificateOfApproval, boolean isDisposable, ProtectionType type, String standardRating, boolean isAntiFog) {
 
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage, size, certificateOfApproval, isDisposable);
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, size, certificateOfApproval, isDisposable);
 
         validateString(standardRating, "standard rating");
 

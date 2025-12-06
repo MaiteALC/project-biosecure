@@ -7,9 +7,9 @@ public abstract class PersonalProtectiveEquipment extends Product {
     private final String certificateOfApproval;
     private final boolean isDisposable;
 
-    public PersonalProtectiveEquipment(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int quantityPerPackage, Size size, String certificateOfApproval, boolean isDisposable) {
+    public PersonalProtectiveEquipment(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, Size size, String certificateOfApproval, boolean isDisposable) {
         
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage);
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, MeasureUnit.UN, (double) quantityPerPackage);
 
         validateString(certificateOfApproval, "certificate of approval");
 

@@ -8,9 +8,9 @@ public class LabCoat extends PersonalProtectiveEquipment {
     private final CuffStyle cuffStyle;
     private final CollarType collarType;
 
-    public LabCoat(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int quantityPerPackage, Size size, String certificateOfApproval, FabricType fabricType, int grammage, CuffStyle cuffStyle, CollarType collarType) {
+    public LabCoat(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, Size size, String certificateOfApproval, FabricType fabricType, int grammage, CuffStyle cuffStyle, CollarType collarType) {
        
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage, size, certificateOfApproval, fabricType == FabricType.SMS_NON_WOVEN ? true : false /* <-- is disposable?*/);
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, size, certificateOfApproval, fabricType == FabricType.SMS_NON_WOVEN ? true : false /* <-- is disposable?*/);
 
         this.fabricType = fabricType;
         this.grammage = grammage;

@@ -9,9 +9,9 @@ public class Glove extends PersonalProtectiveEquipment {
     private final boolean isTextured;
     private final double thicknessMils;
 
-    public Glove(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, int quantityPerPackage, Size size, String certificateOfApproval, boolean isDisposable, boolean isPowderFree, boolean hasLongBarrel, GloveMaterial material, boolean isTextured, double thicknessMils) {
+    public Glove(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, Size size, String certificateOfApproval, boolean isDisposable, boolean isPowderFree, boolean hasLongBarrel, GloveMaterial material, boolean isTextured, double thicknessMils) {
         
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage, size, certificateOfApproval, isDisposable);
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, size, certificateOfApproval, isDisposable);
 
         this.powderFree = isPowderFree;
         this.longBarrel = hasLongBarrel;
