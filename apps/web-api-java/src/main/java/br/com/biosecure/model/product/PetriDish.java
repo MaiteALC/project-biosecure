@@ -2,16 +2,16 @@ package br.com.biosecure.model.product;
 
 import java.time.LocalDate;
 
-public class PetriDishes extends SampleContainer {
+public class PetriDish extends SampleContainer {
     private final int divNum;
     private final boolean grid;
     private final boolean ventilated;
     private final double diameterMm;
     private final double heightMm;
 
-    public PetriDishes(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int qtdPerPackage, SterilizationMethod sterilizationMethod, ClosingMethod closingMethod, Material materialType, int divisionsNumber, boolean hasGrid, boolean isVentilated, double diameterMm, double heightMm) {
+    public PetriDish(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, SterilizationMethod sterilizationMethod, ClosingMethod closingMethod, Material materialType, int divisionsNumber, boolean hasGrid, boolean isVentilated, double diameterMm, double heightMm) {
         
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, qtdPerPackage, sterilizationMethod, closingMethod, materialType, calculateNominalCapacity(diameterMm, heightMm));
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, sterilizationMethod, closingMethod, materialType, calculateNominalCapacity(diameterMm, heightMm));
 
         if (divisionsNumber < 1 || divisionsNumber > 4) {
             throw new InvalidProductAttributeException("divisions number");

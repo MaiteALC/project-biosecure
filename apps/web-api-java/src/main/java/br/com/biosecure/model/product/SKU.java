@@ -43,7 +43,7 @@ public class SKU {
                 value += testTube.getBottomType().toString().charAt(0);
             }
 
-            if (sampleContainer instanceof PetriDishes petriDishes) {
+            if (sampleContainer instanceof PetriDish petriDishes) {
                 value += petriDishes.getDiameter() + "X";
 
                 value += petriDishes.getHeight();
