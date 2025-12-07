@@ -1,5 +1,7 @@
 package br.com.biosecure.model.product;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 public class PetriDish extends SampleContainer {
@@ -50,14 +52,41 @@ public class PetriDish extends SampleContainer {
         return (Math.PI * Math.pow(radius, 2)) / divNum;
     }
 
+    /**
+     * Calculates the nominal capacity (volume) of a Petri Dish in mililiters.
+     * <p>
+     * Important note: This method calculates considering <strong>useful height of 50%</strong> of given total height
+     * considering that the petri dish is never fully filled.
+     * The result is rounded to 2 decimal places.
+     * </p>
+     * 
+     * <p>
+     * The calculation uses the formula for the volume of a cylinder.: {@code V = π * r² * h}.
+     * </p>
+     *
+     * @param diameter Total diameter in milimeters (mm).
+     * Must be betweeen 1 and 9999.
+     * @param height   Total height in milimeters (mm).
+     * Must be between 1 and 9999.
+     * @return The calculated capacity in mililiters (mL).
+     * @throws InvalidProductAttributeException If dimension is out of allowed limits (<1 or >9999).
+     */
     public static double calculateNominalCapacity(double diameter, double height) {
-        // V = pi * r^2 * h
-        double radius = diameter / 2.0;
+        if (diameter < 1 || height < 1 || diameter > 9999 || height > 9999) {
+            throw new InvalidProductAttributeException("physical dimensions");
+        }
 
-        double usefulHeight = height / 2.0;
+        BigDecimal usefulHeight = BigDecimal.valueOf(height / 2.0).setScale(2, RoundingMode.DOWN);
 
-        double volumeCubicMm = Math.PI * Math.pow(radius, 2) * usefulHeight;
+        double volumeCubicMm = Math.PI * Math.pow(diameter / 2.0, 2) * usefulHeight.doubleValue();
 
-        return Math.round(volumeCubicMm / 1000.0); // Conversion of mm^3 to mL
+        BigDecimal volumeML =  BigDecimal.valueOf(volumeCubicMm / 1000).setScale(2, RoundingMode.HALF_UP); 
+
+        return  volumeML.doubleValue();
+    }
+
+    @Override
+    public double getCapacityMiliLiters() {
+        return calculateNominalCapacity(this.diameterMm, this.heightMm);
     }
 }
