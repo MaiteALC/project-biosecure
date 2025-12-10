@@ -9,68 +9,86 @@ public class SKU {
 
     private String generateFor(Product product) {
         String name = product.getName();
-        String value = name.length() >= 3 ? name.substring(0, 4) : name;
+        String code = name.length() >= 3 ? name.substring(0, 4) : name;
 
-        value += "-" + product.getPackagingType().getCode(); // Always returns 1 or 2 letters
+        code += "-" + product.getPackagingType().getCode(); // Always returns 1 or 2 letters
 
         double quantity = product.getQuantityPerPackage(); 
-        value += quantity >= 1000 ? (quantity / 1000) + "k" : quantity;
+        code += quantity >= 1000 ? (quantity / 1000) + "k" : quantity;
 
-        value += product.getMeasureUnit() + "-";
+        code += product.getMeasureUnit() + "-";
 
         if (product instanceof Sanitizer sanitizer) {
-            value += sanitizer.getPhysicalForm().getCode(); // Always returns 2 letters
+            code += sanitizer.getPhysicalForm().getCode(); // Always returns 2 letters
 
-            value += sanitizer.isFlammable() ? "FL" : "NF";
+            code += sanitizer.isFlammable() ? "FL" : "NF";
         }
 
-        if (product instanceof CultureMedia cultureMedia) {
-            value += cultureMedia.isProtectOfLight() ? "F" : "N";
+        else if (product instanceof CultureMedia cultureMedia) {
+            code += cultureMedia.isProtectOfLight() ? "F" : "N";
 
-            value += cultureMedia.getStorageConditions().getCode(); // Always returns 3 letters
+            code += cultureMedia.getStorageConditions().getCode(); // Always returns 3 letters
         }
 
-        if (product instanceof SampleContainer sampleContainer) {
+        else if (product instanceof SampleContainer sampleContainer) {
             if (sampleContainer instanceof SampleBag sampleBag) {
-                value += sampleBag.hasIdentificationTag() ? "I" : "A";
+                code += sampleBag.hasIdentificationTag() ? "I" : "A";
 
-                value += sampleBag.isStandUp() ? "U" : "D";
+                code += sampleBag.isStandUp() ? "U" : "D";
             }
 
-            if (sampleContainer instanceof TestTube testTube) {
-                value += testTube.isGraduated() ? "G" : "L";
+            else if (sampleContainer instanceof TestTube testTube) {
+                code += testTube.isGraduated() ? "G" : "L";
 
-                value += testTube.getBottomType().toString().charAt(0);
+                code += testTube.getBottomType().toString().charAt(0);
             }
 
-            if (sampleContainer instanceof PetriDish petriDishes) {
-                value += petriDishes.getDiameter() + "X";
+            else if (sampleContainer instanceof PetriDish petriDishes) {
+                code += petriDishes.getDiameter() + "X";
 
-                value += petriDishes.getHeight();
+                code += petriDishes.getHeight();
+            }
+
+            else {
+                throw new SkuGenerationException(
+                    "Product with unknow type of 'Sample Container'. Generation of SKU code is unavailable for this subclass.", sampleContainer
+                );
             }
         }
 
-        if (product instanceof PersonalProtectiveEquipment ppe) {
-            value += ppe.getSize().getCode(); // Always returns 1 or 2 letters
+        else if (product instanceof PersonalProtectiveEquipment ppe) {
+            code += ppe.getSize().getCode(); // Always returns 1 or 2 letters
             
             if (ppe instanceof Glove glove) {
-                value += glove.hasLongBarrel() ? "L" : "S";
+                code += glove.hasLongBarrel() ? "L" : "S";
 
-                value += glove.getThicknessMils();
+                code += glove.getThicknessMils();
             }
 
-            if (ppe instanceof FaceProtection faceProtection) {
-                value += faceProtection.getProtectionType().getCode(); // Always returns 2 letters
+            else if (ppe instanceof FaceProtection faceProtection) {
+                code += faceProtection.getProtectionType().getCode(); // Always returns 2 letters
             }
 
-            if (ppe instanceof LabCoat labCoat) {
-                value += labCoat.getFabricType().toString().charAt(0);
+            else if (ppe instanceof LabCoat labCoat) {
+                code += labCoat.getFabricType().toString().charAt(0);
 
-                value += labCoat.getGrammage();
+                code += labCoat.getGrammage();
+            }
+
+            else {
+                throw new SkuGenerationException(
+                    "Product with unknow type of 'Personal Protective Equipment' (PPE). Generation of SKU code is unavailable for this subclass.", ppe
+                );
             }
         }
 
-        return value.toUpperCase();
+        else {
+            throw new SkuGenerationException(
+                "Unknow product type. Generation of SKU code is unavailable for this subclass.", product
+            );
+        }
+
+        return code.toUpperCase();
     }
 
     @Override
