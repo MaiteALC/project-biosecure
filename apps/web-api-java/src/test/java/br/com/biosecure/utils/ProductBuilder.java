@@ -5,75 +5,71 @@ import br.com.biosecure.model.product.Product;
 import br.com.biosecure.model.product.Product.MeasureUnit;
 import br.com.biosecure.model.product.Product.PackagingType;
 
-public class ProductBuilder {
-    private String name = "Test Product";
-    private double price = 54.9;
-    private String manufacturer = "Generic Manufacturer";
-    private String batchNumber = "Batch-A1";
-    private LocalDate expirationDate = LocalDate.of(2027, 6, 12);
-    private PackagingType packagingType = PackagingType.PACKAGE;
-    private MeasureUnit measureUnit = MeasureUnit.KG;
-    private double quantityPerPackage = 20;
+abstract class ProductBuilder<T extends ProductBuilder<T, P>, P extends Product> {
+    protected String name = "Test Product";
+    protected double price = 54.9;
+    protected String manufacturer = "Generic Manufacturer";
+    protected String batchNumber = "Batch-A1";
+    protected LocalDate expirationDate = LocalDate.of(2027, 6, 12);
+    protected PackagingType packagingType = PackagingType.PACKAGE;
+    protected MeasureUnit measureUnit = MeasureUnit.KG;
+    protected double quantityPerPackage = 20;
 
-    private static class ProductDummy extends Product {
-        public ProductDummy(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, double quantityPerPackage) {    
-            super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage);
-        }
-    }
+    protected abstract T self();
 
-    public ProductBuilder withName(String name) {
+    public abstract P build();
+
+    public T withName(String name) {
         this.name = name;
 
-        return this;
+        return self();
     }
 
-    public ProductBuilder withPrice(double price) {
+    public T withPrice(double price) {
         this.price = price;
 
-        return this;
+        return self();
     }
 
-    public ProductBuilder withManufacturer(String manufacturer) {
+    public T withManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
 
-        return this;
+        return self();
     }
 
-    public ProductBuilder withBatchNumber(String batchNumber) {
+    public T withBatchNumber(String batchNumber) {
         this.batchNumber = batchNumber;
 
-        return this;
+        return self();
     }
 
-    public ProductBuilder withExpirationDate(LocalDate expirationDate) {
+    public T withExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
 
-        return this;
+        return self();
     }
 
-    public ProductBuilder withPackagingType(PackagingType packagingType) {
+    public T withPackagingType(PackagingType packagingType) {
         this.packagingType = packagingType;
 
-        return this;
+        return self();
     }
 
-    public ProductBuilder withMeasureUnit(MeasureUnit measureUnit) {
+    public T withMeasureUnit(MeasureUnit measureUnit) {
         this.measureUnit = measureUnit;
 
-        return this;
+        return self();
     }
 
-    public ProductBuilder withQuantityPerPackage(double quantityPerPackage) {
-        this.quantityPerPackage = quantityPerPackage;
+    public T withQuantityPerPackage(double quantity) {
+        this.quantityPerPackage = quantity;
 
-        return this;
+        return self();
     }
+    
+    public T withQuantityPerPackage(int quantity) {
+        this.quantityPerPackage = quantity;
 
-    public Product build() {
-        return new ProductDummy(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage);
-    }
-
-    public static ProductBuilder aProduct() {
-        return new ProductBuilder(); 
+        return self();
     }
 }

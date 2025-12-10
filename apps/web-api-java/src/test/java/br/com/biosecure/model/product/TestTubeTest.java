@@ -64,6 +64,7 @@ public class TestTubeTest {
         
         BioSecurityException exception2 = assertThrows(BioSecurityException.class, () -> {
             TestTubeBuilder.aTestTube()
+                .withMaterial(Material.PC)
                 .withBottomType(BottomType.FLAT)
                 .withMaxRCF(10001)
                 .build();

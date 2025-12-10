@@ -1,26 +1,9 @@
 package br.com.biosecure.utils;
 
-import java.time.LocalDate;
 import br.com.biosecure.model.product.TestTube;
-import br.com.biosecure.model.product.Product.PackagingType;
-import br.com.biosecure.model.product.SampleContainer.*;
 import br.com.biosecure.model.product.TestTube.*;
 
-public class TestTubeBuilder {
-    // General attributes of products
-    private String name = "Sanitizer Test";
-    private double price = 54.90;
-    private String manufacturer = "Test Manufacturer";
-    private String batchNumber = "Batch-1A";
-    private LocalDate expirationDate = LocalDate.of(2027, 6, 12);
-    private PackagingType packagingType = PackagingType.BOX;
-    private int quantityPerPackage = 15;
-
-    // Attributes of super class Sample Container
-    private ClosingMethod closingMethod = ClosingMethod.CELLULOSE_STOPPER;
-    private SterilizationMethod sterilizationMethod = SterilizationMethod.GAMMA_RAYS;
-    private Material material = Material.PS;
-
+public class TestTubeBuilder extends SampleContainerBuilder<TestTubeBuilder, TestTube> {
     // Specific attributes of Test Tubes
     private int maxRCF = 7000;
     private BottomType bottomType = BottomType.ROUND;
@@ -28,24 +11,6 @@ public class TestTubeBuilder {
     private CapColor capColor = CapColor.WHITE;
     private double diameterMm = 12;
     private double heightMm = 75;
-
-    public TestTubeBuilder withClosingMethod(ClosingMethod closingMethod) {
-        this.closingMethod = closingMethod;
-
-        return this;
-    }
-
-    public TestTubeBuilder withSterilizationMethod(SterilizationMethod sterilizationMethod) {
-        this.sterilizationMethod = sterilizationMethod;
-
-        return this;
-    }
-
-    public TestTubeBuilder withMaterial(Material material) {
-        this.material = material;
-
-        return this;
-    }
 
     public TestTubeBuilder withMaxRCF(int maxRCF) {
         this.maxRCF = maxRCF;
@@ -76,10 +41,27 @@ public class TestTubeBuilder {
 
         return this;
     }
+    
+    public TestTubeBuilder withDiameterMm(int diameterMm) {
+        this.diameterMm = diameterMm;
+
+        return this;
+    }
 
     public TestTubeBuilder withHeightMm(double heightMm) {
         this.heightMm = heightMm;
 
+        return this;
+    }
+    
+    public TestTubeBuilder withHeightMm(int heightMm) {
+        this.heightMm = heightMm;
+
+        return this;
+    }
+
+    @Override
+    protected TestTubeBuilder self() {
         return this;
     }
 
@@ -87,7 +69,8 @@ public class TestTubeBuilder {
         return new TestTubeBuilder();
     }
 
+    @Override
     public TestTube build() {
-        return new TestTube(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, sterilizationMethod, closingMethod, material, maxRCF, bottomType, graduated, capColor, diameterMm, heightMm);
+        return new TestTube(name, price, manufacturer, batchNumber, expirationDate, packagingType, (int) quantityPerPackage, sterilizationMethod, closingMethod, material, maxRCF, bottomType, graduated, capColor, diameterMm, heightMm);
     }
 }

@@ -2,23 +2,10 @@ package br.com.biosecure.utils;
 
 import br.com.biosecure.model.product.Sanitizer.ChemicalBase;
 import br.com.biosecure.model.product.Sanitizer.ConcentrationUnit;
-import java.time.LocalDate;
-import br.com.biosecure.model.product.Product.MeasureUnit;
-import br.com.biosecure.model.product.Product.PackagingType;
 import br.com.biosecure.model.product.Sanitizer.PhysicalForm;
 import br.com.biosecure.model.product.Sanitizer;
 
-public class SanitizerBuilder {
-    // General attributes of products
-    private String name = "Sanitizer Test";
-    private double price = 54.90;
-    private String manufacturer = "Test Manufacturer";
-    private String batchNumber = "Batch-1A";
-    private LocalDate expirationDate = LocalDate.of(2027, 3, 3);
-    private PackagingType packagingType = PackagingType.BOTTLE;
-    private MeasureUnit measureUnit = MeasureUnit.L;
-    private double quantityPerPackage = 15.0;
-
+public class SanitizerBuilder extends ProductBuilder<SanitizerBuilder, Sanitizer> {
     // Specifics attributes of Sanitizer
     private ChemicalBase activeIngredient = ChemicalBase.QUATERNARY_AMMONIUM;
     private PhysicalForm form = PhysicalForm.LIQUID;
@@ -30,10 +17,6 @@ public class SanitizerBuilder {
     private boolean flammable = false;
     private boolean requiresDilution = false;
     private double density = 1;
-
-    public static SanitizerBuilder aSanitizer() {
-        return new SanitizerBuilder();
-    }
 
     public SanitizerBuilder withActiveIngredient(ChemicalBase chemicalBase) {
         this.activeIngredient = chemicalBase;
@@ -83,6 +66,16 @@ public class SanitizerBuilder {
         return this;
     }
 
+    public static SanitizerBuilder aSanitizer() {
+        return new SanitizerBuilder();
+    }
+
+    @Override
+    protected SanitizerBuilder self() {
+        return this;
+    }
+
+    @Override
     public Sanitizer build() {
         return new Sanitizer(name, price, activeIngredient, form, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage, registerNumber, useIndications, phLevel, flammable, concentration, concentrationUnit, requiresDilution, density);
     }
