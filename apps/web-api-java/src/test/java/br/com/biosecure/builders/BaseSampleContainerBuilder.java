@@ -1,4 +1,4 @@
-package br.com.biosecure.utils;
+package br.com.biosecure.builders;
 
 import br.com.biosecure.model.product.SampleContainer;
 import br.com.biosecure.model.product.SampleContainer.*;

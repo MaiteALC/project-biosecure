@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import br.com.biosecure.model.product.SampleContainer.*;
 import br.com.biosecure.model.product.TestTube.*;
-import br.com.biosecure.utils.TestTubeBuilder;
+import br.com.biosecure.builders.TestTubeBuilder;
 
 public class TestTubeTest {
     

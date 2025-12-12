@@ -9,10 +9,10 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import br.com.biosecure.model.product.Product.MeasureUnit;
 import br.com.biosecure.model.product.Product.PackagingType;
-import br.com.biosecure.utils.GloveBuilder;
-import br.com.biosecure.utils.PetriDishBuilder;
-import br.com.biosecure.utils.ProductBuilder;
-import br.com.biosecure.utils.SanitizerBuilder;
+import br.com.biosecure.builders.GloveBuilder;
+import br.com.biosecure.builders.PetriDishBuilder;
+import br.com.biosecure.builders.ProductBuilder;
+import br.com.biosecure.builders.SanitizerBuilder;
 
 public class ProductTest {
     

@@ -1,4 +1,4 @@
-package br.com.biosecure.utils;
+package br.com.biosecure.builders;
 
 import br.com.biosecure.model.product.FaceProtection;
 import br.com.biosecure.model.product.FaceProtection.ProtectionType;

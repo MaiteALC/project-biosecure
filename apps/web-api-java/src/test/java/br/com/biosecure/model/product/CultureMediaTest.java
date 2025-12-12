@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import br.com.biosecure.model.product.CultureMedia.*;
-import br.com.biosecure.utils.CultureMediaBuilder;
+import br.com.biosecure.builders.CultureMediaBuilder;
 
 public class CultureMediaTest {
     

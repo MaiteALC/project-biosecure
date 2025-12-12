@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import br.com.biosecure.model.product.SampleContainer.ClosingMethod;
 import br.com.biosecure.model.product.SampleContainer.Material;
-import br.com.biosecure.utils.PetriDishBuilder;
+import br.com.biosecure.builders.PetriDishBuilder;
 
 public class PetriDishTest {
     

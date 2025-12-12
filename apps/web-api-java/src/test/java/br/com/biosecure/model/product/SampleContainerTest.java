@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import br.com.biosecure.model.product.Product.MeasureUnit;
 import br.com.biosecure.model.product.SampleContainer.*;
-import br.com.biosecure.utils.SampleContainerBuilder;
+import br.com.biosecure.builders.SampleContainerBuilder;
 
 public class SampleContainerTest {
     

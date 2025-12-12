@@ -1,4 +1,4 @@
-package br.com.biosecure.utils;
+package br.com.biosecure.builders;
 
 import java.time.LocalDate;
 import br.com.biosecure.model.product.PPE;

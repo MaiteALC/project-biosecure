@@ -1,4 +1,4 @@
-package br.com.biosecure.utils;
+package br.com.biosecure.builders;
 
 import java.util.OptionalDouble;
 import br.com.biosecure.model.product.CultureMedia;

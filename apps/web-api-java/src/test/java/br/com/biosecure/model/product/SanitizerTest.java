@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import br.com.biosecure.model.product.Sanitizer.ChemicalBase;
 import br.com.biosecure.model.product.Sanitizer.ConcentrationUnit;
 import br.com.biosecure.model.product.Sanitizer.PhysicalForm;
-import br.com.biosecure.utils.SanitizerBuilder;
+import br.com.biosecure.builders.SanitizerBuilder;
 import org.junit.jupiter.api.Test;
 
 public class SanitizerTest {
