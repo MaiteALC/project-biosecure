@@ -3,54 +3,39 @@ package br.com.biosecure.model.client;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class ClientTest {
-    Address validAddress = new Address("Test State", "Test City", "Test", "Teststreet", 321, "12345-678");
+    private Address validAddress = new Address("Test State", "Test City", "Test", "Teststreet", 321, "12345-678");
+    private Cnpj validCnpj = new Cnpj("53.297.928/0001-46");
+    private String validEmail = "teste1@biosecure.com.br";
 
-    Cnpj validCnpj = new Cnpj("53.297.928/0001-46");
-
-    @Test
-    @DisplayName("The creation of client don't be allowed when te email isn't valid")
-    public void clientCreationMustFailOnEmail() {
-        String invalidEmail = "  ";
-        String invalidEmail2 = "test2@gmail.com";
-        String invalidEmail3 = "test2@hotmail.com";
-        
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"    ", "test2@gmail.com", "test2@hotmail.com"})
+    public void clientCreationMustFailOnEmail(String invalidEmail) {
         InvalidClientAttributeException exception = assertThrows(InvalidClientAttributeException.class,
-                () -> new Client("Microsoft", validCnpj, validAddress, invalidEmail)
+            () -> new Client("Zepto Lab", validCnpj, validAddress, invalidEmail)
         );
 
         assertEquals("email", exception.getInvalidAttribute());
-        
-        InvalidClientAttributeException exception2 = assertThrows(InvalidClientAttributeException.class,
-                () -> new Client("BioSecure", validCnpj, validAddress, invalidEmail2)
-        );
-
-        assertEquals("email", exception2.getInvalidAttribute());
-
-        InvalidClientAttributeException exception3 = assertThrows(InvalidClientAttributeException.class,
-                () -> new Client("Zepto Lab", validCnpj, validAddress, invalidEmail3)
-        );
-
-        assertEquals("email", exception3.getInvalidAttribute());
     }
 
-    @Test
-    @DisplayName("Creation of client don't be allowed when the name is invalid (blank)")
-    public void clientCreationMustFailOnName() {
-        String validEmail = "teste1@biosecure.com.br";
-
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"     ", "A", "1"})
+    public void clientCreationMustFailOnName(String invalidName) {
         InvalidClientAttributeException exception = assertThrows(InvalidClientAttributeException.class,
-                () -> new Client("  ", validCnpj, validAddress, validEmail)
+            () -> new Client(invalidName, validCnpj, validAddress, validEmail)
         );
 
-        assertEquals("corporate name", exception.getInvalidAttribute());
+        assertEquals("name", exception.getInvalidAttribute());
     }
 
     @Test
-    @DisplayName("The creation of these CNPJs must be fail because they are invalids")
     public void mustFailCnpjValidation() {
         assertThrows(InvalidCnpjException.class, () -> new Cnpj("111111"));
 
@@ -60,7 +45,6 @@ public class ClientTest {
     }
 
     @Test
-    @DisplayName("The creation of these CNPJs mustn't be fail because all of them are valids")
     public void mustCreateCnpjWithSuccess() {
         Cnpj valid = new Cnpj("60.316.817/0001-03");
 

@@ -1,8 +1,8 @@
 package br.com.biosecure.model.client;
 
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import br.com.biosecure.utils.NotificationContext;
+import br.com.biosecure.utils.StringUtils;
 
 public class  Client {
     private String corporateName;
@@ -10,14 +10,19 @@ public class  Client {
     private final Cnpj cnpj;
     private Address address;
     private String email;
+
+    private static int MIN_NAME_LENGTH = 2;
+    private static int MAX_NAME_LENGTH = 55;
     
     public Client(String corporateName, Cnpj cnpj, Address address, String email) {
-        if (corporateName.isBlank()) {
-            throw new InvalidClientAttributeException("corporate name");
-        }
-        
-        if (!validateEmail(email)) {
-            throw new InvalidClientAttributeException("email");
+        NotificationContext notificationContext = new NotificationContext();
+
+        StringUtils.validateString(corporateName, MIN_NAME_LENGTH, "name", MAX_NAME_LENGTH, notificationContext);
+
+        StringUtils.validateCorporateEmail(email, notificationContext);
+
+        if (notificationContext.hasErrors()) {
+            throw new InvalidClientAttributeException(notificationContext.getErrors());
         }
 
         this.corporateName = corporateName;
@@ -44,20 +49,6 @@ public class  Client {
     @Override
     public String toString() {
         return "Client [corporate name: " + corporateName + ", CNPJ: " + cnpj.getFormattedNumber() + ", ID: " + id + ", address: " + address + ", email: " + email + "]";
-    }
-
-    private boolean validateEmail(String email) {
-        if (email.isBlank()) {
-            return false;
-        }
-
-        final String REGEX = "^[A-Za-z0-9._%+-]+@(?!(gmail\\.com|hotmail\\.com|outlook\\.com|yahoo\\.com|live\\.com)$)[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-
-        Pattern pattern = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
-
-        Matcher matcher = pattern.matcher(email);
-
-        return matcher.matches();
     }
 
     public String getCorporateName() {
@@ -88,7 +79,11 @@ public class  Client {
         this.corporateName = newName;
     }
     public void setEmail(String newEmail) {
-        if (!validateEmail(newEmail)) {
+        NotificationContext notificationContext = new NotificationContext();
+        
+        StringUtils.validateCorporateEmail(newEmail, notificationContext);
+        
+        if (notificationContext.hasErrors()) {
             throw new InvalidClientAttributeException("email");
         }
 
