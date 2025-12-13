@@ -4,7 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
-    private static String messageForNull = "The string is null/empty.";
+    private static String messageForNull = "The string is null.";
+    private static String messageForEmpty = "The string is empty.";
     private static String messageForMaxLenght = "The string length is greater than allowed.";
     private static String messageForMinLenght = "The string length is less than allowed.";
     
@@ -16,8 +17,12 @@ public class StringUtils {
      * @param notification A {@code NotificationContext} object that stores the exceptions (if there is) added internaly by this method.
      */
     public static void validateString(String value, String propertyName, NotificationContext notification) {
-        if (value == null || value.isBlank()) {
+        if (value == null) {
             notification.addError(propertyName, messageForNull);
+        }
+
+        else if (value.isBlank()) {
+            notification.addError(propertyName, messageForEmpty);
         }
     }
     
@@ -31,8 +36,12 @@ public class StringUtils {
      * @param notification A {@code NotificationContext} object that stores the exceptions (if there is) added internaly by this method.
      */
     public static void validateString(String value, int minLength, String propertyName, int maxLength, NotificationContext notification) {
-        if (value == null || value.isBlank()) {
+        if (value == null) {
             notification.addError(propertyName, messageForNull);
+        }
+        
+        else if (value.isBlank()) {
+            notification.addError(propertyName, messageForEmpty);
         }
 
         else if (value.length() < minLength) {
@@ -53,8 +62,12 @@ public class StringUtils {
      * @param notification A {@code NotificationContext} object that stores the exceptions (if there is) added internaly by this method.
      */
     public static void validateString(String value, String propertyName, int maxLength, NotificationContext notification) {
-        if (value == null || value.isBlank()) {
+        if (value == null) {
             notification.addError(propertyName, messageForNull);
+        }
+        
+        else if (value.isBlank()) {
+            notification.addError(propertyName, messageForEmpty);
         }
 
         else if (value.length() > maxLength) {
@@ -71,12 +84,16 @@ public class StringUtils {
      * @param notification A {@code NotificationContext} object that stores the exceptions (if there is) added internaly by this method.
      */
     public static void validateString(String value, int minLength, String propertyName, NotificationContext notification) {
-        if (value == null || value.isBlank()) {
+        if (value == null) {
             notification.addError(propertyName, messageForNull);
+        }
+        
+        else if (value.isBlank()) {
+            notification.addError(propertyName, messageForEmpty);
         }
 
         else if (value.length() < minLength) {
-            notification.addError(propertyName, messageForMaxLenght);
+            notification.addError(propertyName, messageForMinLenght);
         }
     }
 
@@ -87,8 +104,12 @@ public class StringUtils {
      * @param notification A {@code NotificationContext} object that stores the {@code ValidationException} (if there is) added internaly by this method.
      */
     public static void validateCorporateEmail(String email, NotificationContext notification) {
-        if (email == null || email.isBlank()) {
-            notification.addError("email", "The email is null/empty.");
+        if (email == null) {
+            notification.addError("email", messageForNull);
+        }
+        
+        else if (email.isBlank()) {
+            notification.addError("email", messageForEmpty);
         }
 
         else {
