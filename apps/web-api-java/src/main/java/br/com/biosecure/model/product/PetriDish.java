@@ -3,6 +3,8 @@ package br.com.biosecure.model.product;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import br.com.biosecure.utils.NotificationContext;
+import br.com.biosecure.utils.NumberUtils;
 
 public class PetriDish extends SampleContainer {
     private final int divNum;
@@ -13,14 +15,17 @@ public class PetriDish extends SampleContainer {
 
     public PetriDish(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, SterilizationMethod sterilizationMethod, ClosingMethod closingMethod, Material materialType, int divisionsNumber, boolean hasGrid, boolean isVentilated, double diameterMm, double heightMm) {
         
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, sterilizationMethod, closingMethod, materialType, calculateNominalCapacity(diameterMm, heightMm));
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, sterilizationMethod, closingMethod, materialType);
 
-        if (divisionsNumber < 1 || divisionsNumber > 4) {
-            throw new InvalidProductAttributeException("divisions number");
-        }
-        
-        if (diameterMm < 1 || diameterMm > 999 || heightMm < 1 || heightMm > 999) {
-            throw new InvalidProductAttributeException("physical dimensions");
+        NotificationContext notification = new NotificationContext();
+
+        NumberUtils.validateNumericalAttribute(heightMm, 1, "heigth (mm)", 999, notification);
+        NumberUtils.validateNumericalAttribute(diameterMm, 1, "width (mm)", 999, notification);
+
+        NumberUtils.validateNumericalAttribute(divisionsNumber, 1, "divisions number", 4, notification);
+
+        if (notification.hasErrors()) {
+            throw new InvalidProductAttributeException(notification.getErrors());
         }
 
         this.divNum = divisionsNumber;
@@ -116,7 +121,6 @@ public class PetriDish extends SampleContainer {
         return  volumeML.doubleValue();
     }
 
-    @Override
     public double getCapacityMiliLiters() {
         return calculateNominalCapacity(this.diameterMm, this.heightMm);
     }

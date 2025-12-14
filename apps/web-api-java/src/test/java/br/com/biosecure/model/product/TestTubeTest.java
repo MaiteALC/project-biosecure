@@ -40,13 +40,13 @@ public class TestTubeTest {
             TestTubeBuilder.aTestTube().withDiameterMm(0).withHeightMm(0).build();
         });
 
-        assertEquals("physical dimensions", exception.getInvalidAttribute());
+        assertEquals("[heigth (mm), diameter (mm)]", exception.getInvalidAttribute());
         
         InvalidProductAttributeException exception2 = assertThrows(InvalidProductAttributeException.class, () -> {
             TestTubeBuilder.aTestTube().withDiameterMm(1000).withHeightMm(1000).build();
         });
 
-        assertEquals("physical dimensions", exception2.getInvalidAttribute());
+        assertEquals("[heigth (mm), diameter (mm)]", exception2.getInvalidAttribute());
     }
 
     @Test

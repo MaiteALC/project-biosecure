@@ -8,7 +8,6 @@ abstract class BaseSampleContainerBuilder<T extends BaseSampleContainerBuilder<T
     protected ClosingMethod closingMethod = ClosingMethod.CELLULOSE_STOPPER;
     protected SterilizationMethod sterilizationMethod = SterilizationMethod.ETHYLENE_OXIDE;
     protected Material material = Material.BOROSILICATE_GLASS;
-    protected double capacityMiliLiters = 1;
 
     public T withClosingMethod(ClosingMethod closingMethod) {
         this.closingMethod = closingMethod;
@@ -24,12 +23,6 @@ abstract class BaseSampleContainerBuilder<T extends BaseSampleContainerBuilder<T
 
     public T withMaterial(Material material) {
         this.material = material;
-
-        return self();
-    }
-
-    public T withCapacityMiliLiters(double capacity) {
-        this.capacityMiliLiters = capacity;
 
         return self();
     }

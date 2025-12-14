@@ -1,20 +1,22 @@
 package br.com.biosecure.model.product;
 
 import java.util.ArrayList;
+import br.com.biosecure.utils.NotificationContext;
 import java.time.LocalDate;
 
 public abstract class SampleContainer extends  Product {
     private final ClosingMethod closingMethod;
     private final SterilizationMethod sterilizationMethod;
     private final Material material;
-    private final double capacityMiliLiters;
 
-    public SampleContainer(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, SterilizationMethod sterilizationMethod, ClosingMethod closingMethod, Material materialType, double capacityMiliLiters) {
+    public SampleContainer(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, SterilizationMethod sterilizationMethod, ClosingMethod closingMethod, Material materialType) {
         
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, MeasureUnit.UN, (double) quantityPerPackage);
 
-        if (capacityMiliLiters <= 0 || capacityMiliLiters > 99999) {
-            throw new InvalidProductAttributeException("capacity");
+        NotificationContext notification = new NotificationContext();
+
+        if (notification.hasErrors()) {
+            throw new InvalidProductAttributeException(notification.getErrors());
         }
 
         validateBioSafetyRules(materialType, sterilizationMethod);
@@ -22,7 +24,6 @@ public abstract class SampleContainer extends  Product {
         this.sterilizationMethod = sterilizationMethod;
         this.closingMethod = closingMethod;
         this.material = materialType;
-        this.capacityMiliLiters = capacityMiliLiters;
     }
 
     private void validateBioSafetyRules(Material material, SterilizationMethod sterilization) {
@@ -107,9 +108,5 @@ public abstract class SampleContainer extends  Product {
 
     public boolean isSterile() {
         return this.sterilizationMethod != SterilizationMethod.NO_STERILE;
-    }
-
-    public double getCapacityMiliLiters() {
-        return capacityMiliLiters;
     }
 }

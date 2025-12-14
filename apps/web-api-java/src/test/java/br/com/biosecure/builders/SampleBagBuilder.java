@@ -11,6 +11,7 @@ public class SampleBagBuilder extends BaseSampleContainerBuilder<SampleBagBuilde
     private double thicknessMm = 3;
     private double widthMm = 10;
     private double heigthMm = 22;
+    private double capacityMiliLiters = 2;
 
     public SampleBagBuilder withFilter(FilterType filter) {
         this.filter = filter;
@@ -44,6 +45,12 @@ public class SampleBagBuilder extends BaseSampleContainerBuilder<SampleBagBuilde
 
     public SampleBagBuilder withHeigthMm(double heigthMm) {
         this.heigthMm = heigthMm;
+
+        return this;
+    }
+
+    public SampleBagBuilder withCapacityMiliLiters(double capacity) {
+        this.capacityMiliLiters = capacity;
 
         return this;
     }

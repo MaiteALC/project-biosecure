@@ -5,7 +5,7 @@ import br.com.biosecure.model.product.TestTube.*;
 
 public class TestTubeBuilder extends BaseSampleContainerBuilder<TestTubeBuilder, TestTube> {
     // Specific attributes of Test Tubes
-    private int maxRCF = 7000;
+    private int maxRCF = 4000;
     private BottomType bottomType = BottomType.ROUND;
     private boolean graduated = true;
     private CapColor capColor = CapColor.WHITE;

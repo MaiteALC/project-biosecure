@@ -46,13 +46,13 @@ public class PetriDishTest {
             PetriDishBuilder.aPetriDish().withDiameterMm(0).withHeightMm(0).build();
         });
 
-        assertEquals("physical dimensions", exception.getInvalidAttribute());
+        assertEquals("[heigth (mm), width (mm)]", exception.getInvalidAttribute());
         
         InvalidProductAttributeException exception2 = assertThrows(InvalidProductAttributeException.class, () -> {
             PetriDishBuilder.aPetriDish().withDiameterMm(1000).withHeightMm(1000).build();
         });
 
-        assertEquals("physical dimensions", exception2.getInvalidAttribute());
+        assertEquals("[heigth (mm), width (mm)]", exception2.getInvalidAttribute());
     }
 
     @Test

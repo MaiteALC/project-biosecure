@@ -1,6 +1,9 @@
 package br.com.biosecure.model.product;
 
 import java.util.ArrayList;
+
+import br.com.biosecure.utils.NotificationContext;
+import br.com.biosecure.utils.NumberUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -15,10 +18,17 @@ public class TestTube extends SampleContainer {
 
     public TestTube(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, SterilizationMethod sterilizationMethod, ClosingMethod closingMethod, Material materialType, int maxRCF, BottomType bottomType, boolean isGraduated, CapColor capColor, double diameterMm, double heightMm) {
        
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, sterilizationMethod,closingMethod, materialType, calculateNominalCapacity(diameterMm, heightMm));
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, sterilizationMethod,closingMethod, materialType);
 
-        if (diameterMm < 1 || diameterMm > 999 || heightMm < 1 || heightMm > 999) {
-            throw new InvalidProductAttributeException("physical dimensions");
+        NotificationContext notification = new NotificationContext();
+        
+        NumberUtils.validateNumericalAttribute(heightMm, 1, "heigth (mm)", 999, notification);
+        NumberUtils.validateNumericalAttribute(diameterMm, 1, "diameter (mm)", 999, notification);
+        
+        NumberUtils.validateNumericalAttribute(maxRCF, 1, "maximum RCF", 500000, notification);
+
+        if (notification.hasErrors()) {
+            throw new InvalidProductAttributeException(notification.getErrors());
         }
 
         validateBioSafetRules(materialType, bottomType, maxRCF);
@@ -129,7 +139,6 @@ public class TestTube extends SampleContainer {
         return  volumeML.doubleValue();
     }
 
-    @Override
     public double getCapacityMiliLiters() {
         return calculateNominalCapacity(this.diameterMm, this.heightMm);
     }

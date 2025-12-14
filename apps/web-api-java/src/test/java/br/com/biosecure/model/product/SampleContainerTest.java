@@ -16,7 +16,6 @@ public class SampleContainerTest {
     @Test
     public void shouldCreateValidSampleContainer() {
         SampleContainer aSampleContainer = SampleContainerBuilder.aSampleContainer()
-            .withCapacityMiliLiters(20)
             .withSterilizationMethod(SterilizationMethod.E_BEAM)
             .withClosingMethod(ClosingMethod.HEAT_SEALABLE)
             .withMaterial(Material.PP)
@@ -26,27 +25,12 @@ public class SampleContainerTest {
         assertEquals(MeasureUnit.UN, aSampleContainer.getMeasureUnit());
 
          SampleContainer anotherSampleContainer = SampleContainerBuilder.aSampleContainer()
-            .withCapacityMiliLiters(12)
             .withSterilizationMethod(SterilizationMethod.AUTOCLAVE)
             .withClosingMethod(ClosingMethod.SCREW_CAP_ORING)
             .withMaterial(Material.PP)
             .build();
 
         assertNotNull(anotherSampleContainer);
-    }
-
-    @Test
-    public void shouldThrowException_WhenCapacityIsInvalid() {
-        InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
-            SampleContainerBuilder.aSampleContainer().withCapacityMiliLiters(0).build();
-        });
-        
-        InvalidProductAttributeException exception2 = assertThrows(InvalidProductAttributeException.class, () -> {
-            SampleContainerBuilder.aSampleContainer().withCapacityMiliLiters(100000).build();
-        });
-
-        assertEquals("capacity", exception.getInvalidAttribute());
-        assertEquals("capacity", exception2.getInvalidAttribute());
     }
 
     @Test
