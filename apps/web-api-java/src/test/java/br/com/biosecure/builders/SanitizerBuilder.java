@@ -7,7 +7,7 @@ public class SanitizerBuilder extends BaseProductBuilder<SanitizerBuilder, Sanit
     // Specifics attributes of Sanitizer
     private ChemicalBase activeIngredient = ChemicalBase.QUATERNARY_AMMONIUM;
     private PhysicalForm form = PhysicalForm.LIQUID;
-    private String registerNumber = "123-Test-Anvisa";
+    private String registerNumber = "123-Test-Anv";
     private String useIndications = "Test test test test test";
     private double phLevel = 7;
     private double concentration = 1;

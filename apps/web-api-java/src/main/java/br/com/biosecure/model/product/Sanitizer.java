@@ -2,6 +2,9 @@ package br.com.biosecure.model.product;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
+import br.com.biosecure.utils.NotificationContext;
+import br.com.biosecure.utils.NumberUtils;
+import br.com.biosecure.utils.StringUtils;
 
 public class Sanitizer extends Product {
     private final ChemicalBase activeIngredient;
@@ -19,30 +22,26 @@ public class Sanitizer extends Product {
         
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage);
 
-        if (phLevel < 0 || phLevel > 14) {
-            throw new InvalidProductAttributeException("ph level");
-        }
-
-        if (concentration < 0 || (concentration > 100 && 
-        (concentrationUnit == ConcentrationUnit.PERCENTAGE || concentrationUnit == ConcentrationUnit.GAY_LUSSAC)) || 
-        (concentrationUnit == ConcentrationUnit.PARTS_PER_MILION && concentration > 1000000) ||
-        (concentrationUnit == ConcentrationUnit.MILIGRAMS_PER_LITER && concentration > 23000000) ){
-            throw new InvalidProductAttributeException("concentration");
-        }
+        NotificationContext notification = new NotificationContext();
         
-        if (densityGramsPerMiliLiter < 0 || densityGramsPerMiliLiter > 23) { 
-            throw new InvalidProductAttributeException("density (grams per mili liter"); // 23 is (a bit greater than) the value of density of the "Osmium", the most dense substance in the world
-        } 
+        StringUtils.validateString(registerNumber, 8, "register number", 14, notification);
+        StringUtils.validateString(useIndications, "use indications", notification);
+
+        NumberUtils.validateNumericalAttribute(phLevel, 0, "ph level", 14, notification);
+        NumberUtils.validateNumericalAttribute(densityGramsPerMiliLiter, 0, "density (g/mL)", 23, notification); // 23 is (a bit greater than) the value of density of the "Osmium", the most dense substance in the world
+
+        NumberUtils.validateNumericalAttribute(concentration, 0, "concentration", getMaxConcentrationValue(concentrationUnit), notification); 
 
         if (activeIngredient != ChemicalBase.ALCOHOL_ISOPROPYL && activeIngredient != ChemicalBase.ETHANOL && concentrationUnit == ConcentrationUnit.GAY_LUSSAC) {
-            throw new InvalidProductAttributeException("concentration unit");
+            notification.addError("concentration unit", "A non-alcoholic substance can't use Gay-Lussac as concentration unit.");
         }
 
+        if (notification.hasErrors()) {
+            throw new InvalidProductAttributeException(notification.getErrors());
+        }
+        
         validateBioSafetyRules(activeIngredient, isFlammable, phLevel, concentration, concentrationUnit);
-
-        validateString(registerNumber, "register number");
-        validateString(useIndications, "use indications");
-
+        
         this.activeIngredient = activeIngredient;
         this.form = form;
         this.registerNumber = registerNumber;
@@ -102,6 +101,38 @@ public class Sanitizer extends Product {
         }
     }
 
+    private int getMaxConcentrationValue(ConcentrationUnit cUnit) {
+        int maxConcentrationValue;
+        
+        switch (cUnit) {
+            case ConcentrationUnit.PERCENTAGE:
+                maxConcentrationValue = 100;
+                break;
+                
+            case ConcentrationUnit.GAY_LUSSAC:
+                maxConcentrationValue = 100;
+                break;
+
+            case ConcentrationUnit.PARTS_PER_MILION:
+                maxConcentrationValue = 1000000;
+                break;
+
+            case ConcentrationUnit.MILIGRAMS_PER_LITER:
+                maxConcentrationValue = 23000000;
+                break;
+
+            case ConcentrationUnit.MILILITERS_PER_LITER:
+                maxConcentrationValue = 1000;
+                break;
+
+            default:        
+                maxConcentrationValue = 24000000;
+                break;
+        }
+
+        return maxConcentrationValue;
+    }
+
     private void validateBioSafetyRules(ChemicalBase chemicalBase, boolean isFlammable, double phLevel, double concentration, ConcentrationUnit unit) {
         ArrayList<String> invalids = new ArrayList<>();
         
@@ -154,7 +185,7 @@ public class Sanitizer extends Product {
         return concentration;
     }
 
-    public double convertConcentration(ConcentrationUnit targetUnit) {
+    public double convertConcentrationUnit(ConcentrationUnit targetUnit) {
         if (this.concentrationUnit == targetUnit) {
             return concentration;
         }

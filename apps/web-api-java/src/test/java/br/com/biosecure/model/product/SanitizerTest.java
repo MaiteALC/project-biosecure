@@ -26,7 +26,7 @@ public class SanitizerTest {
             .withActiveIngredient(ChemicalBase.ETHANOL)
             .withConcentration(70.0)
             .withPhLevel(6.4)
-            .withFlammable(true) // Valid config
+            .withFlammable(true)
             .withForm(PhysicalForm.GEL)
             .build();
 
@@ -114,7 +114,7 @@ public class SanitizerTest {
         InvalidProductAttributeException concentrationException2 = assertThrows(InvalidProductAttributeException.class, () -> {
             SanitizerBuilder.aSanitizer()
             .withConcentration(101)
-            .withConcentrationUnit(ConcentrationUnit.GAY_LUSSAC)
+            .withConcentrationUnit(ConcentrationUnit.GAY_LUSSAC) // default chemical base == QUATERNARY_AMMONIUM. This will be invalidate concentration unit and concentration at same time
             .build();
         });
         
@@ -139,7 +139,7 @@ public class SanitizerTest {
         });
 
         assertEquals("concentration", concentrationException.getInvalidAttribute());
-        assertEquals("concentration", concentrationException2.getInvalidAttribute());
+        assertEquals("[concentration, concentration unit]", concentrationException2.getInvalidAttribute()); 
         assertEquals("concentration", concentrationException3.getInvalidAttribute());
         assertEquals("concentration", concentrationException4.getInvalidAttribute());
         assertEquals("concentration", concentrationException5.getInvalidAttribute());
@@ -154,7 +154,7 @@ public class SanitizerTest {
             .withFlammable(true)
             .build();
 
-        assertEquals(70, aSanitizer.convertConcentration(ConcentrationUnit.PERCENTAGE));
+        assertEquals(70, aSanitizer.convertConcentrationUnit(ConcentrationUnit.PERCENTAGE));
         
         
         Sanitizer anotherSanitizer = SanitizerBuilder.aSanitizer()
@@ -163,7 +163,7 @@ public class SanitizerTest {
             .withConcentrationUnit(ConcentrationUnit.PARTS_PER_MILION)
             .build();
 
-        assertEquals(0.2, anotherSanitizer.convertConcentration(ConcentrationUnit.PERCENTAGE));
+        assertEquals(0.2, anotherSanitizer.convertConcentrationUnit(ConcentrationUnit.PERCENTAGE));
         
 
         Sanitizer anotherSanitizer2 = SanitizerBuilder.aSanitizer()
@@ -172,7 +172,7 @@ public class SanitizerTest {
             .withDensity(0.93)
             .build();
 
-        assertEquals(4650, anotherSanitizer2.convertConcentration(ConcentrationUnit.MILIGRAMS_PER_LITER));
+        assertEquals(4650, anotherSanitizer2.convertConcentrationUnit(ConcentrationUnit.MILIGRAMS_PER_LITER));
         
 
         Sanitizer anotherSanitizer3 = SanitizerBuilder.aSanitizer()
@@ -182,7 +182,7 @@ public class SanitizerTest {
             .withDensity(0.93)
             .build();
 
-        assertEquals(0.5, anotherSanitizer3.convertConcentration(ConcentrationUnit.PERCENTAGE));
+        assertEquals(0.5, anotherSanitizer3.convertConcentrationUnit(ConcentrationUnit.PERCENTAGE));
     
         
         Sanitizer anotherSanitizer4 = SanitizerBuilder.aSanitizer()
@@ -192,6 +192,6 @@ public class SanitizerTest {
             .withConcentrationUnit(ConcentrationUnit.MILIGRAMS_PER_LITER)
             .build();
 
-        assertEquals(98, anotherSanitizer4.convertConcentration(ConcentrationUnit.PERCENTAGE));
+        assertEquals(98, anotherSanitizer4.convertConcentrationUnit(ConcentrationUnit.PERCENTAGE));
     }
 }
