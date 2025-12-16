@@ -1,6 +1,8 @@
 package br.com.biosecure.model.product;
 
 import java.time.LocalDate;
+import br.com.biosecure.utils.NotificationContext;
+import br.com.biosecure.utils.StringUtils;
 
 public abstract class PPE extends Product {
     private final Size size;
@@ -11,7 +13,13 @@ public abstract class PPE extends Product {
         
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, MeasureUnit.UN, (double) quantityPerPackage);
 
-        validateString(certificateOfApproval, "certificate of approval");
+        NotificationContext notificationContext = new NotificationContext();
+
+        StringUtils.validateString(certificateOfApproval, 5, "certificate of approval", 10,  notificationContext);
+
+        if (notificationContext.hasErrors()) {
+            throw new InvalidProductAttributeException(notificationContext.getErrors());
+        }
 
         this.size = size;
         this.certificateOfApproval = certificateOfApproval;
