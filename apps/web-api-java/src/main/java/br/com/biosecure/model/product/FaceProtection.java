@@ -1,6 +1,8 @@
 package br.com.biosecure.model.product;
 
 import java.time.LocalDate;
+import br.com.biosecure.utils.NotificationContext;
+import br.com.biosecure.utils.StringUtils;
 
 public class FaceProtection extends PPE {
     private final ProtectionType type;
@@ -8,16 +10,22 @@ public class FaceProtection extends PPE {
     private final boolean hasValve;
     private final boolean isAntiFog;
 
-    public FaceProtection(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, Size size, String certificateOfApproval, boolean isDisposable, ProtectionType type, String standardRating, boolean isAntiFog) {
+    public FaceProtection(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, Size size, String certificateOfApproval, boolean isDisposable, ProtectionType protectionType, String standardRating, boolean isAntiFog, boolean hasValve) {
 
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, quantityPerPackage, size, certificateOfApproval, isDisposable);
 
-        validateString(standardRating, "standard rating");
+        NotificationContext notificationContext = new NotificationContext();
 
-        this.type = type;
+        StringUtils.validateString(standardRating, 2, "standard rating", 12, notificationContext);
+
+        if (notificationContext.hasErrors()) {
+            throw new InvalidProductAttributeException(notificationContext.getErrors());
+        }
+
+        this.type = protectionType;
         this.standardRating = standardRating;
-        this.hasValve = type != ProtectionType.MASK_RESPIRATOR ? false : true;
-        this.isAntiFog = type == ProtectionType.MASK_RESPIRATOR ? false : isAntiFog;
+        this.hasValve = type == ProtectionType.MASK_RESPIRATOR ? hasValve : false;
+        this.isAntiFog = isAntiFog;
     }
 
     public enum ProtectionType {

@@ -8,6 +8,7 @@ public class FaceProtectionBuilder extends BasePpeBuilder<FaceProtectionBuilder,
     private ProtectionType type = ProtectionType.MASK_RESPIRATOR;
     private String standardRating = "N95";
     private boolean isAntiFog = false;
+    private boolean hasValve = false;
 
     public FaceProtectionBuilder withType(ProtectionType type) {
         this.type = type;
@@ -26,6 +27,12 @@ public class FaceProtectionBuilder extends BasePpeBuilder<FaceProtectionBuilder,
 
         return this;
     }
+
+    public FaceProtectionBuilder withValve(boolean hasValve) {
+        this.hasValve = hasValve;
+
+        return this;
+    }
     
     public static FaceProtectionBuilder aFaceProtection() {
         return new FaceProtectionBuilder();
@@ -38,6 +45,6 @@ public class FaceProtectionBuilder extends BasePpeBuilder<FaceProtectionBuilder,
 
     @Override
     public FaceProtection build() {
-        return new FaceProtection(name, price, manufacturer, batchNumber, expirationDate, packagingType, (int) quantityPerPackage, size, certificateOfApproval, isDisposable, type, standardRating, isAntiFog);
+        return new FaceProtection(name, price, manufacturer, batchNumber, expirationDate, packagingType, (int) quantityPerPackage, size, certificateOfApproval, isDisposable, type, standardRating, isAntiFog, hasValve);
     }
 }
