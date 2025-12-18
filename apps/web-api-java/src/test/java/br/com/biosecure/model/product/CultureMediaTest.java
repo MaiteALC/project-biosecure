@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
+import java.util.OptionalDouble;
 import org.junit.jupiter.api.Test;
 import br.com.biosecure.model.product.CultureMedia.*;
 import br.com.biosecure.builders.CultureMediaBuilder;
@@ -16,7 +17,8 @@ public class CultureMediaTest {
     public void shouldBuildValidCultureMedia() {
         CultureMedia aCultureMedia = CultureMediaBuilder.aCultureMediaBuilder()
             .withFinality(CultureMediaFinality.CHROMOGENIC)
-            .withPhysicalUnit(PhysicalUnit.PREPARED_LIQUID_BOTTLE)
+            .withPresentationForm(Presentation.PREPARED_LIQUID_BOTTLE)
+            .withStorageConditions(StorageConditions.FROZEN)
             .build();
 
         assertNotNull(aCultureMedia);
@@ -24,7 +26,7 @@ public class CultureMediaTest {
         CultureMedia anotherCultureMedia = CultureMediaBuilder.aCultureMediaBuilder()
             .withFinalPhLevel(11)
             .withFinality(CultureMediaFinality.ENRICHMENT)
-            .withPhysicalUnit(PhysicalUnit.DEHYDRATED_POWDER_BOTTLE)
+            .withPresentationForm(Presentation.DEHYDRATED_POWDER_BOTTLE)
             .withStorageConditions(StorageConditions.AMBIENT_TEMP)
             .withQuantificationUnit(QuantificationUnit.G)
             .withQuantityPerUnit(70)
@@ -48,10 +50,10 @@ public class CultureMediaTest {
     }
 
     @Test
-    public void shouldThrowException_WhenPhysicalAndQuantificationUnitIsIncoherent() {
+    public void shouldThrowException_WhenPresentationAndQuantificationUnitIsIncoherent() {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             CultureMediaBuilder.aCultureMediaBuilder()
-                .withPhysicalUnit(PhysicalUnit.DEHYDRATED_POWDER_BOTTLE)
+                .withPresentationForm(Presentation.DEHYDRATED_POWDER_BOTTLE)
                 .withStorageConditions(StorageConditions.AMBIENT_TEMP)
                 .withQuantificationUnit(QuantificationUnit.L)
                 .build();
@@ -59,27 +61,27 @@ public class CultureMediaTest {
         
         InvalidProductAttributeException exception2 = assertThrows(InvalidProductAttributeException.class, () -> {
             CultureMediaBuilder.aCultureMediaBuilder()
-                .withPhysicalUnit(PhysicalUnit.PREPARED_LIQUID_TUBE)
+                .withPresentationForm(Presentation.PREPARED_LIQUID_TUBE)
                 .withQuantificationUnit(QuantificationUnit.KG)
                 .build();
         });
 
-        assertEquals("quantification unit", exception.getInvalidAttribute());
-        assertEquals("quantification unit", exception2.getInvalidAttribute());
+        assertEquals("quantification unit/presentation form", exception.getInvalidAttribute());
+        assertEquals("quantification unit/presentation form", exception2.getInvalidAttribute());
     }
 
     @Test
     public void shouldThrowException_WhenBioSafetyRulesIsViolated() {
         BioSecurityException exception = assertThrows(BioSecurityException.class, () -> {
             CultureMediaBuilder.aCultureMediaBuilder()
-                .withPhysicalUnit(PhysicalUnit.PREPARED_LIQUID_TUBE)
+                .withPresentationForm(Presentation.PREPARED_LIQUID_TUBE)
                 .withStorageConditions(StorageConditions.AMBIENT_TEMP)
                 .build();
         });
         
         BioSecurityException exception2 = assertThrows(BioSecurityException.class, () -> {
             CultureMediaBuilder.aCultureMediaBuilder()
-                .withPhysicalUnit(PhysicalUnit.DEHYDRATED_POWDER_SACHET)
+                .withPresentationForm(Presentation.DEHYDRATED_POWDER_SACHET)
                 .withStorageConditions(StorageConditions.FROZEN)
                 .withQuantificationUnit(QuantificationUnit.MG)
                 .build();
@@ -95,5 +97,71 @@ public class CultureMediaTest {
         expected.add("Physical unit");
 
         assertIterableEquals(expected, exception.getInvalidAttributes());
+    }
+
+    @Test
+    public void shouldValidateCorrectly_WhenQuantityPreparationIsNecessary() {
+        CultureMedia needsQuantityPrep = CultureMediaBuilder.aCultureMediaBuilder()
+            .withPresentationForm(Presentation.DEHYDRATED_POWDER_BOTTLE)
+            .withQuantificationUnit(QuantificationUnit.MG)
+            .withPreparationGramsPerLiter(OptionalDouble.of(3.5))
+            .withStorageConditions(StorageConditions.FRESH)
+            .build();
+        
+        CultureMedia needsQuantityPrep2 = CultureMediaBuilder.aCultureMediaBuilder()
+            .withPresentationForm(Presentation.DEHYDRATED_POWDER_SACHET)
+            .withQuantificationUnit(QuantificationUnit.MG)
+            .withPreparationGramsPerLiter(OptionalDouble.of(5.0))
+            .withStorageConditions(StorageConditions.FRESH)
+            .build();
+
+        assertEquals(3.5, needsQuantityPrep.getPreparationGramsPerLiter().getAsDouble());
+        assertEquals(5.0, needsQuantityPrep2.getPreparationGramsPerLiter().getAsDouble());
+    }
+    
+    @Test
+    public void shouldRejectInvalidValues_WhenQuantityPreparationIsNecessary() {
+        String expected = "quantity for preparation (g/L)";
+
+        InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
+            CultureMediaBuilder.aCultureMediaBuilder()
+                .withPresentationForm(Presentation.DEHYDRATED_POWDER_BOTTLE)
+                .withQuantificationUnit(QuantificationUnit.MG)
+                .withPreparationGramsPerLiter(OptionalDouble.of(0))
+                .withStorageConditions(StorageConditions.FRESH)
+                .build();
+        });
+        
+        InvalidProductAttributeException exception2 = assertThrows(InvalidProductAttributeException.class, () -> {
+            CultureMediaBuilder.aCultureMediaBuilder()
+                .withPresentationForm(Presentation.DEHYDRATED_POWDER_BOTTLE)
+                .withQuantificationUnit(QuantificationUnit.MG)
+                .withStorageConditions(StorageConditions.FRESH)
+                .withPreparationGramsPerLiter(OptionalDouble.of(1001))
+                .build();
+        });
+        
+        InvalidProductAttributeException exception3 = assertThrows(InvalidProductAttributeException.class, () -> {
+            CultureMediaBuilder.aCultureMediaBuilder()
+                .withPresentationForm(Presentation.DEHYDRATED_POWDER_BOTTLE)
+                .withQuantificationUnit(QuantificationUnit.MG)
+                .withStorageConditions(StorageConditions.FRESH)
+                .withPreparationGramsPerLiter(null)
+                .build();
+        });
+        
+        InvalidProductAttributeException exception4 = assertThrows(InvalidProductAttributeException.class, () -> {
+            CultureMediaBuilder.aCultureMediaBuilder()
+                .withPresentationForm(Presentation.DEHYDRATED_POWDER_BOTTLE)
+                .withQuantificationUnit(QuantificationUnit.MG)
+                .withStorageConditions(StorageConditions.FRESH)
+                .withPreparationGramsPerLiter(OptionalDouble.empty())
+                .build();
+        });
+
+        assertEquals(expected, exception.getInvalidAttribute());
+        assertEquals(expected, exception2.getInvalidAttribute());
+        assertEquals(expected, exception3.getInvalidAttribute());
+        assertEquals(expected, exception4.getInvalidAttribute());
     }
 }

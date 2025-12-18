@@ -2,59 +2,85 @@ package br.com.biosecure.model.product;
 
 import java.util.ArrayList;
 import java.util.OptionalDouble;
+import br.com.biosecure.utils.NotificationContext;
+import br.com.biosecure.utils.NumberUtils;
 import java.time.LocalDate;
 
 public class CultureMedia extends Product {
     private final CultureMediaFinality finality;
     private final StorageConditions storageConditions;
-    private final PhysicalUnit physicalUnit;
+    private final Presentation presentation;
     private final boolean protectOfLight;
     private final OptionalDouble preparationGramsPerLiter;
     private final double finalPhLevel;
     private final double quantityPerUnit;
     private final QuantificationUnit quantificationUnit;
 
-    public CultureMedia(String name, double price, PhysicalUnit physicalUnit, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, double quantityPerPackage, CultureMediaFinality finality, StorageConditions storageConditions, boolean protectOfLight, double quantityPerUnit, QuantificationUnit quantificationUnit, double preparationGramsPerLiter, double finalPhLevel) {
+    public CultureMedia(String name, double price, Presentation presentation, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, MeasureUnit measureUnit, double quantityPerPackage, CultureMediaFinality finality, StorageConditions storageConditions, boolean protectOfLight, double quantityPerUnit, QuantificationUnit quantificationUnit, OptionalDouble preparationGramsPerLiter, double finalPhLevel) {
         
         super(name, price, manufacturer, batchNumber, expirationDate, packagingType, measureUnit, quantityPerPackage);
 
-        if (finalPhLevel < 0 || finalPhLevel > 14) {
-            throw new InvalidProductAttributeException("final pH level");
+        NotificationContext notification = new NotificationContext();
+
+        NumberUtils.validateNumericalAttribute(finalPhLevel, 0, "final pH level", 14, notification);
+
+        if (presentation.isRTU() != quantificationUnit.isToRTUProduct()) {
+            notification.addError("quantification unit/presentation form",
+            "There is a incoherence among the quantification unit, physical unit and if the product is ready to use. Both units must be compatible with 'is ready to use' attribute.");
         }
 
-        if (physicalUnit.isRTU() != quantificationUnit.isToRTUProduct()) {
-            throw new InvalidProductAttributeException("quantification unit");
+        validatePreparationQuantity(preparationGramsPerLiter, presentation, notification);
+
+        if (notification.hasErrors()) {
+            throw new InvalidProductAttributeException(notification.getErrors());
         }
 
-        if (!physicalUnit.isRTU() && preparationGramsPerLiter <= 0) {
-            throw new InvalidProductAttributeException("preparation grams per liter");
-        }
-
-        validateBioSafetyRules(physicalUnit, storageConditions);
+        validateBioSafetyRules(presentation, storageConditions);
 
         this.finality = finality;
         this.storageConditions = storageConditions;
-        this.physicalUnit = physicalUnit;
+        this.presentation = presentation;
         this.protectOfLight = protectOfLight;
         this.quantityPerUnit = quantityPerUnit;
         this.quantificationUnit = quantificationUnit;
-        this.preparationGramsPerLiter = physicalUnit.isRTU() ? OptionalDouble.empty(): OptionalDouble.of(preparationGramsPerLiter);
+        this.preparationGramsPerLiter = preparationGramsPerLiter;
         this.finalPhLevel = finalPhLevel;
     } 
 
-    private void validateBioSafetyRules(PhysicalUnit format, StorageConditions storageTemp) {
+    private OptionalDouble validatePreparationQuantity(OptionalDouble quantity, Presentation presentation, NotificationContext notification) {
+        if (presentation.isRTU()) {
+            return OptionalDouble.empty();
+        }
+            
+        else {
+            if (quantity.isEmpty() || quantity == null) {
+                notification.addError("quantity for preparation (g/L)",
+                    "If the product isn't RTU a value for preparation quantity (g/L) must be provided.");
+                
+                return OptionalDouble.empty();
+            }
+
+            else {
+                NumberUtils.validateNumericalAttribute(quantity.getAsDouble(), 0.001, "quantity for preparation (g/L)", 999, notification);
+
+                return OptionalDouble.empty();
+            }
+        }
+    }
+
+    private void validateBioSafetyRules(Presentation form, StorageConditions storageTemp) {
         ArrayList<String> invalids = new ArrayList<>();
 
         invalids.add("Storage conditions");
         invalids.add("Physical unit");
 
-        if (format.isRTU() && (storageTemp == StorageConditions.AMBIENT_TEMP || storageTemp == StorageConditions.FRESH) ) {
+        if (form.isRTU() && (storageTemp == StorageConditions.AMBIENT_TEMP || storageTemp == StorageConditions.FRESH) ) {
             throw new BioSecurityException(
                 "Preparated plates/tubes/bottles requires refrigeration (8°C or less) to don't contaminate or dry out.", invalids
             );
         }
 
-        if (!format.isRTU() && (storageTemp != StorageConditions.AMBIENT_TEMP && storageTemp != StorageConditions.FRESH) ) {
+        if (!form.isRTU() && (storageTemp != StorageConditions.AMBIENT_TEMP && storageTemp != StorageConditions.FRESH) ) {
             throw new BioSecurityException(
                 "Dehydrated powder requires ambient temperature to don't compromise effectiveness.", invalids
             );
@@ -80,7 +106,7 @@ public class CultureMedia extends Product {
         }
     }
 
-    public enum PhysicalUnit {
+    public enum Presentation {
         DEHYDRATED_POWDER_BOTTLE(false),
         DEHYDRATED_POWDER_SACHET(false),
         PREPARED_LIQUID_BOTTLE(true),
@@ -89,7 +115,7 @@ public class CultureMedia extends Product {
 
         private final boolean isRTU;
 
-        PhysicalUnit(boolean isRTU) {
+        Presentation(boolean isRTU) {
             this.isRTU = isRTU;
         }
 
@@ -158,8 +184,8 @@ public class CultureMedia extends Product {
         return storageConditions;
     }
 
-    public PhysicalUnit getPhysicalUnit() {
-        return physicalUnit;
+    public Presentation getPresentationForm() {
+        return presentation;
     }
 
     public  boolean isProtectOfLight() {

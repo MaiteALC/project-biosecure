@@ -7,10 +7,10 @@ import br.com.biosecure.model.product.CultureMedia.*;
 public class CultureMediaBuilder extends BaseProductBuilder<CultureMediaBuilder, CultureMedia> {
     // Specific attributes of Culture Media
     private CultureMediaFinality finality = CultureMediaFinality.SELECTIVE;
-    private PhysicalUnit physicalUnit = PhysicalUnit.PREPARED_LIQUID_PLATE;
+    private Presentation presentation = Presentation.PREPARED_LIQUID_PLATE;
     private boolean protectOfLight = true;
     private StorageConditions storageConditions = StorageConditions.FROZEN;
-    private OptionalDouble preparationGramsPerLiter = OptionalDouble.of(2);
+    private OptionalDouble preparation = OptionalDouble.of(2);
     private double finalPhLevel = 7;
     private double quantityPerUnit = 5;
     private QuantificationUnit quantificationUnit = QuantificationUnit.ML;
@@ -31,8 +31,8 @@ public class CultureMediaBuilder extends BaseProductBuilder<CultureMediaBuilder,
         return this;
     }
 
-    public CultureMediaBuilder withPhysicalUnit(PhysicalUnit physicalUnit) {
-        this.physicalUnit = physicalUnit;
+    public CultureMediaBuilder withPresentationForm(Presentation form) {
+        this.presentation = form;
 
         return this;
     }
@@ -43,8 +43,8 @@ public class CultureMediaBuilder extends BaseProductBuilder<CultureMediaBuilder,
         return this;
     }
 
-    public CultureMediaBuilder withPreparationGramsPerLiter(double preparationGramsPerLiter) {
-        this.preparationGramsPerLiter = OptionalDouble.of(preparationGramsPerLiter);
+    public CultureMediaBuilder withPreparationGramsPerLiter(OptionalDouble preparation) {
+        this.preparation = preparation == null ? OptionalDouble.empty() : preparation;
 
         return this;
     }
@@ -74,6 +74,6 @@ public class CultureMediaBuilder extends BaseProductBuilder<CultureMediaBuilder,
 
     @Override
     public CultureMedia build() {
-        return new CultureMedia(name, price, physicalUnit, manufacturer, batchNumber, expirationDate, packagingType,measureUnit, quantityPerPackage, finality, storageConditions, protectOfLight, quantityPerUnit, quantificationUnit, preparationGramsPerLiter.getAsDouble(), finalPhLevel);
+        return new CultureMedia(name, price, presentation, manufacturer, batchNumber, expirationDate, packagingType,measureUnit, quantityPerPackage, finality, storageConditions, protectOfLight, quantityPerUnit, quantificationUnit, preparation, finalPhLevel);
     }
 }
