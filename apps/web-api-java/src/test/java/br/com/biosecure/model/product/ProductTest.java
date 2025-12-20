@@ -23,7 +23,7 @@ public class ProductTest {
         Product aProduct = ProductBuilder.aProduct()
             .withName("Suppose that is a glove box")
             .withPackagingType(PackagingType.BOX)
-            .withMeasureUnit(MeasureUnit.PAIR)
+            .withMeasureUnit(MeasureUnit.U)
             .withQuantityPerPackage(50)
             .build();
 
@@ -97,7 +97,7 @@ public class ProductTest {
     public void shouldSetQuantityPerPackageToOne_WhenPackagingTypeIsIndividual() {
         Product aProduct =  ProductBuilder.aProduct()
             .withPackagingType(PackagingType.INDIVIDUAL)
-            .withMeasureUnit(MeasureUnit.UN)
+            .withMeasureUnit(MeasureUnit.U)
             .build();
 
         assertEquals(1, aProduct.getQuantityPerPackage());

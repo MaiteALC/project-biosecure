@@ -27,8 +27,8 @@ public class PpeTest {
             .withSize(Size.UNIVERSAL)
             .build();
 
-        assertEquals(MeasureUnit.UN, aPpe.getMeasureUnit());
-        assertEquals(MeasureUnit.UN, anotherPpe.getMeasureUnit());
+        assertEquals(MeasureUnit.U, aPpe.getMeasureUnit());
+        assertEquals(MeasureUnit.U, anotherPpe.getMeasureUnit());
     }
 
     @ParameterizedTest

@@ -11,7 +11,7 @@ public abstract class SampleContainer extends  Product {
 
     public SampleContainer(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, SterilizationMethod sterilizationMethod, ClosingMethod closingMethod, Material materialType) {
         
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, MeasureUnit.UN, (double) quantityPerPackage);
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, MeasureUnit.U, (double) quantityPerPackage);
 
         NotificationContext notification = new NotificationContext();
 

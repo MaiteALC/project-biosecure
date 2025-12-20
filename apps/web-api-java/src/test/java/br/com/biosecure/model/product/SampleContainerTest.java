@@ -22,7 +22,7 @@ public class SampleContainerTest {
             .build();
 
         assertNotNull(aSampleContainer);
-        assertEquals(MeasureUnit.UN, aSampleContainer.getMeasureUnit());
+        assertEquals(MeasureUnit.U, aSampleContainer.getMeasureUnit());
 
          SampleContainer anotherSampleContainer = SampleContainerBuilder.aSampleContainer()
             .withSterilizationMethod(SterilizationMethod.AUTOCLAVE)

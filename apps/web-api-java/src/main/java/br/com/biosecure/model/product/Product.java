@@ -34,7 +34,7 @@ public abstract class Product {
         NumberUtils.validateNumericalAttribute(quantityPerPackage, 1, "quantity per package", MAX_QUANTITY, productNotification);
         NumberUtils.validateExpirationDate(expirationDate, "expiration date", productNotification);
         
-        if (packagingType == PackagingType.INDIVIDUAL && (measureUnit != MeasureUnit.UN && measureUnit != MeasureUnit.PAIR)) {
+        if (packagingType == PackagingType.INDIVIDUAL && measureUnit != MeasureUnit.U) {
             productNotification.addError("measure unit", "The measure unit and packaging type are incoherent.");;
         }
         
@@ -58,9 +58,8 @@ public abstract class Product {
         KG,
         G,
         MG,
-        UN,
-        MM,
-        PAIR
+        U,
+        MM
     }
 
     public enum PackagingType {
