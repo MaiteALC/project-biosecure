@@ -11,7 +11,7 @@ public abstract class PPE extends Product {
 
     public PPE(String name, double price, String manufacturer, String batchNumber, LocalDate expirationDate, PackagingType packagingType, int quantityPerPackage, Size size, String certificateOfApproval, boolean isDisposable) {
         
-        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, MeasureUnit.UN, (double) quantityPerPackage);
+        super(name, price, manufacturer, batchNumber, expirationDate, packagingType, MeasureUnit.U, (double) quantityPerPackage);
 
         NotificationContext notificationContext = new NotificationContext();
 
@@ -32,7 +32,7 @@ public abstract class PPE extends Product {
         MEDIUM("M"),
         LARGE("L"),
         EXTRA_LARGE("XL"),
-        UNIVERSAL("UN");
+        UNIVERSAL("U");
 
         private final String code;
 
