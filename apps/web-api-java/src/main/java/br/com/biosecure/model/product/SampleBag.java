@@ -55,9 +55,19 @@ public class SampleBag extends SampleContainer {
     }
     
     public enum FilterType {
-        NONE,
-        FULL_PAGE,
-        LATERAL
+        NONE("N"),
+        FULL_PAGE("F"),
+        LATERAL("L");
+
+        private String code;
+
+        private FilterType(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
     }
 
     public FilterType getFilter() {
