@@ -62,9 +62,8 @@ public class SampleBagTest {
 
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             SampleBagBuilder.aSampleBag()
-                .withMaterial(Material.PS)
                 .withCapacityMiliLiters(10000)
-                .withHeigthMm(1000)
+                .withHeightMm(1000)
                 .withWidthMm(1000)
                 .withThicknessMm(100)
                 .build();
@@ -75,9 +74,8 @@ public class SampleBagTest {
         
         InvalidProductAttributeException exception2 = assertThrows(InvalidProductAttributeException.class, () -> {
             SampleBagBuilder.aSampleBag()
-                .withMaterial(Material.PE)
                 .withCapacityMiliLiters(0)
-                .withHeigthMm(0)
+                .withHeightMm(0)
                 .withWidthMm(0)
                 .withThicknessMm(0)
                 .build();

@@ -2,15 +2,18 @@ package br.com.biosecure.builders;
 
 import br.com.biosecure.model.product.SampleBag.*;
 import br.com.biosecure.model.product.SampleBag;
+import br.com.biosecure.model.product.SampleContainer.Material;;
 
 public class SampleBagBuilder extends BaseSampleContainerBuilder<SampleBagBuilder, SampleBag> {
+    { material = Material.PE; }
+    
     // Specific attributes of Sample Bag
     private FilterType filter = FilterType.FULL_PAGE;
     private boolean identificationTag = true;
     private boolean standUp = false;
     private double thicknessMm = 3;
     private double widthMm = 10;
-    private double heigthMm = 22;
+    private double heightMm = 22;
     private double capacityMiliLiters = 2;
 
     public SampleBagBuilder withFilter(FilterType filter) {
@@ -43,8 +46,8 @@ public class SampleBagBuilder extends BaseSampleContainerBuilder<SampleBagBuilde
         return this;
     }
 
-    public SampleBagBuilder withHeigthMm(double heigthMm) {
-        this.heigthMm = heigthMm;
+    public SampleBagBuilder withHeightMm(double heigthMm) {
+        this.heightMm = heigthMm;
 
         return this;
     }
@@ -66,6 +69,6 @@ public class SampleBagBuilder extends BaseSampleContainerBuilder<SampleBagBuilde
 
     @Override
     public SampleBag build() {
-        return new SampleBag(name, price, manufacturer, batchNumber, expirationDate, packagingType, (int) quantityPerPackage, sterilizationMethod, closingMethod, material, filter, identificationTag, standUp, thicknessMm, capacityMiliLiters, widthMm, heigthMm);
+        return new SampleBag(name, price, manufacturer, batchNumber, expirationDate, packagingType, (int) quantityPerPackage, sterilizationMethod, closingMethod, material, filter, identificationTag, standUp, thicknessMm, capacityMiliLiters, widthMm, heightMm);
     }
 }
