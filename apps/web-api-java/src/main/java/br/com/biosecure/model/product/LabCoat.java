@@ -30,7 +30,7 @@ public class LabCoat extends PPE {
 
     public enum FabricType {
         COTTON_100("Cotton", false, "CT"),
-        POLYESTER("Polyester", false, "PE"),
+        POLYESTER("Polyester", false, "PO"),
         POLYPROPYLEN("SPP", true, "PP"),
         MIX_COTTON_POLYESTER("Cotton and polyester", false, "CP");
 
