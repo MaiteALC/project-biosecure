@@ -67,7 +67,7 @@ public abstract class Product {
         PACKAGE("P"),
         BOTTLE("BT"),
         GALLON("G"),
-        INDIVIDUAL("I");
+        INDIVIDUAL("INDV");
 
         private final String code;
 
