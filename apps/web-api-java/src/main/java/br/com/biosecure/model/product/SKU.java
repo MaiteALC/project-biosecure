@@ -8,87 +8,157 @@ public class SKU {
     }
 
     private String generateFor(Product product) {
-        String name = product.getName();
-        String code = name.length() >= 3 ? name.substring(0, 4) : name;
-
-        code += "-" + product.getPackagingType().getCode(); // Always returns 1 or 2 letters
-
-        double quantity = product.getQuantityPerPackage(); 
-        code += quantity >= 1000 ? (quantity / 1000) + "k" : quantity;
-
-        code += product.getMeasureUnit() + "-";
-
-        if (product instanceof Sanitizer sanitizer) {
-            code += sanitizer.getPhysicalForm().getCode(); // Always returns 2 letters
-
-            code += sanitizer.isFlammable() ? "FL" : "NF";
+        if (product == null) {
+            throw new NullPointerException("The product mustn't be null.");
         }
 
-        else if (product instanceof CultureMedia cultureMedia) {
-            code += cultureMedia.isProtectOfLight() ? "F" : "N";
+        StringBuilder code = new StringBuilder();
+        code.append('-');
 
-            code += cultureMedia.getStorageConditions().getCode(); // Always returns 3 letters
+        String packagingTypeCode = product.getPackagingType().getCode();
+        code.append(packagingTypeCode);
+
+        if (packagingTypeCode != "INDV") {
+            code.append(formatDoubleAsStr(product.getQuantityPerPackage()));
         }
 
-        else if (product instanceof SampleContainer sampleContainer) {
-            if (sampleContainer instanceof SampleBag sampleBag) {
-                code += sampleBag.hasIdentificationTag() ? "I" : "A";
+        code.append('-');
 
-                code += sampleBag.isStandUp() ? "U" : "D";
-            }
+        switch (product) {
+            case Sanitizer sanitizer -> incrementForSanitizer(code, sanitizer);
 
-            else if (sampleContainer instanceof TestTube testTube) {
-                code += testTube.isGraduated() ? "G" : "L";
-
-                code += testTube.getBottomType().toString().charAt(0);
-            }
-
-            else if (sampleContainer instanceof PetriDish petriDishes) {
-                code += petriDishes.getDiameter() + "X";
-
-                code += petriDishes.getHeight();
-            }
-
-            else {
-                throw new SkuGenerationException(
-                    "Product with unknow type of 'Sample Container'. Generation of SKU code is unavailable for this subclass.", sampleContainer
-                );
-            } 
-        }
-
-        else if (product instanceof PPE ppe) {
-            code += ppe.getSize().getCode(); // Always returns 1 or 2 letters
+            case CultureMedia cultureMedia -> incrementForCultureMedia(code, cultureMedia);
             
-            if (ppe instanceof Glove glove) {
-                code += glove.hasLongBarrel() ? "L" : "S";
+            case SampleContainer sampleContainer -> incrementForSampleContainer(code, sampleContainer);
 
-                code += glove.getThicknessMils();
+            case PPE ppe -> incrementForPpe(code, ppe);
+
+            case null, default -> throw new SkuGenerationException("Unknow product type. Generation of SKU code is unavailable for this subclass.", product);
+        }
+
+        return code.toString();
+    }
+
+    private StringBuilder incrementForPpe(StringBuilder currentCode, PPE aPpe) {
+        switch (aPpe) {
+            case Glove glove -> {
+            currentCode.insert(0, "GLV");
+            currentCode.append(formatDoubleAsStr(glove.getThicknessMils()));                
+            currentCode.append(glove.getMaterial().getCode()); // Always returns 2 letters
+            currentCode.append('-');
+            currentCode.append(glove.hasLongBarrel() ? "L" : "S");
             }
 
-            else if (ppe instanceof FaceProtection faceProtection) {
-                code += faceProtection.getProtectionType().getCode(); // Always returns 2 letters
+            case FaceProtection faceProtection -> {
+                currentCode.insert(0, "FPT");
+                currentCode.append(faceProtection.getProtectionType().getCode()); // Always returns 2 letters
+                currentCode.append('-');
+                currentCode.append(faceProtection.isAntiFog() ? "AF" : "C");
             }
 
-            else if (ppe instanceof LabCoat labCoat) {
-                code += labCoat.getFabricType().toString().charAt(0);
+            case LabCoat labCoat -> {
+                currentCode.insert(0, "COAT");
+                currentCode.append(labCoat.getFabricType().getCode());
+                currentCode.append(labCoat.getGrammage());
+                currentCode.append('-');
+            }
+            
+            case null, default -> throw new SkuGenerationException("Product with unknow type of 'Personal Protective Equipment' (PPE). Generation of SKU code is unavailable for this subclass.", aPpe);
+        }
 
-                code += labCoat.getGrammage();
+        currentCode.append(aPpe.getSize().getCode());
+
+        return currentCode;
+    }
+
+    private StringBuilder incrementForSanitizer(StringBuilder currentCode, Sanitizer aSanitizer) {
+        currentCode.insert(0, "SAN");
+
+        currentCode.insert(currentCode.lastIndexOf("-"), aSanitizer.getMeasureUnit());
+
+        currentCode.append(aSanitizer.getActiveIngredient().getCode());
+        currentCode.append('-');
+
+        currentCode.append(aSanitizer.getPhysicalForm().getCode());
+        currentCode.append(aSanitizer.isFlammable() ? "FL" : "NF");
+
+        return currentCode;
+    }
+
+    private StringBuilder incrementForSampleContainer(StringBuilder currentCode, SampleContainer aContainer) {
+        switch (aContainer) {
+            case SampleBag sampleBag -> {
+                currentCode.insert(0, "BAG");
+
+                currentCode.append(sampleBag.getFilter().getCode());
+                currentCode.append(formatDoubleAsStr(sampleBag.getCapacityMiliLiters()));
+                currentCode.append("-");
+
+                currentCode.append(sampleBag.hasIdentificationTag() ? "ID" : "AN");
+                currentCode.append(sampleBag.isStandUp() ? "U" : "D");
             }
 
-            else {
-                throw new SkuGenerationException(
-                    "Product with unknow type of 'Personal Protective Equipment' (PPE). Generation of SKU code is unavailable for this subclass.", ppe
-                );
+            case TestTube testTube -> {
+                currentCode.insert(0, "TUB"); 
+
+                currentCode.append(testTube.getMaterial().getCode());
+
+                currentCode.append(formatDoubleAsStr(testTube.getHeightMm()));
+                currentCode.append('x');
+                currentCode.append(formatDoubleAsStr(testTube.getDiameterMm()));
+
+                currentCode.append('-');
+
+                currentCode.append(testTube.isSterile() ? "S" : "N");
+                currentCode.append(testTube.getBottomType().toString().charAt(0));
+            }
+
+            case PetriDish petriDish -> {
+                currentCode.insert(0, "PTD");
+
+                currentCode.append(formatDoubleAsStr(petriDish.getDiameter()));
+                currentCode.append('x');
+                currentCode.append(formatDoubleAsStr(petriDish.getHeight()));
+
+                currentCode.append('-');
+
+                currentCode.append(petriDish.getMaterial().getCode());
+            }
+
+            case null, default -> throw new SkuGenerationException("Product with unknow type of 'Sample Container'. Generation of SKU code is unavailable for this subclass.", aContainer);
+        }
+
+        return currentCode;
+    }
+
+    private StringBuilder incrementForCultureMedia(StringBuilder currentCode, CultureMedia aCultureMedia) {
+        currentCode.insert(0, "CTM");
+
+        currentCode.append(formatDoubleAsStr(aCultureMedia.getQuantityPerUnit()));
+        currentCode.append(aCultureMedia.getQuantityUnit());
+        
+        currentCode.append('-');
+        
+        currentCode.append(aCultureMedia.isProtectOfLight() ? "F" : "N");
+        currentCode.append(aCultureMedia.getStorageConditions().getCode());
+
+        return currentCode;
+    }
+
+    private String formatDoubleAsStr(double num) {
+        String numAsStr = String.valueOf(num);
+        
+        if ((int) num == num) {
+            if (num >= 1000) {
+                numAsStr = (num / 1000) + "k";
+            }
+
+            if (numAsStr.endsWith(".0") || numAsStr.endsWith(".0k")) {
+                return numAsStr.replace(".0", "");
             }
         }
 
-        else {
-            throw new SkuGenerationException(
-                "Unknow product type. Generation of SKU code is unavailable for this subclass.", product
-            );
-        }
-
-        return code.toUpperCase();
+        return numAsStr;
     }
 
     @Override
