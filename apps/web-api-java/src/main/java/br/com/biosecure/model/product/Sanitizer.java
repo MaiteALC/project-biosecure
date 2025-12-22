@@ -55,12 +55,22 @@ public class Sanitizer extends Product {
     }
 
     public enum ChemicalBase {
-        ETHANOL,
-        ALCOHOL_ISOPROPYL,
-        SODIUM_HYPOCHLORITE,
-        QUATERNARY_AMMONIUM,
-        PERACETIC_ACID,
-        CHLORHEXIDINE
+        ETHANOL("ET"),
+        ALCOHOL_ISOPROPYL("AI"),
+        SODIUM_HYPOCHLORITE("SH"),
+        QUATERNARY_AMMONIUM("QA"),
+        PERACETIC_ACID("PA"),
+        CHLORHEXIDINE("CH");
+
+        private String code;
+
+        ChemicalBase(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
     }
 
     public enum PhysicalForm {
