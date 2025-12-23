@@ -71,14 +71,16 @@ public class PetriDish extends SampleContainer {
      * @throws InvalidProductAttributeException if the diameter or divNum is shorter than 1, if divNum greater than 4 or diameter greater than 999.
      */
     public static double calculateSurfaceAreaPerDiv(double diameter, int divisionsNum) {
-        if (diameter < 1 || diameter > 999) {
-            throw new InvalidProductAttributeException("diameter");
+        NotificationContext notification = new NotificationContext();
+
+        NumberUtils.validateNumericalAttribute(divisionsNum, 1,"divisions number", 4, notification);
+
+        NumberUtils.validateNumericalAttribute(diameter, 1, "diameter (mm)", 999, notification);
+
+        if (notification.hasErrors()) {
+            throw new InvalidProductAttributeException(notification.getErrors());
         }
         
-        if (divisionsNum < 1 || divisionsNum > 4) {
-            throw new InvalidProductAttributeException("divisions number");
-        }
-
         BigDecimal surfeaceArea = BigDecimal.valueOf((Math.PI * Math.pow(diameter / 2.0, 2)) / (double) divisionsNum).setScale(2, RoundingMode.HALF_UP); 
 
         return surfeaceArea.doubleValue();
@@ -108,8 +110,13 @@ public class PetriDish extends SampleContainer {
      * @throws InvalidProductAttributeException If dimension is out of allowed limits (is <1 or >999).
      */
     public static double calculateNominalCapacity(double diameter, double height) {
-        if (diameter < 1 || height < 1 || diameter > 999 || height > 999) {
-            throw new InvalidProductAttributeException("physical dimensions");
+        NotificationContext notification = new NotificationContext();
+
+        NumberUtils.validateNumericalAttribute(diameter, 1, "diameter (mm)", 999, notification);
+        NumberUtils.validateNumericalAttribute(height, 1, "height (mm)", 999, notification);
+
+        if (notification.hasErrors()) {
+            throw new InvalidProductAttributeException(notification.getErrors());
         }
 
         double usefulHeight = height / 2.0;
