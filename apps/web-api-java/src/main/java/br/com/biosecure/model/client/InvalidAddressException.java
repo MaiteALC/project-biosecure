@@ -1,15 +1,16 @@
 package br.com.biosecure.model.client;
 
-public class InvalidAddressException extends IllegalArgumentException {
-    private final String field;
+import java.util.ArrayList;
+import br.com.biosecure.utils.InvalidAttributeException;
+import br.com.biosecure.utils.ValidationException;
 
-    public InvalidAddressException(String invalidField) {
-        super("The field '" + invalidField + "' is invalid");
+public class InvalidAddressException extends InvalidAttributeException {
+    public InvalidAddressException(String invalidField, String message) {
+        super(invalidField, message);
 
-        this.field = invalidField;
     }
 
-    public String getInvalidField() {
-        return field;
+    public InvalidAddressException(ArrayList<ValidationException> validationExceptions) {
+        super(validationExceptions);
     }
 }
