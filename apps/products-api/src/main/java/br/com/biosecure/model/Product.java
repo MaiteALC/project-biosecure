@@ -26,9 +26,9 @@ public abstract class Product {
         
         NotificationContext productNotification = new NotificationContext();
         
-        StringUtils.validateString(name, MIN_NAMES_LENGTH, "name", MAX_NAMES_LENGTH, productNotification);
-        StringUtils.validateString(manufacturer, MIN_NAMES_LENGTH, "manufacturer", MAX_NAMES_LENGTH, productNotification);
-        StringUtils.validateString(batchNumber, "batch number", productNotification);
+        StringUtils.validateString(name, MIN_NAMES_LENGTH, "name", MAX_NAMES_LENGTH, true, productNotification);
+        StringUtils.validateString(manufacturer, MIN_NAMES_LENGTH, "manufacturer", MAX_NAMES_LENGTH, true, productNotification);
+        StringUtils.validateString(batchNumber, "batch number", true, productNotification);
 
         NumberUtils.validateNumericalAttribute(price, 0.01, "price", MAX_PRICE, productNotification);
         NumberUtils.validateNumericalAttribute(quantityPerPackage, 1, "quantity per package", MAX_QUANTITY, productNotification);

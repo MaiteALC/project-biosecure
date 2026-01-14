@@ -16,7 +16,7 @@ public class StringUtilsTest {
     public void shouldRejectInvalidStrings(String invalidInput) {
         NotificationContext notification = new NotificationContext();
         
-        StringUtils.validateString(invalidInput, "Test", notification);
+        StringUtils.validateString(invalidInput, "Test", true, notification);
 
         assertTrue(notification.hasErrors(), "Should have exception for input: " + invalidInput);
         assertEquals("Test", notification.getErrors().getFirst().getInvalidProperty());
@@ -27,7 +27,7 @@ public class StringUtilsTest {
     public void shouldAcceptValidStrings(String validInput) {
         NotificationContext notification = new NotificationContext();
         
-        StringUtils.validateString(validInput, "Test", notification);
+        StringUtils.validateString(validInput, "Test", true, notification);
         
         assertFalse(notification.hasErrors(), "Should NOT have exception for input: " + validInput);
     }
@@ -37,17 +37,17 @@ public class StringUtilsTest {
     public void shouldAcceptValidStrings_WhenLengthIsDelimited(String validInput) {
         NotificationContext notification = new NotificationContext();
         
-        StringUtils.validateString(validInput, "Test (only max length)", 10, notification);
+        StringUtils.validateString(validInput, "Test (only max length)", 10, true, notification);
         
-        assertFalse(notification.hasErrors(), "Should NOT have exception for input: " + validInput);
+        assertFalse(notification.hasErrors());
         
-        StringUtils.validateString(validInput, 2, "Test (only max length)", notification);
+        StringUtils.validateString(validInput, 2, "Test (only max length)", true, notification);
         
-        assertFalse(notification.hasErrors(), "Should NOT have exception for input: " + validInput);
+        assertFalse(notification.hasErrors());
         
-        StringUtils.validateString(validInput, 1,  "Test (min and max length)", 6, notification);
+        StringUtils.validateString(validInput, 1,  "Test (min and max length)", 6, true, notification);
         
-        assertFalse(notification.hasErrors(), "Should NOT have exception for input: " + validInput);
+        assertFalse(notification.hasErrors());
     }
     
     @ParameterizedTest
@@ -57,14 +57,14 @@ public class StringUtilsTest {
         NotificationContext notification = new NotificationContext();
         NotificationContext notification2 = new NotificationContext();
         
-        StringUtils.validateString(invalidInput, "Test (only max length)", 4, notification);
+        StringUtils.validateString(invalidInput, "Test (only max length)", 4, true, notification);
         
-        assertTrue(notification.hasErrors(), "Should have exception for input: " + invalidInput);
+        assertTrue(notification.hasErrors());
         assertEquals("Test (only max length)", notification.getErrors().getFirst().getInvalidProperty());
         
-        StringUtils.validateString(invalidInput, 3, "Test (min and max length)", 5, notification2);
+        StringUtils.validateString(invalidInput, 3, "Test (min and max length)", 5, true, notification2);
         
-        assertTrue(notification2.hasErrors(), "Should have exception for input: " + invalidInput);
+        assertTrue(notification2.hasErrors());
         assertEquals("Test (min and max length)", notification2.getErrors().getFirst().getInvalidProperty());
     }
 

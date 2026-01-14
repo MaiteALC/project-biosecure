@@ -20,7 +20,7 @@ public class Ingredient {
             notification.addError("CAS Registry Number", "CAS number is invalid");
         }
 
-        StringUtils.validateString(name, 2,"active ingredient name", 60, notification);
+        StringUtils.validateString(name, 2, "active ingredient name", 60, true, notification);
         NumberUtils.validateNumericalAttribute(concentrationPercentual, 0.001, "concentration quantity", 100, notification);
 
         if (notification.hasErrors()) {

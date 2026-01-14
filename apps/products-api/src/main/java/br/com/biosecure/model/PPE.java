@@ -15,7 +15,7 @@ public abstract class PPE extends Product {
 
         NotificationContext notificationContext = new NotificationContext();
 
-        StringUtils.validateString(certificateOfApproval, 5, "certificate of approval", 10,  notificationContext);
+        StringUtils.validateString(certificateOfApproval, 5, "certificate of approval", 10, true, notificationContext);
 
         if (notificationContext.hasErrors()) {
             throw new InvalidProductAttributeException(notificationContext.getErrors());

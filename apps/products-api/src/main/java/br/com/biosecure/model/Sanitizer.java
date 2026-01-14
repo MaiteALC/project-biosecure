@@ -23,8 +23,8 @@ public class Sanitizer extends Product {
 
         NotificationContext notification = new NotificationContext();
 
-        StringUtils.validateString(registryNumber, 8, "register number", 14, notification);
-        StringUtils.validateString(useIndications, "use indications", notification);
+        StringUtils.validateString(registryNumber, 8, "register number", 14, true, notification);
+        StringUtils.validateString(useIndications, "use indications", true, notification);
 
         NumberUtils.validateNumericalAttribute(phLevel, 0, "ph level", 14, notification);
         NumberUtils.validateNumericalAttribute(densityGramsPerMilliLiter, 0, "density (g/mL)", 23, notification); // 23 is (a bit greater than) the value of density of the "Osmium", the most dense substance in the world

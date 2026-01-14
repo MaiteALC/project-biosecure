@@ -8,21 +8,26 @@ public class StringUtils {
     private static final String messageForEmpty = "The string is empty.";
     private static final String messageForMaxLength = "The string length is greater than allowed.";
     private static final String messageForMinLength = "The string length is less than allowed.";
+    private static final String messageForDigits = "The string mustn't contain digits.";
     
     /**
      * Validates if the string is {@code null} or contains <strong>only</strong> useless characters ({@code \t}, {@code \n}, white spaces). If yes, an exception will be added in the notification object with property name (parameter) and an informative message.
      * 
-     * @param value A string will be validated.
+     * @param value A string that will be validated.
      * @param propertyName The name of property/attribute/field/variable that will be validated.
      * @param notification A {@code NotificationContext} object that stores the exceptions (if there is) added internally by this method.
      */
-    public static void validateString(String value, String propertyName, NotificationContext notification) {
+    public static void validateString(String value, String propertyName, boolean acceptDigits, NotificationContext notification) {
         if (value == null) {
             notification.addError(propertyName, messageForNull);
         }
 
         else if (value.isBlank()) {
             notification.addError(propertyName, messageForEmpty);
+        }
+
+        else if (!acceptDigits && value.matches("[0-9]+")) {
+            notification.addError(propertyName, messageForDigits);
         }
     }
     
@@ -35,7 +40,7 @@ public class StringUtils {
      * @param maxLength maximum length to be accepted <strong>(exclusive)</strong>.
      * @param notification A {@code NotificationContext} object that stores the exceptions (if there is) added internally by this method.
      */
-    public static void validateString(String value, int minLength, String propertyName, int maxLength, NotificationContext notification) {
+    public static void validateString(String value, int minLength, String propertyName, int maxLength, boolean acceptDigits, NotificationContext notification) {
         if (value == null) {
             notification.addError(propertyName, messageForNull);
         }
@@ -44,12 +49,18 @@ public class StringUtils {
             notification.addError(propertyName, messageForEmpty);
         }
 
-        else if (value.length() < minLength) {
-            notification.addError(propertyName, messageForMinLength);
-        }
-        
-        else if (value.length() > maxLength) {
-            notification.addError(propertyName, messageForMaxLength);
+        else {
+            if (!acceptDigits && value.matches("[0-9]+")) {
+                notification.addError(propertyName, messageForDigits);
+            }
+
+            if (value.length() < minLength) {
+                notification.addError(propertyName, messageForMinLength);
+            }
+
+            else if (value.length() > maxLength) {
+                notification.addError(propertyName, messageForMaxLength);
+            }
         }
     }
     
@@ -61,7 +72,7 @@ public class StringUtils {
      * @param propertyName The name of property/attribute/field/variable that will be validated.
      * @param notification A {@code NotificationContext} object that stores the exceptions (if there is) added internally by this method.
      */
-    public static void validateString(String value, String propertyName, int maxLength, NotificationContext notification) {
+    public static void validateString(String value, String propertyName, int maxLength, boolean acceptDigits, NotificationContext notification) {
         if (value == null) {
             notification.addError(propertyName, messageForNull);
         }
@@ -70,8 +81,14 @@ public class StringUtils {
             notification.addError(propertyName, messageForEmpty);
         }
 
-        else if (value.length() > maxLength) {
-            notification.addError(propertyName, messageForMaxLength);
+        else {
+            if (!acceptDigits && value.matches("[0-9]+")) {
+                notification.addError(propertyName, messageForDigits);
+            }
+
+            if (value.length() > maxLength) {
+                notification.addError(propertyName, messageForMaxLength);
+            }
         }
     }
     
@@ -83,7 +100,7 @@ public class StringUtils {
      * @param minLength minimum length to be accepted <strong>(exclusive)</strong>.
      * @param notification A {@code NotificationContext} object that stores the exceptions (if there is) added internally by this method.
      */
-    public static void validateString(String value, int minLength, String propertyName, NotificationContext notification) {
+    public static void validateString(String value, int minLength, String propertyName, boolean acceptDigits, NotificationContext notification) {
         if (value == null) {
             notification.addError(propertyName, messageForNull);
         }
@@ -92,8 +109,14 @@ public class StringUtils {
             notification.addError(propertyName, messageForEmpty);
         }
 
-        else if (value.length() < minLength) {
-            notification.addError(propertyName, messageForMinLength);
+        else {
+            if (!acceptDigits && value.matches("[0-9]+")) {
+                notification.addError(propertyName, messageForDigits);
+            }
+
+            if (value.length() < minLength) {
+                notification.addError(propertyName, messageForMinLength);
+            }
         }
     }
 
@@ -113,14 +136,14 @@ public class StringUtils {
         }
 
         else {
-            final String REGEX = "^[A-Za-z0-9._%+-]+@(?!(gmail\\.com|hotmail\\.com|outlook\\.com|yahoo\\.com|live\\.com)$)[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+            final String EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@(?!(gmail\\.com|hotmail\\.com|outlook\\.com|yahoo\\.com|live\\.com)$)[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
-            Pattern pattern = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
 
             Matcher matcher = pattern.matcher(email);
 
             if (!matcher.matches()) {
-                notification.addError("email", "The email '" + email + "' have a not allowed domain.");
+                notification.addError("email", "The email '" + email + "' has a not allowed domain.");
             }
         }
     }

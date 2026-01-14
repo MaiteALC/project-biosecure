@@ -10,12 +10,10 @@ public record Address(String state, String city, String neighborhood, String str
 
         NumberUtils.validateNumericalAttribute(number, 1, "number", 99999, notification);
 
-        StringUtils.validateString(state, 2, "state name", notification);
-        StringUtils.validateString(city, 2, "city name", notification);
-        StringUtils.validateString(neighborhood, 2, "neighborhood name", notification);
-        StringUtils.validateString(street, 2, "street name", notification);
-
-        StringUtils.validateString(postalCode.replace("-", ""), 8, "postal code", 8, notification);
+        StringUtils.validateString(state, MIN_LENGTH, "state name", MAX_LENGTH, false, notification);
+        StringUtils.validateString(city, MIN_LENGTH, "city name", MAX_LENGTH, false, notification);
+        StringUtils.validateString(neighborhood, MIN_LENGTH, "neighborhood name", MAX_LENGTH, true, notification);
+        StringUtils.validateString(street, MIN_LENGTH, "street name", MAX_LENGTH, true, notification);
 
         if (notification.hasErrors()) {
             throw new InvalidAddressException(notification.getErrors());

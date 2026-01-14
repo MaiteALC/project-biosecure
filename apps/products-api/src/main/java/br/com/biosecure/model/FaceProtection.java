@@ -16,7 +16,7 @@ public class FaceProtection extends PPE {
 
         NotificationContext notificationContext = new NotificationContext();
 
-        StringUtils.validateString(standardRating, 2, "standard rating", 12, notificationContext);
+        StringUtils.validateString(standardRating, 2, "standard rating", 12, true, notificationContext);
 
         if (notificationContext.hasErrors()) {
             throw new InvalidProductAttributeException(notificationContext.getErrors());
