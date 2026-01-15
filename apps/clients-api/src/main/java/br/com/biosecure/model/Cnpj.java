@@ -1,19 +1,21 @@
 package br.com.biosecure.model;
 
+import java.util.regex.Pattern;
+
 public class Cnpj {
     private final String number; 
     private final String formattedNumber;
 
     private static final int SIZE_UNFORMATTED = 14;
-    private static final int SIZE_FORMATTED = 18;
+    private static final Pattern CNPJ_REGEX = Pattern.compile("^[0-9]{2}\\.?[0-9]{3}\\.?[0-9]{3}/?[0-9]{4}-?[0-9]{2}$");
 
     public Cnpj(String number) {
         if (number == null || number.isBlank()) {
-            throw new InvalidCnpjException("CNPJ number is null or blank");
+            throw new InvalidCnpjException("CNPJ number is null/blank");
         }
 
-        if (number.length() != SIZE_FORMATTED && number.length() != SIZE_UNFORMATTED) {
-            throw new InvalidCnpjException("CNPJ with invalid size (" + number.length() + ")");
+        if (!CNPJ_REGEX.matcher(number).matches()) {
+            throw new InvalidCnpjException("CNPJ with invalid format");
         }
 
         String cleanNumber = clearFormat(number);
