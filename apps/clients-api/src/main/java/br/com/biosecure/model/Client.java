@@ -1,5 +1,6 @@
 package br.com.biosecure.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 import br.com.biosecure.utils.NotificationContext;
 import br.com.biosecure.utils.StringUtils;
@@ -8,18 +9,23 @@ public class  Client {
     private String corporateName;
     private final UUID id;
     private final Cnpj cnpj;
-    private final Address address;
+    private Address address;
     private String email;
+    private final FinancialData financialData;
+    private final LocalDateTime registrationDate;
 
     private static final  int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 55;
     
-    public Client(String corporateName, Cnpj cnpj, Address address, String email) {
+    public Client(String corporateName, Cnpj cnpj, Address address, String email, FinancialData financialData) {
         NotificationContext notificationContext = new NotificationContext();
 
-        StringUtils.validateString(corporateName, MIN_NAME_LENGTH, "name", MAX_NAME_LENGTH, notificationContext);
+        StringUtils.validateString(corporateName, MIN_NAME_LENGTH, "name", MAX_NAME_LENGTH, true, notificationContext);
 
         StringUtils.validateCorporateEmail(email, notificationContext);
+
+        if (financialData == null)
+            notificationContext.addError("financial data", "financial data mustn't be null");
 
         if (notificationContext.hasErrors()) {
             throw new InvalidClientAttributeException(notificationContext.getErrors());
@@ -30,7 +36,9 @@ public class  Client {
         this.id = UUID.randomUUID();
         this.address = address;
         this.email = email;
-    } 
+        this.financialData = financialData;
+        this.registrationDate = LocalDateTime.now();
+    }
     
     @Override
     public boolean equals(Object obj) {
@@ -48,7 +56,15 @@ public class  Client {
 
     @Override
     public String toString() {
-        return "Client [corporate name: " + corporateName + ", CNPJ: " + cnpj.getFormattedNumber() + ", ID: " + id + ", email: " + email + address.toString();
+        return new StringBuilder("Client = ")
+                .append("[corporate name=").append(corporateName)
+                .append("uuid=").append(id)
+                .append(", CNPJ=").append(cnpj)
+                .append(", email=").append(email)
+                .append(", registrationDate=").append(registrationDate)
+                .append(", ").append(address.toString())
+                .append(", ").append(financialData.toString())
+                .append(']').toString();
     }
 
     public String getCorporateName() {
@@ -71,11 +87,19 @@ public class  Client {
         return email;
     }
 
+    public FinancialData getFinancialData() {
+        return financialData;
+    }
+
+    public LocalDateTime getRegistrationDate() {
+        return registrationDate;
+    }
+
     public void setCorporateName(String newName) {
         NotificationContext notification = new NotificationContext();
 
-        StringUtils.validateString(newName, MIN_NAME_LENGTH, "corporate name", MAX_NAME_LENGTH, notification);
-        
+        StringUtils.validateString(newName, MIN_NAME_LENGTH, "corporate name", MAX_NAME_LENGTH, true, notification);
+
         if (notification.hasErrors()) {
             throw new InvalidClientAttributeException(notification.getErrors());
         }
@@ -84,13 +108,21 @@ public class  Client {
     }
     public void setEmail(String newEmail) {
         NotificationContext notificationContext = new NotificationContext();
-        
+
         StringUtils.validateCorporateEmail(newEmail, notificationContext);
-        
+
         if (notificationContext.hasErrors()) {
             throw new InvalidClientAttributeException(notificationContext.getErrors());
         }
 
         this.email = newEmail;
+    }
+
+    public void setAddress(Address newAddress) {
+        if (newAddress == null) {
+            throw new  NullPointerException("address mustn't be null");
+        }
+
+        this.address = newAddress;
     }
 }
