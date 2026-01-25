@@ -17,7 +17,7 @@ public class FinancialDataTest {
     public void shouldUpdateInfosCorrectly_WhenDataIsValid() {
         FinancialData financialData = FinancialDataBuilder.aFinancialData().build();
 
-        financialData.updateSocialCapital(BigDecimal.valueOf(10_000_000));
+        financialData.updateShareCapital(BigDecimal.valueOf(10_000_000));
         financialData.updateTotalCredit(BigDecimal.valueOf(5_400_000));
 
         assertTrue(financialData.getShareCapital().compareTo(BigDecimal.valueOf(10_000_000)) == 0);
@@ -28,7 +28,7 @@ public class FinancialDataTest {
     public void shouldNotUpdateInfos_WhenDataIsInvalid() {
         FinancialData financialData = FinancialDataBuilder.aFinancialData().build();
 
-        InvalidFinancialDataException socialCapitalException = assertThrows(InvalidFinancialDataException.class, () -> financialData.updateSocialCapital(BigDecimal.valueOf(-1)) );
+        InvalidFinancialDataException socialCapitalException = assertThrows(InvalidFinancialDataException.class, () -> financialData.updateShareCapital(BigDecimal.valueOf(-1)) );
 
         InvalidFinancialDataException creditException = assertThrows(InvalidFinancialDataException.class, () -> financialData.updateTotalCredit(BigDecimal.valueOf(100_000_000)) );
 
@@ -75,10 +75,10 @@ public class FinancialDataTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"    ",  "sdchwig", "2372747576747", "1111-1/00", "71201/00", "0119-9/02", "2122-3/03"})
-    public void shouldThrowException_WhenSocialCapitalIsInvalid(String socialCapital) {
+    public void shouldThrowException_WhenCnaeIsInvalid(String cnae) {
         assertThrows(InvalidFinancialDataException.class, () -> {
             FinancialDataBuilder.aFinancialData()
-                    .withEconomicActivityCode(socialCapital)
+                    .withCnae(new Cnae(cnae))
                     .build();
         });
     }

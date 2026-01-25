@@ -1,5 +1,6 @@
 package br.com.biosecure.builders;
 
+import br.com.biosecure.model.Cnae;
 import br.com.biosecure.model.Cnpj;
 import br.com.biosecure.model.FinancialData;
 import java.math.BigDecimal;
@@ -7,7 +8,7 @@ import java.time.LocalDate;
 
 public class FinancialDataBuilder {
     private LocalDate startDateActivities = LocalDate.of(2020, 1, 1);
-    private String economicActivityCode = "7120-1/00";
+    private Cnae cnae = new Cnae("7120-1/00");
     private BigDecimal shareCapital = BigDecimal.valueOf(6_000_000);
     private BigDecimal totalCredit;
     private BigDecimal utilizedCredit;
@@ -19,8 +20,8 @@ public class FinancialDataBuilder {
         return this;
     }
 
-    public FinancialDataBuilder withEconomicActivityCode(String economicalActivityCode) {
-        this.economicActivityCode = economicalActivityCode;
+    public FinancialDataBuilder withCnae(Cnae cnae) {
+        this.cnae = cnae;
         return this;
     }
 
@@ -54,7 +55,7 @@ public class FinancialDataBuilder {
     }
 
     public FinancialData build() {
-         FinancialData fd = new FinancialData(startDateActivities, economicActivityCode, cnpj, registrationStatus, shareCapital);
+         FinancialData fd = new FinancialData(startDateActivities, cnae, cnpj, registrationStatus, shareCapital);
 
          if (totalCredit != null) {
             fd.updateTotalCredit(totalCredit);
