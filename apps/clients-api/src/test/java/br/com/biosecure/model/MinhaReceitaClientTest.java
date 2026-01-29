@@ -1,10 +1,5 @@
 package br.com.biosecure.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
-
 import br.com.biosecure.infrastructure.ExternalApiUnreachableException;
 import br.com.biosecure.infrastructure.MinhaReceitaClient;
 import br.com.biosecure.infrastructure.MinhaReceitaResponse;
@@ -18,6 +13,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
+
 @RestClientTest(MinhaReceitaClient.class)
 public class MinhaReceitaClientTest {
 
@@ -29,8 +29,6 @@ public class MinhaReceitaClientTest {
 
     @Test
     public void shouldReturnDataCorrectly_WhenRequestIsValid() {
-        String cnpj = "33683111000280";
-
         String responseJson = """ 
             {
                          "cnpj": "33683111000280",
@@ -111,6 +109,8 @@ public class MinhaReceitaClientTest {
                      }
         """; // This JSON string is a simplified version of the JSON found in 'docs.minhareceita.org/como-usar/'
 
+        String cnpj = "33683111000280";
+
         fakeServer.expect(requestTo("https://minhareceita.org/" + cnpj))
                 .andRespond(withSuccess(responseJson, MediaType.APPLICATION_JSON));
 
@@ -132,7 +132,6 @@ public class MinhaReceitaClientTest {
     @NullAndEmptySource
     @ValueSource(strings = {"00000000000000", "  ", "noaneonf"})
     public void shouldThrowException_WhenCnpjIsInvalid(String invalidCnpj) {
-
         fakeServer.expect(requestTo("https://minhareceita.org/" + invalidCnpj))
                 .andRespond(withResourceNotFound());
 
@@ -141,7 +140,6 @@ public class MinhaReceitaClientTest {
 
     @Test
     public void shouldThrowException_WhenApiIsUnreachable() {
-
         fakeServer.expect(requestTo("https://minhareceita.org/12345678000100"))
                 .andRespond(withServerError());
 
