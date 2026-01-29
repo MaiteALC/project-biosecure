@@ -13,7 +13,9 @@ lib/
 Thumbs.db
 
 ### IntelliJ IDEA ###
-apps/.idea/
+.idea/
+apps/*/.idea/
+apps/*/.mvn/
 *.iws
 *.iml
 *.ipr
