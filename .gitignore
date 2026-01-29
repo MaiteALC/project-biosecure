@@ -13,7 +13,7 @@ lib/
 Thumbs.db
 
 ### IntelliJ IDEA ###
-.idea/
+apps/.idea/
 *.iws
 *.iml
 *.ipr
