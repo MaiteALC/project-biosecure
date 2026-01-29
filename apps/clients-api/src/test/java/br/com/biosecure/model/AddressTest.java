@@ -8,10 +8,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AddressTest {
+class AddressTest {
 
     @Test
-    public void shouldBuildValidAddress() {
+    void shouldBuildValidAddress() {
         AddressBuilder.anAddress().build();
 
         Address eifelTower = AddressBuilder.anAddress()
@@ -29,7 +29,7 @@ public class AddressTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "a", "197", "loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong string"})
-    public void shouldThrowException_WhenAddressStringAttributesIsInvalid(String invalid) {
+    void shouldThrowException_WhenAddressStringAttributesIsInvalid(String invalid) {
         assertThrows(InvalidAddressException.class, // all of this attributes fail in the same way
                 () -> AddressBuilder.anAddress()
                         .withState(invalid)

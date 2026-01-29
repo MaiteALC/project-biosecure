@@ -8,12 +8,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class ClientTest {
+class ClientTest {
 
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"    ", "test2@gmail.com", "test2@hotmail.com", "test3@outlook.com", "test4@live.com", "test5@yahoo.com", "random text"})
-    public void shouldThrowException_WhenEmailIsInvalid(String invalidEmail) {
+    void shouldThrowException_WhenEmailIsInvalid(String invalidEmail) {
         InvalidClientAttributeException exception = assertThrows(InvalidClientAttributeException.class,
             () -> ClientBuilder.aClient().withEmail(invalidEmail).build()
         );
@@ -24,7 +24,7 @@ public class ClientTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"     ", "A", "1", "loooooooooooooooooooooooooooooooooooooooooooooooooong name"})
-    public void clientCreationMustFailOnName(String invalidName) {
+    void clientCreationMustFailOnName(String invalidName) {
         InvalidClientAttributeException exception = assertThrows(InvalidClientAttributeException.class,
             () -> ClientBuilder.aClient().withCorporateName(invalidName).build()
         );

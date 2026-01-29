@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-public class CnpjTest {
+class CnpjTest {
 
     @Test
-    public void mustFailInCnpjValidation() {
+    void mustFailInCnpjValidation() {
         InvalidCnpjException formatException =  assertThrows(InvalidCnpjException.class, () -> new Cnpj("111111"));
         InvalidCnpjException formatException2 =  assertThrows(InvalidCnpjException.class, () -> new Cnpj("1111111111111111111"));
 
@@ -28,7 +28,7 @@ public class CnpjTest {
     }
 
     @Test
-    public void mustValidateCnpjWithSuccess() {
+    void mustValidateCnpjWithSuccess() {
         Cnpj valid = new Cnpj("60.316.817/0001-03");
 
         assertEquals("60316817000103", valid.getNumber());

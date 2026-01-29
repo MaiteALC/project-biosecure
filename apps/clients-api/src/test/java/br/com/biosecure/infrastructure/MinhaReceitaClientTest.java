@@ -18,7 +18,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
 @RestClientTest(MinhaReceitaClient.class)
-public class MinhaReceitaClientTest {
+class MinhaReceitaClientTest {
 
     @Autowired
     private MinhaReceitaClient client;
@@ -27,7 +27,7 @@ public class MinhaReceitaClientTest {
     private MockRestServiceServer fakeServer;
 
     @Test
-    public void shouldReturnDataCorrectly_WhenRequestIsValid() {
+    void shouldReturnDataCorrectly_WhenRequestIsValid() {
         String responseJson = """ 
             {
                          "cnpj": "33683111000280",
@@ -130,7 +130,7 @@ public class MinhaReceitaClientTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"00000000000000", "  ", "noaneonf"})
-    public void shouldThrowException_WhenCnpjIsInvalid(String invalidCnpj) {
+    void shouldThrowException_WhenCnpjIsInvalid(String invalidCnpj) {
         fakeServer.expect(requestTo("https://minhareceita.org/" + invalidCnpj))
                 .andRespond(withResourceNotFound());
 
@@ -138,7 +138,7 @@ public class MinhaReceitaClientTest {
     }
 
     @Test
-    public void shouldThrowException_WhenApiIsUnreachable() {
+    void shouldThrowException_WhenApiIsUnreachable() {
         fakeServer.expect(requestTo("https://minhareceita.org/12345678000100"))
                 .andRespond(withServerError());
 

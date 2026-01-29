@@ -9,10 +9,10 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FinancialDataTest {
+class FinancialDataTest {
 
     @Test
-    public void shouldUpdateInfosCorrectly_WhenDataIsValid() {
+    void shouldUpdateInfosCorrectly_WhenDataIsValid() {
         FinancialData financialData = FinancialDataBuilder.aFinancialData().build();
 
         financialData.updateShareCapital(BigDecimal.valueOf(10_000_000));
@@ -23,7 +23,7 @@ public class FinancialDataTest {
     }
 
     @Test
-    public void shouldNotUpdateInfos_WhenDataIsInvalid() {
+    void shouldNotUpdateInfos_WhenDataIsInvalid() {
         FinancialData financialData = FinancialDataBuilder.aFinancialData().build();
 
         InvalidFinancialDataException socialCapitalException = assertThrows(InvalidFinancialDataException.class, () -> financialData.updateShareCapital(BigDecimal.valueOf(-1)) );
@@ -35,7 +35,7 @@ public class FinancialDataTest {
     }
 
     @Test
-    public void shouldPayDebitAndUseCreditCorrectly_WhenDataIsValid() {
+    void shouldPayDebitAndUseCreditCorrectly_WhenDataIsValid() {
         FinancialData financialData = FinancialDataBuilder.aFinancialData()
                 .withShareCapital(BigDecimal.valueOf(60_000_000))
                 .withUtilizedCredit(BigDecimal.valueOf(10_000_000))
@@ -51,7 +51,7 @@ public class FinancialDataTest {
     }
 
     @Test
-    public void shouldThrowException_WhenPaymentAndCreditValuesAreInvalid() {
+    void shouldThrowException_WhenPaymentAndCreditValuesAreInvalid() {
         InvalidFinancialDataException socialCapitalException = assertThrows(InvalidFinancialDataException.class, () -> FinancialDataBuilder.aFinancialData()
                 .withShareCapital(BigDecimal.valueOf(-1))
                 .build());
@@ -68,7 +68,7 @@ public class FinancialDataTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"9602-5/01", "47.81-4/00", "73.19002", "4399-101", "45307/03"})
-    public void shouldThrowException_WhenCnaeNumberIsUnallowed(String cnaeNum) {
+    void shouldThrowException_WhenCnaeNumberIsUnallowed(String cnaeNum) {
         assertThrows(InvalidFinancialDataException.class, () -> FinancialDataBuilder.aFinancialData().withCnae(new Cnae(cnaeNum, "test description")).build());
     }
 }
