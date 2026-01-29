@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public class FinancialDataBuilder {
     private LocalDate startDateActivities = LocalDate.of(2020, 1, 1);
-    private Cnae cnae = new Cnae("7120-1/00");
+    private Cnae cnae = new Cnae("7120-1/00", "Technical tests and analyses");
     private BigDecimal shareCapital = BigDecimal.valueOf(6_000_000);
     private BigDecimal totalCredit;
     private BigDecimal utilizedCredit;

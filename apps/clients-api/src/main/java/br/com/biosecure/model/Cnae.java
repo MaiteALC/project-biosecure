@@ -1,46 +1,53 @@
 package br.com.biosecure.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+@Getter
 public class Cnae {
-    private final String code;
+     private final String unformattedCode;
     private String description;
     private final String formattedCode;
 
     private final static Pattern CNAE_REGEX = Pattern.compile(
-            "^[0-9]{4}-?[0-9]/?[0-9]{2}$"
+            "^[0-9]{2}\\.?[0-9]{2}-?[0-9]/?[0-9]{2}$"
     );
 
-    public Cnae(String number, String description) {
+    public final static Map<String, String> ALLOWED_CNAE_NUMBERS = new HashMap<>();
+
+    {
+        ALLOWED_CNAE_NUMBERS.put("8610-1/01", "Hospital care activities (General hospitals).");
+        ALLOWED_CNAE_NUMBERS.put("8610-1/02", "Emergency room and hospital unit services for urgent care.");
+        ALLOWED_CNAE_NUMBERS.put("8640-2/02", "Services for collection of clinical laboratory tests, clinical tests and services for clinical analysis laboratory");
+        ALLOWED_CNAE_NUMBERS.put("8630-5/01", "Outpatient medical activity with resources for performing surgical procedures.");
+        ALLOWED_CNAE_NUMBERS.put("8630-5/02", "Outpatient medical activity with resources for carrying out complementary examinations.");
+        ALLOWED_CNAE_NUMBERS.put("8650-0/01", "Nursing activities (Vaccination clinics, for example).");
+        ALLOWED_CNAE_NUMBERS.put("7210-0/00", "Research and experimental development in physical and natural sciences (Encompasses most biotech startups and university research laboratories).");
+        ALLOWED_CNAE_NUMBERS.put("7120-1/00", "Technical tests and analyses (Quality control laboratories, industrial biological tests).");
+        ALLOWED_CNAE_NUMBERS.put("2110-6/00", "Manufacture of pharmaceutical products.");
+        ALLOWED_CNAE_NUMBERS.put("2121-1/01", "Manufacture of allopathic medicines for human use.");
+        ALLOWED_CNAE_NUMBERS.put("2121-1/03", "Manufacture of homeopathic medicines for human use.");
+        ALLOWED_CNAE_NUMBERS.put("2123-8/00", "Manufacture of pharmaceutical preparations.");
+        ALLOWED_CNAE_NUMBERS.put("7500-1/00", "Veterinary activities (Veterinary clinics and hospitals).");
+        ALLOWED_CNAE_NUMBERS.put("2122-0/00", "Manufacture of medicines for veterinary use.");
+        ALLOWED_CNAE_NUMBERS.put("3812-2/00", "Collection of hazardous waste (Includes infectious/biological waste).");
+        ALLOWED_CNAE_NUMBERS.put("3822-0/00", "Treatment and disposal of hazardous waste.");
+        ALLOWED_CNAE_NUMBERS.put("8129-0/00", "Cleaning and pest control activities (Hospital sanitation companies).");
+    }
+
+    @JsonCreator
+    public Cnae(@JsonProperty("codigo") String number, @JsonProperty("descricao") String description) {
         if (number == null || !CNAE_REGEX.matcher(number).matches()) {
             throw new IllegalArgumentException("CNAE number format is invalid");
         }
 
-        this.code = removeFormating(number);
+        this.unformattedCode = removeFormating(number);
         this.description = description;
         this.formattedCode = formatCnae(number);
-    }
-
-    public Cnae(String number) {
-        if (number == null || !CNAE_REGEX.matcher(number).matches()) {
-            throw new IllegalArgumentException("CNAE number format is invalid");
-        }
-
-        this.code = removeFormating(number);
-        this.description = "Description unavailable";
-        this.formattedCode = formatCnae(number);
-    }
-
-    public String getUnformattedCnaeCode() {
-        return code;
-    }
-
-    public String getFormattedCnaeCode() {
-        return formattedCode;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setDescription(String description) {
@@ -52,7 +59,7 @@ public class Cnae {
     }
 
     private static String removeFormating(String cnaeFormatted) {
-        return cnaeFormatted.replace("-", "").replace("/", "");
+        return cnaeFormatted.replace(".", "").replace("-", "").replace("/", "");
     }
 
     private static String formatCnae(String cnae) {
@@ -63,36 +70,16 @@ public class Cnae {
     }
 
     public static boolean isAllowedCnae(Cnae cnaeToVerify) {
-        if (cnaeToVerify == null || !CNAE_REGEX.matcher(cnaeToVerify.getFormattedCnaeCode()).matches()) {
+        if (cnaeToVerify == null || !CNAE_REGEX.matcher(cnaeToVerify.formattedCode).matches()) {
             return false;
         }
-
-        for (String allowed : ALLOWED_CNAE_NUMBERS) {
-            if (cnaeToVerify.getFormattedCnaeCode().equals(allowed)) {
-                return true;
-            }
-        }
-        return false;
+        return ALLOWED_CNAE_NUMBERS.containsKey(cnaeToVerify.formattedCode);
     }
 
     public static boolean isAllowedCnae(String cnaeToVerify) {
         if (cnaeToVerify == null || !CNAE_REGEX.matcher(cnaeToVerify).matches()) {
             return false;
         }
-
-        for (String allowed : ALLOWED_CNAE_NUMBERS) {
-            if (formatCnae(cnaeToVerify).equals(allowed)) {
-                return true;
-            }
-        }
-        return false;
+        return ALLOWED_CNAE_NUMBERS.containsKey(formatCnae(cnaeToVerify));
     }
-
-    private final static String[] ALLOWED_CNAE_NUMBERS = {
-            "8610-1/01", "8610-1/02", "8640-2/02", "8630-5/01", "8630-5/02", "8650-0/01", // human health and clinical analysis
-            "7210-0/00", "7120-1/00", // research, development and biotechnology
-            "2110-6/00", "2121-1/01", "2121-1/02", "2121-1/03", "2123-8/00", // pharmaceutical and inputs industry
-            "7500-1/00", "2122-0/00", // animal health
-            "3812-2/00", "3822-0/00", "8129-0/00" // waste management and support services
-    };
 }

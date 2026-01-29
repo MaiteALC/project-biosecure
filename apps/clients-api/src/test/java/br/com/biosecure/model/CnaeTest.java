@@ -17,7 +17,7 @@ public class CnaeTest {
             "8630-5/01, 8630501"
     })
     public void shouldRemoveFormattingCorrectly(String input, String expected) {
-        assertEquals(expected, new Cnae(input).getUnformattedCnaeCode());
+        assertEquals(expected, new Cnae(input, "test description").getUnformattedCode());
     }
 
     @ParameterizedTest
@@ -28,7 +28,7 @@ public class CnaeTest {
             "8630-5/01, 8630501"
     })
     public void shouldAddFormattingCorrectly(String expected, String input) {
-        assertEquals(expected, new Cnae(input).getFormattedCnaeCode());
+        assertEquals(expected, new Cnae(input, "test description").getFormattedCode());
     }
 
     @ParameterizedTest
@@ -41,7 +41,7 @@ public class CnaeTest {
     @ParameterizedTest
     @ValueSource(strings = {"3812-2/00", "3822-0/00", "8129-0/00", "8640-2/02", "8129-0/00"})
     public void shouldValidateCnaeCorrectly_WhenItIsAllowed(String valid) {
-        assertTrue(Cnae.isAllowedCnae(new Cnae(valid)));
+        assertTrue(Cnae.isAllowedCnae(new Cnae(valid, "test description").getFormattedCode()));
         assertTrue(Cnae.isAllowedCnae(valid));
     }
 }
