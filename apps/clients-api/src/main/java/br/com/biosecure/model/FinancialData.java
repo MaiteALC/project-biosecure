@@ -2,10 +2,12 @@ package br.com.biosecure.model;
 
 import br.com.biosecure.utils.NotificationContext;
 import br.com.biosecure.utils.NumberUtils;
+import lombok.Getter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
+@Getter
 public class FinancialData {
     private final LocalDate startDateActivities;
     private final Cnae cnae;
@@ -62,32 +64,8 @@ public class FinancialData {
                 .append(']').toString();
     }
 
-    public LocalDate getStartDateActivities() {
-        return startDateActivities;
-    }
-
-    public Cnae getCnae() {
-        return cnae;
-    }
-
-    public BigDecimal getShareCapital() {
-        return shareCapital;
-    }
-
-    public BigDecimal getTotalCredit() {
-        return totalCredit;
-    }
-
-    public BigDecimal getUtilizedCredit() {
-        return utilizedCredit;
-    }
-
     public BigDecimal getRemainderCredit() {
         return totalCredit.subtract(utilizedCredit);
-    }
-
-    public Cnpj getCnpj() {
-        return cnpj;
     }
 
     public void updateShareCapital(BigDecimal shareCapital) {
