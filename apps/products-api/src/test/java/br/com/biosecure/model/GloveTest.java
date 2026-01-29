@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GloveTest {
+class GloveTest {
     
     @Test
-    public void shouldBuildValidGlove() {
+    void shouldBuildValidGlove() {
         Glove aGlove = GloveTestBuilder.aGlove()
             .withMaterial(GloveMaterial.LATEX)
             .withDisposable(true)
@@ -25,7 +25,7 @@ public class GloveTest {
     }
 
     @Test
-    public void shouldThrowException_WhenThicknessIsInvalid() {
+    void shouldThrowException_WhenThicknessIsInvalid() {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             GloveTestBuilder.aGlove().withThicknessMils(2).build();
         });

@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SampleContainerTest {
+class SampleContainerTest {
     
     @Test
-    public void shouldCreateValidSampleContainer() {
+    void shouldCreateValidSampleContainer() {
         SampleContainer aSampleContainer = DummySampleContainer.builder()
             .sterilizationMethod(SterilizationMethod.E_BEAM)
             .closingMethod(ClosingMethod.HEAT_SEALABLE)
@@ -33,7 +33,7 @@ public class SampleContainerTest {
     }
 
     @Test
-    public void shouldThrowException_WhenMaterialAndSterilizationMethodIsIncoherent() {
+    void shouldThrowException_WhenMaterialAndSterilizationMethodIsIncoherent() {
         BioSecurityException exception = assertThrows(BioSecurityException.class, () -> DummySampleContainer.builder()
             .materialType(Material.PE)
             .sterilizationMethod(SterilizationMethod.AUTOCLAVE)

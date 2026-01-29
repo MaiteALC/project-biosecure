@@ -9,10 +9,10 @@ import br.com.biosecure.model.SampleBag.FilterType;
 import br.com.biosecure.model.SampleContainer.*;
 import br.com.biosecure.builders.SampleBagTestBuilder;
 
-public class SampleBagTest {
+class SampleBagTest {
     
     @Test
-    public void shouldBuildValidSampleBag() {
+    void shouldBuildValidSampleBag() {
         SampleBag aBag = SampleBagTestBuilder.aSampleBag()
             .withFilter(FilterType.NONE)
             .withIdentificationTag(true)
@@ -32,7 +32,7 @@ public class SampleBagTest {
     }
 
     @Test
-    public void shouldThrowException_WhenBioSafetyRulesIsViolated() {
+    void shouldThrowException_WhenBioSafetyRulesIsViolated() {
         final String beginningOfMessage = "SECURITY WARNING: Sample bags must be of flexible material (PE, PP).";
 
         BioSecurityException exception = assertThrows(BioSecurityException.class, () -> {
@@ -55,7 +55,7 @@ public class SampleBagTest {
     }
 
     @Test
-    public void shouldThrowException_WhenPhysicalDimensionsIsInvalid() {
+    void shouldThrowException_WhenPhysicalDimensionsIsInvalid() {
         String expectedMsg = "These attributes are invalids:\n\t - height (mm) | The number is greater than allowed\n\t - width (mm) | The number is greater than allowed\n\t - thickness (mm) | The number is greater than allowed\n\t - capacity (mL) | The number is greater than allowed\n";
 
         String expectedInvalidAttributeString = "[height (mm), width (mm), thickness (mm), capacity (mL)]";

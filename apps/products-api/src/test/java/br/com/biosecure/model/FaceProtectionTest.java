@@ -10,10 +10,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FaceProtectionTest {
+class FaceProtectionTest {
     
     @Test
-    public void shouldBuildValidFaceProtection() {
+    void shouldBuildValidFaceProtection() {
         FaceProtection aFaceProtection = FaceProtectionTestBuilder.aFaceProtection()
             .withAntiFog(false)
             .withStandardRating("N95")
@@ -36,7 +36,7 @@ public class FaceProtectionTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "N", "N1234567890123"})
-    public void shouldThrowException_WhenStandardRatingIsInvalid(String invalidInput) {
+    void shouldThrowException_WhenStandardRatingIsInvalid(String invalidInput) {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             FaceProtectionTestBuilder.aFaceProtection().withStandardRating(invalidInput).build();
         });
@@ -46,7 +46,7 @@ public class FaceProtectionTest {
     }
 
     @Test
-    public void shouldInferValveAttributeCorrectly() {
+    void shouldInferValveAttributeCorrectly() {
         FaceProtection maskProtection = FaceProtectionTestBuilder.aFaceProtection()
             .withType(ProtectionType.MASK_RESPIRATOR)
             .withValve(true)

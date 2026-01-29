@@ -10,10 +10,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SanitizerTest {
+class SanitizerTest {
     
     @Test
-    public void shouldBuildValidSanitizer() {
+    void shouldBuildValidSanitizer() {
         Sanitizer defaultSanitizer = SanitizerTestBuilder.aSanitizer().build();
 
         assertNotNull(defaultSanitizer);
@@ -30,7 +30,7 @@ public class SanitizerTest {
     }
 
     @Test
-    public void shouldThrowException_WhenProductAttributeIsInvalid() {
+    void shouldThrowException_WhenProductAttributeIsInvalid() {
         
         InvalidProductAttributeException phException = assertThrows(InvalidProductAttributeException.class, () -> {
             SanitizerTestBuilder.aSanitizer()

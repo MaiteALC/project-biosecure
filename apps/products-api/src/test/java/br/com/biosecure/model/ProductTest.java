@@ -13,10 +13,10 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ProductTest {
+class ProductTest {
     
     @Test
-    public void shouldCreateProduct_WhenAttributesAreCorrect() {
+    void shouldCreateProduct_WhenAttributesAreCorrect() {
         Product aProduct = DummyProduct.builder()
             .name("Suppose that is a glove box")
             .packagingType(PackagingType.BOX)
@@ -35,7 +35,7 @@ public class ProductTest {
     }
 
     @Test
-    public void shouldThrowException_WhenStringAttributeIsInvalid() {
+    void shouldThrowException_WhenStringAttributeIsInvalid() {
         String expectedMessage = "These attributes are invalids:\n\t - name | The string is null.\n\t - manufacturer | The string is empty.\n\t - batch number | The string is empty.\n";
 
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> DummyProduct.builder()
@@ -57,7 +57,7 @@ public class ProductTest {
     }
 
     @Test
-    public void shouldThrowException_WhenProductAttributeIsInvalid()  {
+    void shouldThrowException_WhenProductAttributeIsInvalid()  {
         InvalidProductAttributeException priceException = assertThrows(InvalidProductAttributeException.class, () -> DummyProduct.builder().price(0).build());
         
         InvalidProductAttributeException priceException2 = assertThrows(InvalidProductAttributeException.class, () -> DummyProduct.builder().price(1000000).build());
@@ -74,7 +74,7 @@ public class ProductTest {
     }
 
     @Test
-    public void shouldEnsureCoherence_BetweenPackagingTypeAndMeasureUnit() {
+    void shouldEnsureCoherence_BetweenPackagingTypeAndMeasureUnit() {
         Product aProduct =  DummyProduct.builder()
             .packagingType(PackagingType.INDIVIDUAL)
             .quantityPerPackage(50)
@@ -91,7 +91,7 @@ public class ProductTest {
     }
 
     @Test
-    public void shouldThrowException_WhenExpirationDateIsInvalid() {
+    void shouldThrowException_WhenExpirationDateIsInvalid() {
         InvalidProductAttributeException dateException = assertThrows(InvalidProductAttributeException.class, () -> DummyProduct.builder()
             .expirationDate(LocalDate.now().minusDays(1))
             .build());
@@ -112,7 +112,7 @@ public class ProductTest {
     }
 
     @Test
-    public void shouldVerifyCorrectly_WhenTwoProductsAreDifferentOrEquals() {
+    void shouldVerifyCorrectly_WhenTwoProductsAreDifferentOrEquals() {
         Product productA = PetriDishTestBuilder.aPetriDish()
             .withName("Product A")
             .withManufacturer("Manufacturer A")

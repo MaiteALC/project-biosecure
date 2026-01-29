@@ -9,10 +9,10 @@ import br.com.biosecure.model.SampleContainer.*;
 import br.com.biosecure.model.TestTube.*;
 import br.com.biosecure.builders.TestTubeTestBuilder;
 
-public class TestTubeTest {
+class TestTubeTest {
     
     @Test
-    public void shouldBuildValidTestTube() {
+    void shouldBuildValidTestTube() {
         TestTube aTube = TestTubeTestBuilder.aTestTube()
             .withBottomType(BottomType.ROUND)
             .withCapColor(CapColor.PURPLE)
@@ -35,7 +35,7 @@ public class TestTubeTest {
     }
 
     @Test
-    public void shouldThrowException_WhenPhysicalDimensionsIsInvalid() {
+    void shouldThrowException_WhenPhysicalDimensionsIsInvalid() {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             TestTubeTestBuilder.aTestTube().withDiameterMm(0).withHeightMm(0).build();
         });
@@ -50,7 +50,7 @@ public class TestTubeTest {
     }
 
     @Test
-    public void shouldThrowException_WhenBioSafetyRulesIsViolated() {
+    void shouldThrowException_WhenBioSafetyRulesIsViolated() {
         String expectedMessage = "SECURITY WARNING: Glass tubes rarely supports RCF greater than 5000g. Verify the specifications.";
         
         String expectedMessage2 = "SECURITY WARNING: Flat bottoms concentrate the tension. RCF greater than 10.000g is uncommon for flat bottoms. Verify the specifications";
@@ -81,7 +81,7 @@ public class TestTubeTest {
     }
 
     @Test
-    public void shouldCalculateNominalCapacityCorrectly() {
+    void shouldCalculateNominalCapacityCorrectly() {
         double delta = 0.01;
 
         assertEquals(47.12, TestTube.calculateNominalCapacity(20, 150), delta);
@@ -92,7 +92,7 @@ public class TestTubeTest {
     }
 
     @Test
-    public void shouldThrowException_WhenCalculateNominalCapacity_GivenInvalidPhysicalDimensions() {
+    void shouldThrowException_WhenCalculateNominalCapacity_GivenInvalidPhysicalDimensions() {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             TestTube.calculateNominalCapacity(0, 0);
         });

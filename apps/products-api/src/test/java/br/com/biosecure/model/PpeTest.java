@@ -10,10 +10,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PpeTest {
+class PpeTest {
     
     @Test
-    public void shouldBuildValidPPE() {
+    void shouldBuildValidPPE() {
         PPE aPpe = DummyPpe.builder()
             .certificateOfApproval("C.A.12.549")
             .disposable(false)
@@ -32,7 +32,7 @@ public class PpeTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {"   ", "CA", "C.A.56789101112"})
-    public void shouldThrowException_WhenCertificateOfApprovalIsInvalid(String invalidInput) {
+    void shouldThrowException_WhenCertificateOfApprovalIsInvalid(String invalidInput) {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> DummyPpe.builder().certificateOfApproval(invalidInput).build());
 
         assertEquals("certificate of approval", exception.getInvalidAttribute());

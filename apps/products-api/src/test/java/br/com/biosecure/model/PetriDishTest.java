@@ -9,10 +9,10 @@ import br.com.biosecure.model.SampleContainer.ClosingMethod;
 import br.com.biosecure.model.SampleContainer.Material;
 import br.com.biosecure.builders.PetriDishTestBuilder;
 
-public class PetriDishTest {
+class PetriDishTest {
     
     @Test
-    public void shouldBuildValidPetriDish() {
+    void shouldBuildValidPetriDish() {
         PetriDish aPetriDish = PetriDishTestBuilder.aPetriDish()
             .withClosingMethod(ClosingMethod.SCREW_CAP_RING)
             .withDiameterMm(75)
@@ -26,7 +26,7 @@ public class PetriDishTest {
     }
 
     @Test
-    public void shouldThrowException_WhenDivNumberIsInvalid() {
+    void shouldThrowException_WhenDivNumberIsInvalid() {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             PetriDishTestBuilder.aPetriDish().withDivNum(0).build();
         });
@@ -41,7 +41,7 @@ public class PetriDishTest {
     }
 
     @Test
-    public void shouldThrowException_WhenPhysicalDimensionsIsInvalid() {
+    void shouldThrowException_WhenPhysicalDimensionsIsInvalid() {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             PetriDishTestBuilder.aPetriDish().withDiameterMm(0).withHeightMm(0).build();
         });
@@ -56,7 +56,7 @@ public class PetriDishTest {
     }
 
     @Test
-    public void shouldCalculateNominalCapacityCorrectly() {
+    void shouldCalculateNominalCapacityCorrectly() {
         PetriDish aPetri = PetriDishTestBuilder.aPetriDish()
             .withDiameterMm(100)
             .withHeightMm(10)
@@ -73,7 +73,7 @@ public class PetriDishTest {
     }
 
     @Test
-    public void shouldCalculateSurfaceArePerDivCorrectly() {
+    void shouldCalculateSurfaceArePerDivCorrectly() {
         double delta = 0.01;
         String message = "The calculated area should be in margin of error (0.01)";
 
@@ -107,7 +107,7 @@ public class PetriDishTest {
     }
 
     @Test
-    public void shouldThrowException_WhenCalculatesSurfaceAreaPerDiv_GivenDiameterOrDivNumIsInvalid() {
+    void shouldThrowException_WhenCalculatesSurfaceAreaPerDiv_GivenDiameterOrDivNumIsInvalid() {
         InvalidProductAttributeException divException = assertThrows(InvalidProductAttributeException.class, () -> {
             PetriDish.calculateSurfaceAreaPerDiv(100, 0);
         });

@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LabCoatTest {
+class LabCoatTest {
     
     @Test
-    public void shouldBuildValidLabCoat() {
+    void shouldBuildValidLabCoat() {
         LabCoat labCoat = LabCoatTestBuilder.aLabCoat()
             .withCollarType(CollarType.HIGH_NECK)
             .withGrammage(30)
@@ -28,7 +28,7 @@ public class LabCoatTest {
     }
 
     @Test
-    public void shouldThrowException_WhenGrammageIsInvalid() {
+    void shouldThrowException_WhenGrammageIsInvalid() {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             LabCoatTestBuilder.aLabCoat().withGrammage(19).build();
         });

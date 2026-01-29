@@ -27,11 +27,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class SkuTest {
+class SkuTest {
 
     @Test
     @BeforeAll
-    public void shouldThrowException_WhenProductIsInvalid() {
+    void shouldThrowException_WhenProductIsInvalid() {
         SkuGenerationException skuException = assertThrows(SkuGenerationException.class, () -> {
             DummyProduct.builder().build().getSku();
         });
@@ -46,7 +46,7 @@ public class SkuTest {
     }
     
     @Test
-    public void shouldGenerateSkuCorrectly_WhenProductIsASanitizer() {
+    void shouldGenerateSkuCorrectly_WhenProductIsASanitizer() {
         Sanitizer sanitizerAmmonium = SanitizerTestBuilder.aSanitizer()
             .withQuantityPerPackage(5)
             .withMeasureUnit(MeasureUnit.L)
@@ -75,7 +75,7 @@ public class SkuTest {
     }
     
     @Test
-    public void shouldGenerateSkuCorrectly_WhenProductIsACultureMedia() {
+    void shouldGenerateSkuCorrectly_WhenProductIsACultureMedia() {
         CultureMedia cultureMedia = CultureMediaTestBuilder.aCultureMediaBuilder()
             .withPackagingType(PackagingType.BOX)
             .withQuantityPerPackage(50)
@@ -106,7 +106,7 @@ public class SkuTest {
     class WhenSubclassOfPpe  {
         
         @Test
-        public void shouldGenerateSkuCorrectly_WhenProductIsAGlove() {
+        void shouldGenerateSkuCorrectly_WhenProductIsAGlove() {
             Glove glove = GloveTestBuilder.aGlove()
                 .withMaterial(GloveMaterial.NITRILE)
                 .withLongBarrel(false)
@@ -125,7 +125,7 @@ public class SkuTest {
         }
 
         @Test
-        public void shouldGenerateSkuCorrectly_WhenProductIsAFaceProtection() {
+        void shouldGenerateSkuCorrectly_WhenProductIsAFaceProtection() {
             FaceProtection goggles = FaceProtectionTestBuilder.aFaceProtection()
                 .withAntiFog(false)
                 .withType(ProtectionType.GOGGLES)
@@ -152,7 +152,7 @@ public class SkuTest {
         }
         
         @Test
-        public void shouldGenerateSkuCorrectly_WhenProductIsALabCoat() {
+        void shouldGenerateSkuCorrectly_WhenProductIsALabCoat() {
             LabCoat labCoat = LabCoatTestBuilder.aLabCoat()
                 .withGrammage(40)
                 .withFabricType(FabricType.POLYPROPYLENE)
@@ -170,7 +170,7 @@ public class SkuTest {
 
         @Test
         @BeforeAll
-        public void shouldThrowException_WhenProductIsAUnknowSubclass() {
+        void shouldThrowException_WhenProductIsAUnknowSubclass() {
             SkuGenerationException skuException = assertThrows(SkuGenerationException.class, () -> {
                 DummyPpe.builder().build().getSku();
             });
@@ -184,7 +184,7 @@ public class SkuTest {
     class WhenSampleContainer {
         
         @Test
-        public void shouldGenerateSkuCorrectly_WhenProductIsASampleBag() {
+        void shouldGenerateSkuCorrectly_WhenProductIsASampleBag() {
             SampleBag sampleBag = SampleBagTestBuilder.aSampleBag()
                 .withCapacityMilliLiters(200)
                 .withFilter(FilterType.FULL_PAGE)
@@ -207,7 +207,7 @@ public class SkuTest {
         }
         
         @Test
-        public void shouldGenerateSkuCorrectly_WhenProductIsAPetriDish() {
+        void shouldGenerateSkuCorrectly_WhenProductIsAPetriDish() {
             PetriDish petriDish = PetriDishTestBuilder.aPetriDish()
                 .withDiameterMm(90)
                 .withHeightMm(15)
@@ -226,7 +226,7 @@ public class SkuTest {
         }
         
         @Test
-        public void shouldGenerateSkuCorrectly_WhenProductIsATestTube() {
+        void shouldGenerateSkuCorrectly_WhenProductIsATestTube() {
             TestTube testTube = TestTubeTestBuilder.aTestTube()
                 .withMaterial(Material.PC)
                 .withBottomType(BottomType.ROUND)
@@ -249,7 +249,7 @@ public class SkuTest {
         
         @Test
         @BeforeAll
-        public void shouldThrowException_WhenProductIsAUnknowSubclass() {
+        void shouldThrowException_WhenProductIsAUnknowSubclass() {
             SkuGenerationException skuException = assertThrows(SkuGenerationException.class, () -> {
                 DummySampleContainer.builder().build().getSku();
             });

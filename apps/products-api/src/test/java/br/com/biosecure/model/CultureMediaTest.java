@@ -12,10 +12,10 @@ import java.util.OptionalDouble;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CultureMediaTest {
+class CultureMediaTest {
     
     @Test
-    public void shouldBuildValidCultureMedia() {
+    void shouldBuildValidCultureMedia() {
         CultureMedia aCultureMedia = CultureMediaTestBuilder.aCultureMediaBuilder()
             .withFinality(CultureMediaFinality.CHROMOGENIC)
             .withPresentationForm(Presentation.PREPARED_LIQUID_BOTTLE)
@@ -37,7 +37,7 @@ public class CultureMediaTest {
     }
 
     @Test
-    public void shouldThrowException_WhenPhLevelIsInvalid() {
+    void shouldThrowException_WhenPhLevelIsInvalid() {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             CultureMediaTestBuilder.aCultureMediaBuilder().withFinalPhLevel(-1).build();
         });
@@ -51,7 +51,7 @@ public class CultureMediaTest {
     }
 
     @Test
-    public void shouldThrowException_WhenPresentationAndQuantificationUnitIsIncoherent() {
+    void shouldThrowException_WhenPresentationAndQuantificationUnitIsIncoherent() {
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
             CultureMediaTestBuilder.aCultureMediaBuilder()
                 .withPresentationForm(Presentation.DEHYDRATED_POWDER_BOTTLE)
@@ -72,7 +72,7 @@ public class CultureMediaTest {
     }
 
     @Test
-    public void shouldThrowException_WhenBioSafetyRulesIsViolated() {
+    void shouldThrowException_WhenBioSafetyRulesIsViolated() {
         BioSecurityException exception = assertThrows(BioSecurityException.class, () -> {
             CultureMediaTestBuilder.aCultureMediaBuilder()
                 .withPresentationForm(Presentation.PREPARED_LIQUID_TUBE)
@@ -101,7 +101,7 @@ public class CultureMediaTest {
     }
 
     @Test
-    public void shouldValidateCorrectly_WhenQuantityPreparationIsNecessary() {
+    void shouldValidateCorrectly_WhenQuantityPreparationIsNecessary() {
         CultureMedia needsQuantityPrep = CultureMediaTestBuilder.aCultureMediaBuilder()
             .withPresentationForm(Presentation.DEHYDRATED_POWDER_BOTTLE)
             .withQuantificationUnit(QuantificationUnit.MG)
@@ -121,7 +121,7 @@ public class CultureMediaTest {
     }
     
     @Test
-    public void shouldRejectInvalidValues_WhenQuantityPreparationIsNecessary() {
+    void shouldRejectInvalidValues_WhenQuantityPreparationIsNecessary() {
         String expected = "quantity for preparation (g/L)";
 
         InvalidProductAttributeException exception = assertThrows(InvalidProductAttributeException.class, () -> {
