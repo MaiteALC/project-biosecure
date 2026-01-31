@@ -6,10 +6,8 @@ import br.com.biosecure.utils.ErrorAggregator;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -48,6 +46,8 @@ public class TestTube extends SampleContainer {
         return new TestTubeBuilder();
     }
 
+    @Setter
+    @Accessors(fluent = true,  chain = true)
     public static final class TestTubeBuilder extends SampleContainerBuilder<TestTube, TestTubeBuilder> {
         private int maxRCF;
         private BottomType bottomType;
@@ -58,36 +58,6 @@ public class TestTube extends SampleContainer {
 
         @Override
         protected TestTubeBuilder self() {
-            return this;
-        }
-
-        public TestTubeBuilder maxRCF(int maxRCF) {
-            this.maxRCF = maxRCF;
-            return this;
-        }
-
-        public TestTubeBuilder bottomType(BottomType bottomType) {
-            this.bottomType = bottomType;
-            return this;
-        }
-
-        public TestTubeBuilder graduated(boolean graduated) {
-            this.graduated = graduated;
-            return this;
-        }
-
-        public TestTubeBuilder capColor(CapColor capColor) {
-            this.capColor = capColor;
-            return this;
-        }
-
-        public TestTubeBuilder diameterMm(double diameterMm) {
-            this.diameterMm = diameterMm;
-            return this;
-        }
-
-        public TestTubeBuilder heightMm(double heightMm) {
-            this.heightMm = heightMm;
             return this;
         }
 

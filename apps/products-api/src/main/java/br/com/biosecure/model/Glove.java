@@ -4,10 +4,8 @@ import br.com.biosecure.utils.NumberUtils;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,6 +32,8 @@ public class Glove extends PPE {
         return new GloveBuilder();
     }
 
+    @Setter
+    @Accessors(fluent = true, chain = true)
     public static final class GloveBuilder extends PpeBuilder<Glove, GloveBuilder> {
         private boolean powderFree;
         private boolean longBarrel;
@@ -43,31 +43,6 @@ public class Glove extends PPE {
 
         @Override
         protected GloveBuilder self() {
-            return this;
-        }
-
-        public GloveBuilder powderFree(boolean powderFree) {
-            this.powderFree = powderFree;
-            return this;
-        }
-
-        public GloveBuilder longBarrel(boolean longBarrel) {
-            this.longBarrel = longBarrel;
-            return this;
-        }
-
-        public GloveBuilder material(GloveMaterial material) {
-            this.material = material;
-            return this;
-        }
-
-        public GloveBuilder textured(boolean textured) {
-            this.textured = textured;
-            return this;
-        }
-
-        public GloveBuilder thicknessMils(double thicknessMils) {
-            this.thicknessMils = thicknessMils;
             return this;
         }
 

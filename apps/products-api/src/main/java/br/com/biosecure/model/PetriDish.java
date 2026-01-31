@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -36,6 +38,8 @@ public class PetriDish extends SampleContainer {
         return new PetriDishBuilder();
     }
 
+    @Setter
+    @Accessors(fluent = true, chain = true)
     public static final class PetriDishBuilder extends SampleContainerBuilder<PetriDish, PetriDishBuilder> {
         private int divisionsNumber;
         private boolean grid;
@@ -45,31 +49,6 @@ public class PetriDish extends SampleContainer {
 
         @Override
         protected PetriDishBuilder self() {
-            return this;
-        }
-
-        public PetriDishBuilder divisionsNumber(int divisionsNumber) {
-            this.divisionsNumber = divisionsNumber;
-            return this;
-        }
-
-        public PetriDishBuilder grid(boolean grid) {
-            this.grid = grid;
-            return this;
-        }
-
-        public PetriDishBuilder ventilated(boolean ventilated) {
-            this.ventilated = ventilated;
-            return this;
-        }
-
-        public PetriDishBuilder diameterMm(double diameterMm) {
-            this.diameterMm = diameterMm;
-            return this;
-        }
-
-        public PetriDishBuilder heightMm(double heightMm) {
-            this.heightMm = heightMm;
             return this;
         }
 

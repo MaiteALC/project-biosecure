@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class LabCoat extends PPE {
         return new LabCoatBuilder();
     }
 
+    @Setter
+    @Accessors(fluent = true, chain = true)
     public static final class LabCoatBuilder extends PpeBuilder<LabCoat, LabCoatBuilder> {
         private FabricType fabricType;
         private int grammage;
@@ -42,26 +45,6 @@ public class LabCoat extends PPE {
 
         @Override
         protected LabCoatBuilder self() {
-            return this;
-        }
-
-        public  LabCoatBuilder fabricType(FabricType fabricType) {
-            this.fabricType = fabricType;
-            return this;
-        }
-
-        public  LabCoatBuilder grammage(int grammage) {
-            this.grammage = grammage;
-            return this;
-        }
-
-        public  LabCoatBuilder cuffStyle(CuffStyle cuffStyle) {
-            this.cuffStyle = cuffStyle;
-            return this;
-        }
-
-        public  LabCoatBuilder collarType(CollarType collarType) {
-            this.collarType = collarType;
             return this;
         }
 

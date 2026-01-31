@@ -6,10 +6,8 @@ import br.com.biosecure.utils.ErrorAggregator;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +33,7 @@ public class CultureMedia extends Product {
     private CultureMedia(CultureMediaBuilder builder) {
         super(builder);
 
-        this.finality = builder.finality;
+        this.finality = builder.cultureMediaFinality;
         this.storageConditions = builder.storageConditions;
         this.presentation = builder.presentation;
         this.protectOfLight = builder.protectOfLight;
@@ -49,8 +47,10 @@ public class CultureMedia extends Product {
         return new CultureMediaBuilder();
     }
 
+    @Setter
+    @Accessors(fluent = true, chain = true)
     public static class CultureMediaBuilder extends ProductBuilder<CultureMedia, CultureMediaBuilder> {
-        private CultureMediaFinality finality;
+        private CultureMediaFinality cultureMediaFinality;
         private StorageConditions storageConditions;
         private Presentation presentation;
         private boolean protectOfLight;
@@ -64,52 +64,12 @@ public class CultureMedia extends Product {
             return this;
         }
 
-        public CultureMediaBuilder cultureMediaFinality(CultureMediaFinality finality) {
-            this.finality = finality;
-            return this;
-        }
-
-        public CultureMediaBuilder storageConditions(StorageConditions storageConditions) {
-            this.storageConditions = storageConditions;
-            return this;
-        }
-
-        public CultureMediaBuilder presentation(Presentation presentation) {
-            this.presentation = presentation;
-            return this;
-        }
-
-        public CultureMediaBuilder protectOfLight(boolean protectOfLight) {
-            this.protectOfLight = protectOfLight;
-            return this;
-        }
-
-        public CultureMediaBuilder preparationGramsPerLiter(OptionalDouble preparationGramsPerLiter) {
-            this.preparationGramsPerLiter = preparationGramsPerLiter;
-            return this;
-        }
-
-        public CultureMediaBuilder finalPhLevel(double finalPhLevel) {
-            this.finalPhLevel = finalPhLevel;
-            return this;
-        }
-
-        public CultureMediaBuilder quantityPerUnit(double quantityPerUnit) {
-            this.quantityPerUnit = quantityPerUnit;
-            return this;
-        }
-
-        public CultureMediaBuilder quantificationUnit(QuantificationUnit quantificationUnit) {
-            this.quantificationUnit = quantificationUnit;
-            return this;
-        }
-
         @Override
         public CultureMedia build() {
             ErrorAggregator.aggregateValidationExceptions(
                     List.of(
                             ErrorAggregator.verifyNull(storageConditions, "storageConditions"),
-                            ErrorAggregator.verifyNull(finality, "culture media finality"),
+                            ErrorAggregator.verifyNull(cultureMediaFinality, "culture media finality"),
                             ErrorAggregator.verifyNull(quantificationUnit, "quantification unit")
                     ),
                     productNotification

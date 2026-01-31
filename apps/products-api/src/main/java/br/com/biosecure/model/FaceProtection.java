@@ -4,10 +4,8 @@ import br.com.biosecure.utils.StringUtils;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +30,8 @@ public class FaceProtection extends PPE {
         return new FaceProtectionBuilder();
     }
 
+    @Setter
+    @Accessors(fluent = true, chain = true)
     public static final class FaceProtectionBuilder extends PpeBuilder<FaceProtection, FaceProtectionBuilder> {
         private ProtectionType protectionType;
         private String standardRating;
@@ -40,26 +40,6 @@ public class FaceProtection extends PPE {
 
         @Override
         protected FaceProtectionBuilder self() {
-            return this;
-        }
-
-        public FaceProtectionBuilder protectionType(ProtectionType protectionType) {
-            this.protectionType = protectionType;
-            return this;
-        }
-
-        public FaceProtectionBuilder standardRating(String standardRating) {
-            this.standardRating = standardRating;
-            return this;
-        }
-
-        public FaceProtectionBuilder hasValve(boolean hasValve) {
-            this.hasValve = hasValve;
-            return this;
-        }
-
-        public FaceProtectionBuilder antiFog(boolean antiFog) {
-            this.antiFog = antiFog;
             return this;
         }
 

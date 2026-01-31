@@ -4,10 +4,8 @@ import br.com.biosecure.utils.NumberUtils;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 
@@ -40,6 +38,8 @@ public class SampleBag extends SampleContainer {
         return new SampleBagBuilder();
     }
 
+    @Setter
+    @Accessors(fluent = true, chain = true)
     public static final class SampleBagBuilder extends SampleContainerBuilder<SampleBag, SampleBagBuilder> {
         private FilterType filter;
         private boolean identificationTag;
@@ -51,41 +51,6 @@ public class SampleBag extends SampleContainer {
 
         @Override
         protected SampleBagBuilder self() {
-            return this;
-        }
-
-        public SampleBagBuilder filter(FilterType filter) {
-            this.filter = filter;
-            return this;
-        }
-
-        public SampleBagBuilder identificationTag(boolean identificationTag) {
-            this.identificationTag = identificationTag;
-            return this;
-        }
-
-        public SampleBagBuilder standUp(boolean standUp) {
-            this.standUp = standUp;
-            return this;
-        }
-
-        public SampleBagBuilder thicknessMm(double thicknessMm) {
-            this.thicknessMm = thicknessMm;
-            return this;
-        }
-
-        public SampleBagBuilder widthMm(double widthMm) {
-            this.widthMm = widthMm;
-            return this;
-        }
-
-        public SampleBagBuilder heightMm(double heightMm) {
-            this.heightMm = heightMm;
-            return this;
-        }
-
-        public SampleBagBuilder capacityMilliLiters(double capacityMilliLiters) {
-            this.capacityMilliLiters = capacityMilliLiters;
             return this;
         }
 

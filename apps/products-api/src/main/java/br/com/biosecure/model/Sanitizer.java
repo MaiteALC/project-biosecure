@@ -5,6 +5,7 @@ import br.com.biosecure.utils.NumberUtils;
 import br.com.biosecure.utils.StringUtils;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class Sanitizer extends Product {
         return new SanitizerBuilder();
     }
 
+    @Setter
+    @Accessors(fluent = true, chain = true)
     public static final class SanitizerBuilder extends ProductBuilder<Sanitizer, SanitizerBuilder> {
         private List<Ingredient> composition;
         private PhysicalForm physicalForm;
@@ -56,51 +59,6 @@ public class Sanitizer extends Product {
 
         @Override
         protected SanitizerBuilder self() {
-            return this;
-        }
-
-        public SanitizerBuilder composition(List<Ingredient> composition) {
-            this.composition = composition;
-            return this;
-        }
-
-        public SanitizerBuilder registryNumber(String registryNumber) {
-            this.registryNumber = registryNumber;
-            return this;
-        }
-
-        public SanitizerBuilder physicalForm(PhysicalForm physicalForm) {
-            this.physicalForm = physicalForm;
-            return this;
-        }
-
-        public SanitizerBuilder useIndications(String useIndications) {
-            this.useIndications = useIndications;
-            return this;
-        }
-
-        public SanitizerBuilder phLevel(double phLevel) {
-            this.phLevel = phLevel;
-            return this;
-        }
-
-        public SanitizerBuilder flammable(boolean flammable) {
-            this.flammable = flammable;
-            return this;
-        }
-
-        public SanitizerBuilder densityGramsPerMilliLiter(double densityGramsPerMilliLiter) {
-            this.densityGramsPerMilliLiter = densityGramsPerMilliLiter;
-            return this;
-        }
-
-        public SanitizerBuilder mainChemicalFamily(Ingredient.ChemicalFamily mainChemicalFamily) {
-            this.mainChemicalFamily = mainChemicalFamily;
-            return this;
-        }
-
-        public SanitizerBuilder requiresDilution(boolean requiresDilution) {
-            this.requiresDilution = requiresDilution;
             return this;
         }
 
