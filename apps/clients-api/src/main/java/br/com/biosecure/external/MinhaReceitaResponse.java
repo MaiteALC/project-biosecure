@@ -1,4 +1,4 @@
-package br.com.biosecure.infrastructure;
+package br.com.biosecure.external;
 
 import br.com.biosecure.model.Cnae;
 import br.com.biosecure.model.Cnpj;
