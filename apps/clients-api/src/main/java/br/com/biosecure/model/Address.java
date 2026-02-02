@@ -3,10 +3,16 @@ package br.com.biosecure.model;
 import br.com.biosecure.utils.NumberUtils;
 import br.com.biosecure.utils.StringUtils;
 import br.com.biosecure.utils.NotificationContext;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.regex.Pattern;
 
+@Entity
+@Table(name = "TB_CLIENTS_ADDRESSES")
+@NoArgsConstructor
 @Getter
 public class Address {
     String state;
@@ -16,6 +22,11 @@ public class Address {
     int number;
     String postalCode;
     boolean deliveryAddress;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "client-id")
+    @Setter
+    private Client client;
 
     private static final Pattern POSTAL_CODE_REGEX = Pattern.compile("^[0-9]{5}-?[0-9]{3}$");
 

@@ -2,19 +2,31 @@ package br.com.biosecure.model;
 
 import br.com.biosecure.utils.NotificationContext;
 import br.com.biosecure.utils.NumberUtils;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "TB_CLIENTS_FINANCIAL_DATA")
+@NoArgsConstructor
 @Getter
 public class FinancialData {
-    private final LocalDate startDateActivities;
-    private final Cnae cnae;
-    private final Cnpj cnpj;
+    private LocalDate startDateActivities;
+    private Cnae cnae;
+    private Cnpj cnpj;
     private BigDecimal shareCapital;
     private BigDecimal totalCredit;
     private BigDecimal utilizedCredit = BigDecimal.ZERO;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id")
+    @Setter
+    private Client client;
 
     public FinancialData(LocalDate startDateActivities, Cnae cnae, Cnpj cnpj, String registrationStatus, BigDecimal shareCapital) {
         validateInstantiationRules(shareCapital, cnpj, cnae, startDateActivities, registrationStatus);

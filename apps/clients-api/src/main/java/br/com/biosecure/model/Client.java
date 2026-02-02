@@ -3,20 +3,30 @@ package br.com.biosecure.model;
 import br.com.biosecure.utils.NotificationContext;
 import br.com.biosecure.utils.StringUtils;
 import br.com.biosecure.utils.ErrorAggregator;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
+@Table(name = "TB_CLIENTS")
+@NoArgsConstructor
 @Getter
 public class  Client {
     private String corporateName;
-    private final UUID id;
-    private final Cnpj cnpj;
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    @Embedded
+    private Cnpj cnpj;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
     private String email;
-    private final FinancialData financialData;
-    private final LocalDateTime registrationDate;
+    @OneToOne(cascade = CascadeType.ALL)
+    private FinancialData financialData;
+    private LocalDateTime registrationDate;
 
     private static final  int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 55;

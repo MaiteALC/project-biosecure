@@ -31,12 +31,12 @@ class CnpjTest {
     void mustValidateCnpjWithSuccess() {
         Cnpj valid = new Cnpj("60.316.817/0001-03");
 
-        assertEquals("60316817000103", valid.getNumber());
+        assertEquals("60316817000103", valid.getUnformattedNumber());
         assertEquals("60.316.817/0001-03", valid.getFormattedNumber());
 
         Cnpj valid2 = new Cnpj("69804101000111");
 
-        assertEquals("69804101000111", valid2.getNumber());
+        assertEquals("69804101000111", valid2.getUnformattedNumber());
         assertEquals("69.804.101/0001-11", valid2.getFormattedNumber());
     }
 }

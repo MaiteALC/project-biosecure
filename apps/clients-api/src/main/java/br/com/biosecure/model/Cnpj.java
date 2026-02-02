@@ -1,28 +1,35 @@
 package br.com.biosecure.model;
 
+import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.regex.Pattern;
 
+@Embeddable
+@NoArgsConstructor
+@Getter
 public class Cnpj {
-    private final String number; 
-    private final String formattedNumber;
+    private String unformattedNumber;
+    private String formattedNumber;
 
     private static final int SIZE_UNFORMATTED = 14;
     private static final Pattern CNPJ_REGEX = Pattern.compile("^[0-9]{2}\\.?[0-9]{3}\\.?[0-9]{3}/?[0-9]{4}-?[0-9]{2}$");
 
-    public Cnpj(String number) {
-        if (number == null || number.isBlank()) {
+    public Cnpj(String unformattedNumber) {
+        if (unformattedNumber == null || unformattedNumber.isBlank()) {
             throw new InvalidCnpjException("CNPJ number is null/blank");
         }
 
-        if (!CNPJ_REGEX.matcher(number).matches()) {
+        if (!CNPJ_REGEX.matcher(unformattedNumber).matches()) {
             throw new InvalidCnpjException("CNPJ with invalid format");
         }
 
-        String cleanNumber = clearFormat(number);
+        String cleanNumber = clearFormat(unformattedNumber);
 
         validateVerifierDigits(cleanNumber);
 
-        this.number = cleanNumber;
+        this.unformattedNumber = cleanNumber;
         this.formattedNumber = formatCnpj(cleanNumber);
     }
 
@@ -105,14 +112,6 @@ public class Cnpj {
 
         Cnpj other = (Cnpj) obj;
 
-        return number.equals(other.number);
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public String getFormattedNumber() {
-        return formattedNumber;
+        return unformattedNumber.equals(other.unformattedNumber);
     }
 }
