@@ -13,7 +13,7 @@ public class  Client {
     private String corporateName;
     private final UUID id;
     private final Cnpj cnpj;
-    private Address address;
+    private List<Address> addresses;
     private String email;
     private final FinancialData financialData;
     private final LocalDateTime registrationDate;
@@ -21,33 +21,31 @@ public class  Client {
     private static final  int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 55;
     
-    public Client(String corporateName, Cnpj cnpj, Address address, String email, FinancialData financialData) {
-        validateInstantiationRules(corporateName, email, cnpj,  address, financialData);
+    public Client(String corporateName, Cnpj cnpj, List<Address> addresses, String email, FinancialData financialData) {
+        validateInstantiationRules(corporateName, email, cnpj, addresses, financialData);
 
         this.corporateName = corporateName;
         this.cnpj = cnpj;
         this.id = UUID.randomUUID();
-        this.address = address;
+        this.addresses = addresses;
         this.email = email;
         this.financialData = financialData;
         this.registrationDate = LocalDateTime.now();
     }
 
-    private static void validateInstantiationRules(String corporateName, String email, Cnpj cnpj, Address address, FinancialData financialData) {
+    private static void validateInstantiationRules(String corporateName, String email, Cnpj cnpj, List<Address> addresses, FinancialData financialData) {
         NotificationContext notificationContext = new NotificationContext();
 
         StringUtils.validateString(corporateName, MIN_NAME_LENGTH, "name", MAX_NAME_LENGTH, true, notificationContext);
 
         StringUtils.validateCorporateEmail(email, notificationContext);
 
-        ErrorAggregator.aggregateValidationExceptions(
-                List.of(
-                        ErrorAggregator.verifyNull(financialData, "financial data"),
-                        ErrorAggregator.verifyNull(cnpj, "CNPJ"),
-                        ErrorAggregator.verifyNull(address, "address")
-                ),
-                notificationContext
-        );
+        if (addresses == null || addresses.isEmpty()) {
+            notificationContext.addError("addresses", "at least one address is required");
+        }
+
+        ErrorAggregator.verifyNull(financialData, "financial data", notificationContext);
+        ErrorAggregator.verifyNull(cnpj, "CNPJ", notificationContext);
 
         if (notificationContext.hasErrors()) {
             throw new InvalidClientAttributeException(notificationContext.getErrors());
@@ -76,7 +74,7 @@ public class  Client {
                 .append(", CNPJ=").append(cnpj)
                 .append(", email=").append(email)
                 .append(", registrationDate=").append(registrationDate)
-                .append(", ").append(address.toString())
+                .append(", ").append(addresses.toString())
                 .append(", ").append(financialData.toString())
                 .append(']').toString();
     }
@@ -92,6 +90,7 @@ public class  Client {
 
         this.corporateName = newName;
     }
+
     public void setEmail(String newEmail) {
         NotificationContext notificationContext = new NotificationContext();
 
@@ -104,11 +103,19 @@ public class  Client {
         this.email = newEmail;
     }
 
-    public void setAddress(Address newAddress) {
+    public void addAddress(Address newAddress) {
         if (newAddress == null) {
             throw new  NullPointerException("address mustn't be null");
         }
 
-        this.address = newAddress;
+        this.addresses.add(newAddress);
+    }
+
+    public void addAddresses(List<Address> newAddresses) {
+        if (newAddresses == null || newAddresses.isEmpty()) {
+            throw new IllegalArgumentException("at least one address is required");
+        }
+
+        this.addresses.addAll(newAddresses);
     }
 }
