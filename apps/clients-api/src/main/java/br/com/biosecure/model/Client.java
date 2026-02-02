@@ -6,6 +6,8 @@ import br.com.biosecure.utils.ErrorAggregator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,10 +32,8 @@ public class  Client {
 
     private static final  int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 55;
-    
-    public Client(String corporateName, Cnpj cnpj, List<Address> addresses, String email, FinancialData financialData) {
-        validateInstantiationRules(corporateName, email, cnpj, addresses, financialData);
 
+    private Client(String corporateName, Cnpj cnpj, List<Address> addresses, String email, FinancialData financialData) {
         this.corporateName = corporateName;
         this.cnpj = cnpj;
         this.id = UUID.randomUUID();
@@ -41,6 +41,30 @@ public class  Client {
         this.email = email;
         this.financialData = financialData;
         this.registrationDate = LocalDateTime.now();
+    }
+
+    public static ClientBuilder builder() {
+        return new ClientBuilder();
+    }
+
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    public static final class ClientBuilder {
+        private String corporateName;
+        private Cnpj cnpj;
+        private List<Address> addresses;
+        private String email;
+        private FinancialData financialData;
+
+        public Client build() {
+            validateInstantiationRules(corporateName, email, cnpj, addresses, financialData);
+
+            Client client = new Client(corporateName, cnpj, addresses, email, financialData);
+
+            financialData.setClient(client);
+
+            return client;
+        }
     }
 
     private static void validateInstantiationRules(String corporateName, String email, Cnpj cnpj, List<Address> addresses, FinancialData financialData) {

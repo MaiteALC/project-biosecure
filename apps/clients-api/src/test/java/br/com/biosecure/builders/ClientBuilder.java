@@ -49,6 +49,12 @@ public class ClientBuilder {
     }
 
     public Client build() {
-        return new Client(corporateName, cnpj, address, email, financialData);
+        return Client.builder()
+                .corporateName(corporateName)
+                .cnpj(cnpj)
+                .addresses(address)
+                .email(email)
+                .financialData(financialData)
+                .build();
     }
 }
