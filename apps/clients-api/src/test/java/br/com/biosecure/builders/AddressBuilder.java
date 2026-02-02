@@ -8,7 +8,8 @@ public class AddressBuilder {
     private String neighborhood = "random neighborhood name";
     private String street = "random street name";
     private int number = 549;
-    private String postalCode = "12345-67";
+    private String postalCode = "12345-067";
+    private boolean deliveryAddress = true;
 
     public AddressBuilder withState(String state) {
         this.state = state;
@@ -40,11 +41,16 @@ public class AddressBuilder {
         return this;
     }
 
+    public AddressBuilder withDeliveryAddress(boolean deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+        return this;
+    }
+
     public static AddressBuilder anAddress() {
         return new AddressBuilder();
     }
 
     public Address build() {
-        return new Address(state, city, neighborhood, street, number, postalCode);
+        return new Address(state, city, neighborhood, street, number, postalCode, deliveryAddress);
     }
 }

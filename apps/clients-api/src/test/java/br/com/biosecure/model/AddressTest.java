@@ -20,7 +20,7 @@ class AddressTest {
                 .withNeighborhood("7º arrondissement")
                 .withStreet("5 Avenue Anatole France")
                 .withNumber(75007)
-                .withPostalCode("21831-24") // random number. Paris don't have postal codes in same format than Brazil
+                .withPostalCode("21831-024") // random number. Paris don't have postal codes in same format than Brazil
                 .build();
 
         System.out.println(eifelTower);
