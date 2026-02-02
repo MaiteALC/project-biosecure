@@ -94,7 +94,13 @@ public class Sanitizer extends Product {
                 throw new InvalidProductAttributeException(productNotification.getErrors());
             }
 
-            return new Sanitizer(this);
+            Sanitizer sanitizer = new Sanitizer(this);
+
+            for (Ingredient ingredient : sanitizer.getComposition()) {
+                ingredient.setSanitizer(sanitizer);
+            }
+
+            return sanitizer;
         }
     }
 

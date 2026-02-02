@@ -4,10 +4,8 @@ import br.com.biosecure.utils.NumberUtils;
 import br.com.biosecure.utils.StringUtils;
 import br.com.biosecure.utils.NotificationContext;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.util.regex.Pattern;
 
 @Entity
@@ -28,6 +26,7 @@ public class Ingredient {
 
     @ManyToOne
     @JoinColumn(name = "sanitizer_id")
+    @Setter
     private Sanitizer sanitizer;
 
     public Ingredient(String name, String casNumber, ChemicalFamily chemicalFamily, double concentrationPercentual, IngredientType type) {
