@@ -8,10 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
-@Entity
-@Table(name = "TB_CLIENTS_ADDRESSES")
+@Embeddable
 @NoArgsConstructor
 @Getter
 public class Address {
@@ -78,5 +78,22 @@ public class Address {
                 .append(", number=").append(number)
                 .append(", postalCode=").append(postalCode)
                 .append(']').toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Address other = (Address) obj;
+
+        return this.postalCode.equals(other.postalCode) &&
+                this.street.equals(other.street) &&
+                this.number == other.number;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(state, city, neighborhood, street, number, postalCode, deliveryAddress);
     }
 }

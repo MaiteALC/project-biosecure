@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -23,8 +24,12 @@ public class  Client {
     private UUID id;
     @Embedded
     private Cnpj cnpj;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Address> addresses;
+    @ElementCollection
+    @CollectionTable(
+            name = "CLIENTS_ADDRESSES",
+            joinColumns = @JoinColumn(name = "client_id")
+    )
+    private Set<Address> addresses;
     private String email;
     @OneToOne(cascade = CascadeType.ALL)
     private FinancialData financialData;
@@ -33,7 +38,7 @@ public class  Client {
     private static final  int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 55;
 
-    private Client(String corporateName, Cnpj cnpj, List<Address> addresses, String email, FinancialData financialData) {
+    private Client(String corporateName, Cnpj cnpj, Set<Address> addresses, String email, FinancialData financialData) {
         this.corporateName = corporateName;
         this.cnpj = cnpj;
         this.id = UUID.randomUUID();
@@ -52,7 +57,7 @@ public class  Client {
     public static final class ClientBuilder {
         private String corporateName;
         private Cnpj cnpj;
-        private List<Address> addresses;
+        private Set<Address> addresses;
         private String email;
         private FinancialData financialData;
 

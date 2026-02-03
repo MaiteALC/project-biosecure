@@ -3,15 +3,14 @@ package br.com.biosecure.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import br.com.biosecure.builders.AddressBuilder;
 import br.com.biosecure.builders.ClientBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 class ClientTest {
 
@@ -39,7 +38,7 @@ class ClientTest {
 
     @Test
     void shouldThrowException_WhenAddressIsInvalid() {
-        List<Address> addresses = new ArrayList<>();
+        Set<Address> addresses = new HashSet<>();
 
         InvalidClientAttributeException exception = assertThrows(InvalidClientAttributeException.class, () -> ClientBuilder.aClient()
                 .withAddress(addresses)
