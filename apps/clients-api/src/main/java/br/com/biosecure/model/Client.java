@@ -23,6 +23,7 @@ public class  Client {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Embedded
+    @AttributeOverride(name = "formattedNumber", column = @Column(name = "cnpj_number"))
     private Cnpj cnpj;
     @ElementCollection
     @CollectionTable(

@@ -1,6 +1,7 @@
 package br.com.biosecure.model;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.regex.Pattern;
 @NoArgsConstructor
 @Getter
 public class Cnpj {
+    @Transient
     private String unformattedNumber;
     private String formattedNumber;
 
