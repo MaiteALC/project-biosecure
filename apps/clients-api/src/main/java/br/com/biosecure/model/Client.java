@@ -57,35 +57,31 @@ public class  Client {
         private FinancialData financialData;
 
         public Client build() {
-            validateInstantiationRules(corporateName, email, cnpj, addresses, financialData);
+            NotificationContext clientNotification = new NotificationContext();
+
+            StringUtils.validateString(corporateName, MIN_NAME_LENGTH, "name", MAX_NAME_LENGTH, true, clientNotification);
+
+            StringUtils.validateCorporateEmail(email, clientNotification);
+
+            if (addresses == null || addresses.isEmpty()) {
+                clientNotification.addError("addresses", "at least one address is required");
+            }
+
+            ErrorAggregator.verifyNull(financialData, "financial data", clientNotification);
+            ErrorAggregator.verifyNull(cnpj, "CNPJ", clientNotification);
+
+            if (clientNotification.hasErrors()) {
+                throw new InvalidClientAttributeException(clientNotification.getErrors());
+            }
 
             Client client = new Client(corporateName, cnpj, addresses, email, financialData);
 
-            financialData.setClient(client);
+            client.getFinancialData().setClient(client);
 
             return client;
         }
     }
 
-    private static void validateInstantiationRules(String corporateName, String email, Cnpj cnpj, List<Address> addresses, FinancialData financialData) {
-        NotificationContext notificationContext = new NotificationContext();
-
-        StringUtils.validateString(corporateName, MIN_NAME_LENGTH, "name", MAX_NAME_LENGTH, true, notificationContext);
-
-        StringUtils.validateCorporateEmail(email, notificationContext);
-
-        if (addresses == null || addresses.isEmpty()) {
-            notificationContext.addError("addresses", "at least one address is required");
-        }
-
-        ErrorAggregator.verifyNull(financialData, "financial data", notificationContext);
-        ErrorAggregator.verifyNull(cnpj, "CNPJ", notificationContext);
-
-        if (notificationContext.hasErrors()) {
-            throw new InvalidClientAttributeException(notificationContext.getErrors());
-        }
-    }
-    
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
