@@ -12,12 +12,16 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "TB_CLIENTS_FINANCIAL_DATA")
+@Table(name = "TB_CLIENT_FINANCIAL_DATA")
 @NoArgsConstructor
 @Getter
 public class FinancialData {
     private LocalDate startDateActivities;
+    @Embedded
+    @AttributeOverride(name = "formattedCode", column = @Column(name = "cnae_number"))
     private Cnae cnae;
+    @Embedded
+    @AttributeOverride(name = "formattedNumber", column = @Column(name = "cnpj_number"))
     private Cnpj cnpj;
     private BigDecimal shareCapital;
     private BigDecimal totalCredit;
