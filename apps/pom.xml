@@ -13,6 +13,7 @@
         <spring.boot.version>3.5.10</spring.boot.version>
         <junit.version>6.0.1</junit.version>
         <lombok.version>1.18.42</lombok.version>
+        <postgresql.version>42.7.7</postgresql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -64,6 +65,13 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+                <scope>runtime</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
