@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,9 +19,10 @@ import java.util.UUID;
 @Table(name = "TB_CLIENTS")
 @NoArgsConstructor
 @Getter
-public class  Client {
+public class Client {
     private String corporateName;
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    @Id @GeneratedValue
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
     private UUID id;
     @Embedded
     @AttributeOverride(name = "formattedNumber", column = @Column(name = "cnpj_number"))
@@ -42,7 +44,6 @@ public class  Client {
     private Client(String corporateName, Cnpj cnpj, Set<Address> addresses, String email, FinancialData financialData) {
         this.corporateName = corporateName;
         this.cnpj = cnpj;
-        this.id = UUID.randomUUID();
         this.addresses = addresses;
         this.email = email;
         this.financialData = financialData;
