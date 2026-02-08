@@ -34,7 +34,7 @@ public class Client {
     )
     private Set<Address> addresses;
     private String email;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private FinancialData financialData;
     private LocalDateTime registrationDate;
 

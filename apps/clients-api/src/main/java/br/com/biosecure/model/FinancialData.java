@@ -27,9 +27,10 @@ public class FinancialData {
     private BigDecimal totalCredit;
     private BigDecimal utilizedCredit = BigDecimal.ZERO;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     @Setter
+    @MapsId
     private Client client;
 
     public FinancialData(LocalDate startDateActivities, Cnae cnae, Cnpj cnpj, String registrationStatus, BigDecimal shareCapital) {
