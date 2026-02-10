@@ -7,7 +7,7 @@ public class AddressBuilder {
     private String city = "BH";
     private String neighborhood = "random neighborhood name";
     private String street = "random street name";
-    private int number = 549;
+    private String number = "549A";
     private String postalCode = "12345-067";
     private boolean deliveryAddress = true;
 
@@ -31,7 +31,7 @@ public class AddressBuilder {
         return this;
     }
 
-    public AddressBuilder withNumber(int number) {
+    public AddressBuilder withNumber(String number) {
         this.number = number;
         return this;
     }

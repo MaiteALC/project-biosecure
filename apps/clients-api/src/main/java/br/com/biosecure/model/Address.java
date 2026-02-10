@@ -1,8 +1,7 @@
 package br.com.biosecure.model;
 
-import br.com.biosecure.utils.NumberUtils;
-import br.com.biosecure.utils.StringUtils;
 import br.com.biosecure.utils.NotificationContext;
+import br.com.biosecure.utils.StringUtils;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,7 @@ public class Address {
     String city;
     String neighborhood;
     String street;
-    int number;
+    String number;
     String postalCode;
     boolean deliveryAddress;
 
@@ -30,7 +29,7 @@ public class Address {
 
     private static final Pattern POSTAL_CODE_REGEX = Pattern.compile("^[0-9]{5}-?[0-9]{3}$");
 
-    public Address(String state, String city, String neighborhood, String street, int number, String postalCode, boolean deliveryAddress) {
+    public Address(String state, String city, String neighborhood, String street, String number, String postalCode, boolean deliveryAddress) {
         validateInstantiationRules(state,  city, neighborhood, street, number, postalCode);
 
         this.state = state;
@@ -42,14 +41,14 @@ public class Address {
         this.deliveryAddress = deliveryAddress;
     }
 
-    private static void validateInstantiationRules(String state,  String city, String neighborhood, String street, int number, String postalCode) {
+    private static void validateInstantiationRules(String state,  String city, String neighborhood, String street, String number, String postalCode) {
         NotificationContext notification = new NotificationContext();
 
         if (!isValidPostalCode(postalCode)) {
             notification.addError("postal code", "postal code is null or in invalid format");
         }
 
-        NumberUtils.validateNumericalAttribute(number, 1, "number", 99999, notification);
+        StringUtils.validateString(number, "number", true, notification);
 
         StringUtils.validateString(state, 2, "state name", 96, false, notification);
 
@@ -89,7 +88,7 @@ public class Address {
 
         return this.postalCode.equals(other.postalCode) &&
                 this.street.equals(other.street) &&
-                this.number == other.number;
+                this.number.equals(other.number);
     }
 
     @Override
