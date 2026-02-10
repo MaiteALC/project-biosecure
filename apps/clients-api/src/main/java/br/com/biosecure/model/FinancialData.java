@@ -10,21 +10,37 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
-@Table(name = "financial_data")
+@Table(name = "client_financial_data", schema = "sales")
 @NoArgsConstructor
 @Getter
 public class FinancialData {
+
     private LocalDate activitiesStartDate;
+
     @Embedded
-    @AttributeOverride(name = "formattedCode", column = @Column(name = "cnae_number"))
+    @AttributeOverride(
+            name = "formattedCode",
+            column = @Column(name = "cnae_number", nullable = false, length = 10)
+    )
     private Cnae cnae;
+
     @Embedded
-    @AttributeOverride(name = "formattedNumber", column = @Column(name = "cnpj_number"))
+    @AttributeOverride(
+            name = "formattedNumber",
+            column = @Column(name = "cnpj_number", nullable = false, unique = true, length = 18)
+    )
     private Cnpj cnpj;
+
+    @Column(name = "share_capital", nullable = false, precision = 19, scale = 2)
     private BigDecimal shareCapital;
+
+    @Column(name = "total_credit", nullable = false, precision = 19, scale = 2)
     private BigDecimal totalCredit;
+
+    @Column(name = "utilized_credit", nullable = false, precision = 19, scale = 2)
     private BigDecimal utilizedCredit = BigDecimal.ZERO;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -32,6 +48,9 @@ public class FinancialData {
     @Setter
     @MapsId
     private Client client;
+
+    @Id
+    private UUID clientId;
 
     public FinancialData(LocalDate activitiesStartDate, Cnae cnae, Cnpj cnpj, String registrationStatus, BigDecimal shareCapital) {
         validateInstantiationRules(shareCapital, cnpj, cnae, activitiesStartDate, registrationStatus);

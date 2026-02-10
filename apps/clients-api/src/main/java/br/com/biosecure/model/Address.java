@@ -5,7 +5,6 @@ import br.com.biosecure.utils.StringUtils;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -14,18 +13,26 @@ import java.util.regex.Pattern;
 @NoArgsConstructor
 @Getter
 public class Address {
-    String state;
-    String city;
-    String neighborhood;
-    String street;
-    String number;
-    String postalCode;
-    boolean deliveryAddress;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
-    @Setter
-    private Client client;
+    @Column(name = "state_name", nullable = false)
+    String state;
+
+    @Column(name = "city_name", nullable = false)
+    String city;
+
+    @Column(name = "neighborhood_name", nullable = false)
+    String neighborhood;
+
+    @Column(name = "street_name", nullable = false)
+    String street;
+
+    @Column(name = "address_number", nullable = false, length = 7)
+    String number;
+
+    @Column(name = "postal_code", nullable = false, length = 9)
+    String postalCode;
+
+    boolean deliveryAddress;
 
     private static final Pattern POSTAL_CODE_REGEX = Pattern.compile("^[0-9]{5}-?[0-9]{3}$");
 

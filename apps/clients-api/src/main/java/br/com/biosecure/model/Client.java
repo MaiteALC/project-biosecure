@@ -10,36 +10,49 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "clients")
+@Table(name = "clients", schema = "sales")
 @NoArgsConstructor
 @Getter
 public class Client {
+
+    @Column(name = "corporate_name", nullable = false, length = 150)
     private String corporateName;
+
     @Id @GeneratedValue
     @UuidGenerator(style = UuidGenerator.Style.TIME)
     private UUID id;
+
     @Embedded
-    @AttributeOverride(name = "formattedNumber", column = @Column(name = "cnpj_number"))
+    @AttributeOverride(
+            name = "formattedNumber",
+            column = @Column(name = "cnpj_number",  nullable = false, unique = true, length = 18)
+    )
     private Cnpj cnpj;
+
     @ElementCollection
     @CollectionTable(
             name = "client_addresses",
+            schema = "sales",
             joinColumns = @JoinColumn(name = "client_id")
     )
     private Set<Address> addresses;
+
+    @Column(nullable = false, length = 100)
     private String email;
+
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private FinancialData financialData;
-    private LocalDateTime registrationDate;
+
+    private LocalDate registrationDate;
 
     private static final  int MIN_NAME_LENGTH = 2;
-    private static final int MAX_NAME_LENGTH = 55;
+    private static final int MAX_NAME_LENGTH = 150;
 
     private Client(String corporateName, Cnpj cnpj, Set<Address> addresses, String email, FinancialData financialData) {
         this.corporateName = corporateName;
@@ -47,7 +60,7 @@ public class Client {
         this.addresses = addresses;
         this.email = email;
         this.financialData = financialData;
-        this.registrationDate = LocalDateTime.now();
+        this.registrationDate = LocalDate.now();
     }
 
     public static ClientBuilder builder() {
