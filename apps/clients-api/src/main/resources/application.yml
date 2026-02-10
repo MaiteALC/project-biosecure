@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: BioSecure - Clients API
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+    url: jdbc:postgresql://localhost:5432/biosecure_db
+
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    show-sql: false
+
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migrations
+
+    schemas: sales, flyway_history
+    default-schema: flyway_history
+    create-schemas: true
+
+    user: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD}
