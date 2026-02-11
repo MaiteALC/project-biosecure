@@ -51,6 +51,14 @@ public class AddressBuilder {
     }
 
     public Address build() {
-        return new Address(state, city, neighborhood, street, number, postalCode, deliveryAddress);
+        return Address.builder()
+                .state(state)
+                .city(city)
+                .neighborhood(neighborhood)
+                .street(street)
+                .number(number)
+                .postalCode(postalCode)
+                .deliveryAddress(deliveryAddress)
+                .build();
     }
 }

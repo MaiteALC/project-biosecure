@@ -3,14 +3,15 @@ package br.com.biosecure.model;
 import br.com.biosecure.utils.NotificationContext;
 import br.com.biosecure.utils.StringUtils;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Embeddable
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class Address {
 
@@ -36,37 +37,43 @@ public class Address {
 
     private static final Pattern POSTAL_CODE_REGEX = Pattern.compile("^[0-9]{5}-?[0-9]{3}$");
 
-    public Address(String state, String city, String neighborhood, String street, String number, String postalCode, boolean deliveryAddress) {
-        validateInstantiationRules(state,  city, neighborhood, street, number, postalCode);
-
-        this.state = state;
-        this.city = city;
-        this.neighborhood = neighborhood;
-        this.street = street;
-        this.number = number;
-        this.postalCode = postalCode;
-        this.deliveryAddress = deliveryAddress;
+    public static AddressBuilder builder() {
+        return new AddressBuilder();
     }
 
-    private static void validateInstantiationRules(String state,  String city, String neighborhood, String street, String number, String postalCode) {
-        NotificationContext notification = new NotificationContext();
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    public static final class AddressBuilder {
+        private String state;
+        private String city;
+        private String neighborhood;
+        private String street;
+        private String number;
+        private String postalCode;
+        private boolean deliveryAddress;
 
-        if (!isValidPostalCode(postalCode)) {
-            notification.addError("postal code", "postal code is null or in invalid format");
-        }
+        public Address build() {
+            NotificationContext addressNotification = new NotificationContext();
 
-        StringUtils.validateString(number, "number", true, notification);
+            if (!isValidPostalCode(postalCode)) {
+                addressNotification.addError("postal code", "postal code is null or in invalid format");
+            }
 
-        StringUtils.validateString(state, 2, "state name", 96, false, notification);
+            StringUtils.validateString(number, "number", true, addressNotification);
 
-        StringUtils.validateString(city, 2, "city name", 96, false, notification);
+            StringUtils.validateString(state, 2, "state name", 96, false, addressNotification);
 
-        StringUtils.validateString(neighborhood, 2, "neighborhood name", 96, true, notification);
+            StringUtils.validateString(city, 2, "city name", 96, false, addressNotification);
 
-        StringUtils.validateString(street, 2, "street name", 96, true, notification);
+            StringUtils.validateString(neighborhood, 2, "neighborhood name", 96, true, addressNotification);
 
-        if (notification.hasErrors()) {
-            throw new InvalidAddressException(notification.getErrors());
+            StringUtils.validateString(street, 2, "street name", 96, true, addressNotification);
+
+            if (addressNotification.hasErrors()) {
+                throw new InvalidAddressException(addressNotification.getErrors());
+            }
+
+            return new Address(state, city, neighborhood, street, number, postalCode, deliveryAddress);
         }
     }
 
