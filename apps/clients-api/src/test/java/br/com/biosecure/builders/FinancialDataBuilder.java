@@ -1,29 +1,14 @@
 package br.com.biosecure.builders;
 
-import br.com.biosecure.model.Cnae;
 import br.com.biosecure.model.Cnpj;
 import br.com.biosecure.model.FinancialData;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 public class FinancialDataBuilder {
-    private LocalDate activitiesStartDate = LocalDate.of(2020, 1, 1);
-    private Cnae cnae = new Cnae("7120-1/00", "Technical tests and analyses");
     private BigDecimal shareCapital = BigDecimal.valueOf(6_000_000);
     private BigDecimal totalCredit;
     private BigDecimal utilizedCredit;
     private Cnpj cnpj = new Cnpj("06.990.590/0001-23");
-    private String registrationStatus = "ATIVA";
-
-    public FinancialDataBuilder withActivitiesStartDate(LocalDate activitiesStartDate) {
-        this.activitiesStartDate = activitiesStartDate;
-        return this;
-    }
-
-    public FinancialDataBuilder withCnae(Cnae cnae) {
-        this.cnae = cnae;
-        return this;
-    }
 
     public FinancialDataBuilder withShareCapital(BigDecimal shareCapital) {
         this.shareCapital = shareCapital;
@@ -45,17 +30,12 @@ public class FinancialDataBuilder {
         return this;
     }
 
-    public FinancialDataBuilder withRegistrationStatus(String registrationStatus) {
-        this.registrationStatus = registrationStatus;
-        return this;
-    }
-
     public static FinancialDataBuilder aFinancialData() {
         return new FinancialDataBuilder();
     }
 
     public FinancialData build() {
-         FinancialData fd = new FinancialData(activitiesStartDate, cnae, cnpj, registrationStatus, shareCapital);
+         FinancialData fd = new FinancialData(cnpj, shareCapital);
 
          if (totalCredit != null) {
             fd.updateTotalCredit(totalCredit);

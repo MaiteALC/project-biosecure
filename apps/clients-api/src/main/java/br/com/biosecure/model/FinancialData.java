@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -17,15 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 public class FinancialData {
-
-    private LocalDate activitiesStartDate;
-
-    @Embedded
-    @AttributeOverride(
-            name = "formattedCode",
-            column = @Column(name = "cnae_number", nullable = false, length = 10)
-    )
-    private Cnae cnae;
 
     @Embedded
     @AttributeOverride(
@@ -52,35 +42,21 @@ public class FinancialData {
     @Id
     private UUID clientId;
 
-    public FinancialData(LocalDate activitiesStartDate, Cnae cnae, Cnpj cnpj, String registrationStatus, BigDecimal shareCapital) {
-        validateInstantiationRules(shareCapital, cnpj, cnae, activitiesStartDate, registrationStatus);
+    public FinancialData(Cnpj cnpj, BigDecimal shareCapital) {
+        validateInstantiationRules(shareCapital, cnpj);
 
-        this.activitiesStartDate = activitiesStartDate;
-        this.cnae = cnae;
         this.cnpj = cnpj;
         this.shareCapital = shareCapital;
         this.totalCredit = this.shareCapital.multiply(BigDecimal.valueOf(0.3)).setScale(4, RoundingMode.HALF_EVEN);
     }
 
-    private static void validateInstantiationRules(BigDecimal shareCapital, Cnpj cnpj, Cnae cnaeNumber, LocalDate startDateActivities, String registrationStatus) {
+    private static void validateInstantiationRules(BigDecimal shareCapital, Cnpj cnpj) {
         NotificationContext notification = new NotificationContext();
 
         NumberUtils.validateNumericalAttribute(shareCapital, BigDecimal.ZERO, "social capital", BigDecimal.valueOf(Long.MAX_VALUE), notification);
 
         if (cnpj == null) {
             notification.addError("CNPJ number", "CNPJ number mustn't be null.");
-        }
-
-        if (!registrationStatus.equalsIgnoreCase("ATIVA")) {
-            notification.addError("Registration status", "Registration status must be 'ATIVA'.");
-        }
-
-        if (!Cnae.isAllowedCnae(cnaeNumber)) {
-            notification.addError("CNAE number", "CNAE number isn't allowed.");
-        }
-
-        if (startDateActivities == null || startDateActivities.isAfter(LocalDate.now())) {
-            notification.addError("Starting date activities", "The entered date shouldn't be in the future.");
         }
 
         if (notification.hasErrors()) {
@@ -90,14 +66,13 @@ public class FinancialData {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Financial Data = ");
-        return sb.append("[start date activity=").append(activitiesStartDate)
-                .append(", economic activity code (CNAE)=").append(cnae)
-                .append(", social capital=R$").append(shareCapital.toString())
+        return new StringBuilder("Financial Data = ")
+                .append("[share capital=R$").append(shareCapital.toString())
                 .append(", total credit=R$").append(totalCredit.toString())
                 .append(", utilized credit=R$").append(utilizedCredit.toString())
                 .append(", remainder credit=R$").append(getRemainderCredit().toString())
-                .append(']').toString();
+                .append(']')
+                .toString();
     }
 
     public BigDecimal getRemainderCredit() {

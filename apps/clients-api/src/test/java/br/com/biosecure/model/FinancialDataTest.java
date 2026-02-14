@@ -2,11 +2,7 @@ package br.com.biosecure.model;
 
 import br.com.biosecure.builders.FinancialDataBuilder;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-
 import java.math.BigDecimal;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class FinancialDataTest {
@@ -64,11 +60,5 @@ class FinancialDataTest {
         assertEquals("These attributes are invalids:\n\t - social capital | The number is less than allowed\n", socialCapitalException.getMessage());
 
         assertEquals("Total credit cannot be null or greater than social capital", creditException.getMessage());
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"9602-5/01", "47.81-4/00", "73.19002", "4399-101", "45307/03"})
-    void shouldThrowException_WhenCnaeNumberIsUnallowed(String cnaeNum) {
-        assertThrows(InvalidFinancialDataException.class, () -> FinancialDataBuilder.aFinancialData().withCnae(new Cnae(cnaeNum, "test description")).build());
     }
 }
