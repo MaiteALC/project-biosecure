@@ -1,9 +1,6 @@
 package br.com.biosecure.builders;
 
-import br.com.biosecure.model.Address;
-import br.com.biosecure.model.Cnpj;
-import br.com.biosecure.model.Customer;
-import br.com.biosecure.model.FinancialData;
+import br.com.biosecure.model.*;
 
 import java.util.Set;
 
@@ -13,6 +10,7 @@ public class CustomerBuilder {
     private Set<Address> address = Set.of(AddressBuilder.anAddress().build());
     private String email = "oracle@biosecure.test.com";
     private FinancialData financialData = FinancialDataBuilder.aFinancialData().build();
+    private TaxData taxData = TaxDataTestBuilder.aTaxData().build();
 
     public CustomerBuilder withCorporateName(String corporateName) {
         this.corporateName = corporateName;
@@ -44,6 +42,11 @@ public class CustomerBuilder {
         return this;
     }
 
+    public CustomerBuilder withTaxData(TaxData taxData) {
+        this.taxData = taxData;
+        return this;
+    }
+
     public static CustomerBuilder aCustomer() {
         return new CustomerBuilder();
     }
@@ -55,6 +58,7 @@ public class CustomerBuilder {
                 .addresses(address)
                 .email(email)
                 .financialData(financialData)
+                .taxData(taxData)
                 .build();
     }
 }

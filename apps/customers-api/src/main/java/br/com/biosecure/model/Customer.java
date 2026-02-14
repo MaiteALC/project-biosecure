@@ -35,7 +35,7 @@ public class Customer {
     )
     private Cnpj cnpj;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name = "customer_addresses",
             schema = "sales",
@@ -49,17 +49,26 @@ public class Customer {
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private FinancialData financialData;
 
+    @ElementCollection(fetch =  FetchType.LAZY)
+    @CollectionTable(
+            name = "customer_tax_data",
+            schema = "sales",
+            joinColumns = @JoinColumn(name = "customer_id")
+    )
+    private List<TaxData> taxData;
+
     private LocalDate registrationDate;
 
-    private static final  int MIN_NAME_LENGTH = 2;
+    private static final int MIN_NAME_LENGTH = 2;
     private static final int MAX_NAME_LENGTH = 100;
 
-    private Customer(String corporateName, Cnpj cnpj, Set<Address> addresses, String email, FinancialData financialData) {
+    private Customer(String corporateName, Cnpj cnpj, Set<Address> addresses, String email, FinancialData financialData, List<TaxData> taxData) {
         this.corporateName = corporateName;
         this.cnpj = cnpj;
         this.addresses = addresses;
         this.email = email;
         this.financialData = financialData;
+        this.taxData = taxData;
         this.registrationDate = LocalDate.now();
     }
 
@@ -75,6 +84,7 @@ public class Customer {
         private Set<Address> addresses;
         private String email;
         private FinancialData financialData;
+        private TaxData taxData;
 
         public Customer build() {
             NotificationContext clientNotification = new NotificationContext();
@@ -89,12 +99,13 @@ public class Customer {
 
             ErrorAggregator.verifyNull(financialData, "financial data", clientNotification);
             ErrorAggregator.verifyNull(cnpj, "CNPJ", clientNotification);
+            ErrorAggregator.verifyNull(taxData, "tax data", clientNotification);
 
             if (clientNotification.hasErrors()) {
                 throw new InvalidCustomerAttributeException(clientNotification.getErrors());
             }
 
-            Customer customer = new Customer(corporateName, cnpj, addresses, email, financialData);
+            Customer customer = new Customer(corporateName, cnpj, addresses, email, financialData, List.of(taxData));
 
             customer.getFinancialData().setCustomer(customer);
 
