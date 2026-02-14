@@ -9,15 +9,16 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @Table(name = "customer_tax_data", schema = "sales")
+@Embeddable
 public class TaxData {
 
     @Column(name = "last_search_date", nullable = false)
-    private LocalDate lastSearchDate;
+    private LocalDateTime lastSearchDate;
 
     @Column(name = "activities_start_date", nullable = false)
     private LocalDate activitiesStartDate;
@@ -26,7 +27,7 @@ public class TaxData {
     @Enumerated(EnumType.STRING)
     private RegistrationStatus registrationStatus;
 
-    @Column(name = "registration_status_description", nullable = false)
+    @Column(name = "status_description")
     private String statusDescription;
 
     @Embedded
@@ -36,16 +37,7 @@ public class TaxData {
     )
     private Cnae cnae;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    @MapsId
-    @Setter
-    private Customer customer;
-
-    @Id
-    private UUID clientId;
-
-    private TaxData(LocalDate lastSearchDate, LocalDate activitiesStartDate, RegistrationStatus registrationStatus, String statusDescription, Cnae cnae) {
+    private TaxData(LocalDateTime lastSearchDate, LocalDate activitiesStartDate, RegistrationStatus registrationStatus, String statusDescription, Cnae cnae) {
         this.lastSearchDate = lastSearchDate;
         this.activitiesStartDate = activitiesStartDate;
         this.registrationStatus = registrationStatus;
@@ -60,7 +52,7 @@ public class TaxData {
     @Setter
     @Accessors(fluent = true, chain = true)
     public static final class FiscalDataBuilder {
-        private LocalDate lastSearchDate;
+        private LocalDateTime lastSearchDate;
         private LocalDate activitiesStartDate;
         private RegistrationStatus registrationStatus;
         private String registrationStatusDescription;
