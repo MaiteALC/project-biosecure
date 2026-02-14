@@ -87,22 +87,22 @@ public class Customer {
         private TaxData taxData;
 
         public Customer build() {
-            NotificationContext clientNotification = new NotificationContext();
+            NotificationContext customerNotification = new NotificationContext();
 
-            StringUtils.validateString(corporateName, MIN_NAME_LENGTH, "name", MAX_NAME_LENGTH, true, clientNotification);
+            StringUtils.validateString(corporateName, MIN_NAME_LENGTH, "name", MAX_NAME_LENGTH, true, customerNotification);
 
-            StringUtils.validateCorporateEmail(email, clientNotification);
+            StringUtils.validateCorporateEmail(email, customerNotification);
 
             if (addresses == null || addresses.isEmpty()) {
-                clientNotification.addError("addresses", "at least one address is required");
+                customerNotification.addError("addresses", "at least one address is required");
             }
 
-            ErrorAggregator.verifyNull(financialData, "financial data", clientNotification);
-            ErrorAggregator.verifyNull(cnpj, "CNPJ", clientNotification);
-            ErrorAggregator.verifyNull(taxData, "tax data", clientNotification);
+            ErrorAggregator.verifyNull(financialData, "financial data", customerNotification);
+            ErrorAggregator.verifyNull(cnpj, "CNPJ", customerNotification);
+            ErrorAggregator.verifyNull(taxData, "tax data", customerNotification);
 
-            if (clientNotification.hasErrors()) {
-                throw new InvalidCustomerAttributeException(clientNotification.getErrors());
+            if (customerNotification.hasErrors()) {
+                throw new InvalidCustomerAttributeException(customerNotification.getErrors());
             }
 
             Customer customer = new Customer(corporateName, cnpj, addresses, email, financialData, List.of(taxData));
