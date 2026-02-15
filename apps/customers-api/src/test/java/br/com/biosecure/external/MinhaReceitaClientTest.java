@@ -122,7 +122,7 @@ class MinhaReceitaClientTest {
 
         assertEquals(2, response.partnersList().size());
 
-        assertEquals("ANDRE DE CESERO", response.partnersList().getFirst().partnerName());
+        assertEquals("ANDRE DE CESERO", response.partnersList().getFirst().name());
         assertEquals(7, response.partnersList().get(1).ageRangeCode());
         assertEquals("6204000", response.cnaeNumber());
     }
