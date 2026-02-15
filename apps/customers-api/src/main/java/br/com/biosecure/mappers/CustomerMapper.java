@@ -1,6 +1,8 @@
 package br.com.biosecure.mappers;
 
-import br.com.biosecure.dto.*;
+import br.com.biosecure.dto.input.AddressInputDto;
+import br.com.biosecure.dto.input.CustomerInputDto;
+import br.com.biosecure.dto.response.*;
 import br.com.biosecure.model.Address;
 import br.com.biosecure.model.Customer;
 import br.com.biosecure.model.TaxData;

@@ -1,7 +1,7 @@
 package br.com.biosecure.mappers;
 
-import br.com.biosecure.dto.AddressInputDto;
-import br.com.biosecure.dto.AddressResponseDto;
+import br.com.biosecure.dto.input.AddressInputDto;
+import br.com.biosecure.dto.response.AddressResponseDto;
 import br.com.biosecure.model.Address;
 
 public class AddressMapper {

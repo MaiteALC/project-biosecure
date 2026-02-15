@@ -1,15 +1,13 @@
-package br.com.biosecure.dto;
+package br.com.biosecure.dto.input;
 
 import br.com.biosecure.model.Cnpj;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.List;
 import java.util.Set;
 
-public record CustomerResponseDto(
-
+public record CustomerInputDto(
         @NotBlank(message = "Corporate name is required")
         String corporateName,
 
@@ -21,13 +19,13 @@ public record CustomerResponseDto(
 
         @Valid
         @NotNull
-        Set<AddressResponseDto> addresses,
+        Set<AddressInputDto> addresses,
 
         @Valid
         @NotNull
-        FinancialDataResponseDto financialData,
+        FinancialDataInputDto financialData,
 
         @Valid
         @NotNull
-        List<TaxDataResponseDto> taxData
+        TaxDataInputDto taxData
 ) {}

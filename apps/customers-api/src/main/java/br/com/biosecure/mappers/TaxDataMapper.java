@@ -1,7 +1,7 @@
 package br.com.biosecure.mappers;
 
-import br.com.biosecure.dto.TaxDataInputDto;
-import br.com.biosecure.dto.TaxDataResponseDto;
+import br.com.biosecure.dto.input.TaxDataInputDto;
+import br.com.biosecure.dto.response.TaxDataResponseDto;
 import br.com.biosecure.model.TaxData;
 
 public class TaxDataMapper {

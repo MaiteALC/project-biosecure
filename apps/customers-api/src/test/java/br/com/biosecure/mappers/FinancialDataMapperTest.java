@@ -1,8 +1,8 @@
 package br.com.biosecure.mappers;
 
 import br.com.biosecure.builders.FinancialDataTestBuilder;
-import br.com.biosecure.dto.FinancialDataInputDto;
-import br.com.biosecure.dto.FinancialDataResponseDto;
+import br.com.biosecure.dto.input.FinancialDataInputDto;
+import br.com.biosecure.dto.response.FinancialDataResponseDto;
 import br.com.biosecure.model.FinancialData;
 import org.junit.jupiter.api.Test;
 

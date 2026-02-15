@@ -1,7 +1,9 @@
 package br.com.biosecure.mappers;
 
 import br.com.biosecure.builders.CustomerTestBuilder;
-import br.com.biosecure.dto.*;
+import br.com.biosecure.dto.input.*;
+import br.com.biosecure.dto.response.CustomerResponseDto;
+import br.com.biosecure.dto.response.CustomerSummaryDto;
 import br.com.biosecure.model.*;
 import org.junit.jupiter.api.Test;
 

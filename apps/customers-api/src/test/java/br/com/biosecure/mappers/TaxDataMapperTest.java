@@ -1,9 +1,9 @@
 package br.com.biosecure.mappers;
 
 import br.com.biosecure.builders.TaxDataTestBuilder;
-import br.com.biosecure.dto.CnaeInputDto;
-import br.com.biosecure.dto.TaxDataInputDto;
-import br.com.biosecure.dto.TaxDataResponseDto;
+import br.com.biosecure.dto.input.CnaeInputDto;
+import br.com.biosecure.dto.input.TaxDataInputDto;
+import br.com.biosecure.dto.response.TaxDataResponseDto;
 import br.com.biosecure.model.Cnae;
 import br.com.biosecure.model.RegistrationStatus;
 import br.com.biosecure.model.TaxData;

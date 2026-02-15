@@ -1,7 +1,7 @@
 package br.com.biosecure.mappers;
 
-import br.com.biosecure.dto.CnaeInputDto;
-import br.com.biosecure.dto.CnaeResponseDto;
+import br.com.biosecure.dto.input.CnaeInputDto;
+import br.com.biosecure.dto.response.CnaeResponseDto;
 import br.com.biosecure.model.Cnae;
 import org.junit.jupiter.api.Test;
 

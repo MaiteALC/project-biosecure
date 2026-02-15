@@ -1,11 +1,10 @@
-package br.com.biosecure.dto;
+package br.com.biosecure.dto.input;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record CnaeResponseDto(
+public record CnaeInputDto(
         @NotBlank(message = "CNAE number is required")
         String code,
 
-        @NotBlank(message = "CNAE description is required")
         String description
 ) {}

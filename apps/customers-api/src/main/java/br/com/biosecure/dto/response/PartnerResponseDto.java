@@ -1,4 +1,4 @@
-package br.com.biosecure.dto;
+package br.com.biosecure.dto.response;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

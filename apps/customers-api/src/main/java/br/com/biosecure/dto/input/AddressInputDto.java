@@ -1,8 +1,8 @@
-package br.com.biosecure.dto;
+package br.com.biosecure.dto.input;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record AddressResponseDto(
+public record AddressInputDto(
         @NotBlank(message = "State name is required")
         String state,
 

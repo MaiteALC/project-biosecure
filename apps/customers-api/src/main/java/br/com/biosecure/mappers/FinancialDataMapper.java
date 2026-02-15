@@ -1,7 +1,7 @@
 package br.com.biosecure.mappers;
 
-import br.com.biosecure.dto.FinancialDataInputDto;
-import br.com.biosecure.dto.FinancialDataResponseDto;
+import br.com.biosecure.dto.input.FinancialDataInputDto;
+import br.com.biosecure.dto.response.FinancialDataResponseDto;
 import br.com.biosecure.model.FinancialData;
 
 public class FinancialDataMapper {

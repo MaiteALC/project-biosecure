@@ -1,6 +1,6 @@
 package br.com.biosecure.external;
 
-import br.com.biosecure.dto.PartnerResponseDto;
+import br.com.biosecure.dto.response.PartnerResponseDto;
 import br.com.biosecure.model.Partner;
 
 public class PartnerMapper {

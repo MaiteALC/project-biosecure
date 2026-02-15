@@ -1,8 +1,8 @@
 package br.com.biosecure.mappers;
 
 import br.com.biosecure.builders.AddressTestBuilder;
-import br.com.biosecure.dto.AddressInputDto;
-import br.com.biosecure.dto.AddressResponseDto;
+import br.com.biosecure.dto.input.AddressInputDto;
+import br.com.biosecure.dto.response.AddressResponseDto;
 import br.com.biosecure.model.Address;
 import org.junit.jupiter.api.Test;
 

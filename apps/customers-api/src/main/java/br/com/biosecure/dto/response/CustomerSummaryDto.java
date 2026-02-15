@@ -1,4 +1,4 @@
-package br.com.biosecure.dto;
+package br.com.biosecure.dto.response;
 
 import br.com.biosecure.model.Cnpj;
 import jakarta.validation.constraints.NotBlank;
