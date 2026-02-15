@@ -17,13 +17,6 @@ import java.util.UUID;
 @Getter
 public class FinancialData {
 
-    @Embedded
-    @AttributeOverride(
-            name = "formattedNumber",
-            column = @Column(name = "cnpj_number", nullable = false, unique = true, length = 18)
-    )
-    private Cnpj cnpj;
-
     @Column(name = "share_capital", nullable = false, precision = 19, scale = 2)
     private BigDecimal shareCapital;
 
@@ -42,22 +35,17 @@ public class FinancialData {
     @Id
     private UUID customerId;
 
-    public FinancialData(Cnpj cnpj, BigDecimal shareCapital) {
-        validateInstantiationRules(shareCapital, cnpj);
+    public FinancialData(BigDecimal shareCapital) {
+        validateInstantiationRules(shareCapital);
 
-        this.cnpj = cnpj;
         this.shareCapital = shareCapital;
         this.totalCredit = this.shareCapital.multiply(BigDecimal.valueOf(0.3)).setScale(4, RoundingMode.HALF_EVEN);
     }
 
-    private static void validateInstantiationRules(BigDecimal shareCapital, Cnpj cnpj) {
+    private static void validateInstantiationRules(BigDecimal shareCapital) {
         NotificationContext notification = new NotificationContext();
 
         NumberUtils.validateNumericalAttribute(shareCapital, BigDecimal.ZERO, "social capital", BigDecimal.valueOf(Long.MAX_VALUE), notification);
-
-        if (cnpj == null) {
-            notification.addError("CNPJ number", "CNPJ number mustn't be null.");
-        }
 
         if (notification.hasErrors()) {
             throw new InvalidFinancialDataException(notification.getErrors());
