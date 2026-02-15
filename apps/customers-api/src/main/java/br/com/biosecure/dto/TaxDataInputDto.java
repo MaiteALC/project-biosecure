@@ -1,7 +1,7 @@
 package br.com.biosecure.dto;
 
-import br.com.biosecure.model.Cnae;
 import br.com.biosecure.model.RegistrationStatus;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -20,6 +20,7 @@ public record TaxDataInputDto(
 
         String registrationStatusDescription,
 
-        @NotNull(message = "CNAE number is required")
-        Cnae cnae
+        @Valid
+        @NotNull(message = "CNAE is required")
+        CnaeInputDto cnae
 ) {}

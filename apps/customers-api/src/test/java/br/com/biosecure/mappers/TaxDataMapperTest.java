@@ -1,6 +1,7 @@
 package br.com.biosecure.mappers;
 
 import br.com.biosecure.builders.TaxDataTestBuilder;
+import br.com.biosecure.dto.CnaeInputDto;
 import br.com.biosecure.dto.TaxDataInputDto;
 import br.com.biosecure.dto.TaxDataResponseDto;
 import br.com.biosecure.model.Cnae;
@@ -21,12 +22,12 @@ public class TaxDataMapperTest {
 
         TaxDataResponseDto dto = TaxDataMapper.toDto(td);
 
-        assertEquals("2121-1/01", dto.cnae().getFormattedCode());
+        assertEquals("2121-1/01", dto.cnae().code());
     }
 
     @Test
     void shouldConvertToTaxDataEntityCorrectly() {
-        TaxDataInputDto dto = new TaxDataInputDto(LocalDateTime.now(), LocalDate.of(2014, 4, 24), RegistrationStatus.ACTIVE, "null", new Cnae("2121101", "test"));
+        TaxDataInputDto dto = new TaxDataInputDto(LocalDateTime.now(), LocalDate.of(2014, 4, 24), RegistrationStatus.ACTIVE, "null", new CnaeInputDto("2121101", "test"));
 
         TaxData td = TaxDataMapper.toEntity(dto);
 

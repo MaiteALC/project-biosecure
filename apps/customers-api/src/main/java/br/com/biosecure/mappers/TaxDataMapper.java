@@ -15,7 +15,7 @@ public class TaxDataMapper {
                 .lastSearchDate(dto.lastSearchDate())
                 .registrationStatusDescription(dto.registrationStatusDescription())
                 .registrationStatus(dto.registrationStatus())
-                .cnae(dto.cnae())
+                .cnae(CnaeMapper.toEntity(dto.cnae()))
                 .activitiesStartDate(dto.activitiesStartDate())
                 .build();
     }
@@ -25,6 +25,6 @@ public class TaxDataMapper {
             throw new NullPointerException("A tax data entity is required");
         }
 
-        return new TaxDataResponseDto(entity.getLastSearchDate(), entity.getActivitiesStartDate(), entity.getRegistrationStatus(), entity.getStatusDescription(), entity.getCnae());
+        return new TaxDataResponseDto(entity.getLastSearchDate(), entity.getActivitiesStartDate(), entity.getRegistrationStatus(), entity.getStatusDescription(), CnaeMapper.toDto(entity.getCnae()));
     }
 }

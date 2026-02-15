@@ -54,7 +54,7 @@ public class CustomerMapperTest {
                 LocalDate.now().minusYears(5),
                 RegistrationStatus.ACTIVE,
                 "random",
-                new Cnae("3812-2/00", "random")
+                new CnaeInputDto("3812-2/00", "random")
         );
 
         CustomerInputDto dto  = new CustomerInputDto(
