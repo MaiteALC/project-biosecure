@@ -3,7 +3,7 @@ package br.com.biosecure.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import br.com.biosecure.builders.CustomerBuilder;
+import br.com.biosecure.builders.CustomerTestBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -19,7 +19,7 @@ class CustomerTest {
     @ValueSource(strings = {"    ", "test2@gmail.com", "test2@hotmail.com", "test3@outlook.com", "test4@live.com", "test5@yahoo.com", "random text"})
     void shouldThrowException_WhenEmailIsInvalid(String invalidEmail) {
         InvalidCustomerAttributeException exception = assertThrows(InvalidCustomerAttributeException.class,
-            () -> CustomerBuilder.aCustomer().withEmail(invalidEmail).build()
+            () -> CustomerTestBuilder.aCustomer().withEmail(invalidEmail).build()
         );
 
         assertEquals("email", exception.getInvalidAttribute());
@@ -30,7 +30,7 @@ class CustomerTest {
     @ValueSource(strings = {"     ", "A", "1", "looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong name"})
     void shouldThrowException_WhenNameIsInvalid(String invalidName) {
         InvalidCustomerAttributeException exception = assertThrows(InvalidCustomerAttributeException.class,
-            () -> CustomerBuilder.aCustomer().withCorporateName(invalidName).build()
+            () -> CustomerTestBuilder.aCustomer().withCorporateName(invalidName).build()
         );
 
         assertEquals("name", exception.getInvalidAttribute());
@@ -40,7 +40,7 @@ class CustomerTest {
     void shouldThrowException_WhenAddressIsInvalid() {
         Set<Address> addresses = new HashSet<>();
 
-        InvalidCustomerAttributeException exception = assertThrows(InvalidCustomerAttributeException.class, () -> CustomerBuilder.aCustomer()
+        InvalidCustomerAttributeException exception = assertThrows(InvalidCustomerAttributeException.class, () -> CustomerTestBuilder.aCustomer()
                 .withAddress(addresses)
                 .build()
         );

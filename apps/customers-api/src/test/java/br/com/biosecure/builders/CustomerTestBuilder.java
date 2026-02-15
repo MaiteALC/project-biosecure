@@ -4,51 +4,51 @@ import br.com.biosecure.model.*;
 
 import java.util.Set;
 
-public class CustomerBuilder {
+public class CustomerTestBuilder {
     private String corporateName = "Oracle";
     private Cnpj cnpj = new Cnpj("59.456.277/0001-76");
-    private Set<Address> address = Set.of(AddressBuilder.anAddress().build());
+    private Set<Address> address = Set.of(AddressTestBuilder.anAddress().build());
     private String email = "oracle@biosecure.test.com";
-    private FinancialData financialData = FinancialDataBuilder.aFinancialData().build();
+    private FinancialData financialData = FinancialDataTestBuilder.aFinancialData().build();
     private TaxData taxData = TaxDataTestBuilder.aTaxData().build();
 
-    public CustomerBuilder withCorporateName(String corporateName) {
+    public CustomerTestBuilder withCorporateName(String corporateName) {
         this.corporateName = corporateName;
         return this;
     }
 
-    public CustomerBuilder withCnpj(Cnpj cnpj) {
+    public CustomerTestBuilder withCnpj(Cnpj cnpj) {
         this.cnpj = cnpj;
         return this;
     }
 
-    public CustomerBuilder withAddress(Address address) {
+    public CustomerTestBuilder withAddress(Address address) {
         this.address = Set.of(address);
         return this;
     }
 
-    public CustomerBuilder withAddress(Set<Address> address) {
+    public CustomerTestBuilder withAddress(Set<Address> address) {
         this.address = address;
         return this;
     }
 
-    public CustomerBuilder withEmail(String email) {
+    public CustomerTestBuilder withEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public CustomerBuilder withFinancialData(FinancialData financialData) {
+    public CustomerTestBuilder withFinancialData(FinancialData financialData) {
         this.financialData = financialData;
         return this;
     }
 
-    public CustomerBuilder withTaxData(TaxData taxData) {
+    public CustomerTestBuilder withTaxData(TaxData taxData) {
         this.taxData = taxData;
         return this;
     }
 
-    public static CustomerBuilder aCustomer() {
-        return new CustomerBuilder();
+    public static CustomerTestBuilder aCustomer() {
+        return new CustomerTestBuilder();
     }
 
     public Customer build() {

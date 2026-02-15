@@ -1,6 +1,6 @@
 package br.com.biosecure.model;
 
-import br.com.biosecure.builders.FinancialDataBuilder;
+import br.com.biosecure.builders.FinancialDataTestBuilder;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +9,7 @@ class FinancialDataTest {
 
     @Test
     void shouldUpdateInfosCorrectly_WhenDataIsValid() {
-        FinancialData financialData = FinancialDataBuilder.aFinancialData().build();
+        FinancialData financialData = FinancialDataTestBuilder.aFinancialData().build();
 
         financialData.updateShareCapital(BigDecimal.valueOf(10_000_000));
         financialData.updateTotalCredit(BigDecimal.valueOf(5_400_000));
@@ -20,7 +20,7 @@ class FinancialDataTest {
 
     @Test
     void shouldNotUpdateInfos_WhenDataIsInvalid() {
-        FinancialData financialData = FinancialDataBuilder.aFinancialData().build();
+        FinancialData financialData = FinancialDataTestBuilder.aFinancialData().build();
 
         InvalidFinancialDataException socialCapitalException = assertThrows(InvalidFinancialDataException.class, () -> financialData.updateShareCapital(BigDecimal.valueOf(-1)) );
 
@@ -32,7 +32,7 @@ class FinancialDataTest {
 
     @Test
     void shouldPayDebitAndUseCreditCorrectly_WhenDataIsValid() {
-        FinancialData financialData = FinancialDataBuilder.aFinancialData()
+        FinancialData financialData = FinancialDataTestBuilder.aFinancialData()
                 .withShareCapital(BigDecimal.valueOf(60_000_000))
                 .withUtilizedCredit(BigDecimal.valueOf(10_000_000))
                 .build();
@@ -48,11 +48,11 @@ class FinancialDataTest {
 
     @Test
     void shouldThrowException_WhenPaymentAndCreditValuesAreInvalid() {
-        InvalidFinancialDataException socialCapitalException = assertThrows(InvalidFinancialDataException.class, () -> FinancialDataBuilder.aFinancialData()
+        InvalidFinancialDataException socialCapitalException = assertThrows(InvalidFinancialDataException.class, () -> FinancialDataTestBuilder.aFinancialData()
                 .withShareCapital(BigDecimal.valueOf(-1))
                 .build());
 
-        InvalidFinancialDataException creditException = assertThrows(InvalidFinancialDataException.class, () -> FinancialDataBuilder.aFinancialData()
+        InvalidFinancialDataException creditException = assertThrows(InvalidFinancialDataException.class, () -> FinancialDataTestBuilder.aFinancialData()
                 .withShareCapital(BigDecimal.valueOf(10_000_000))
                 .withTotalCredit(BigDecimal.valueOf(100_000_000))
                 .build());

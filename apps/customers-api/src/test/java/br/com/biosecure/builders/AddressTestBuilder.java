@@ -2,7 +2,7 @@ package br.com.biosecure.builders;
 
 import br.com.biosecure.model.Address;
 
-public class AddressBuilder {
+public class AddressTestBuilder {
     private String state = "MG";
     private String city = "BH";
     private String neighborhood = "random neighborhood name";
@@ -11,43 +11,43 @@ public class AddressBuilder {
     private String postalCode = "12345-067";
     private boolean deliveryAddress = true;
 
-    public AddressBuilder withState(String state) {
+    public AddressTestBuilder withState(String state) {
         this.state = state;
         return this;
     }
 
-    public AddressBuilder withCity(String city) {
+    public AddressTestBuilder withCity(String city) {
         this.city = city;
         return this;
     }
 
-    public AddressBuilder withNeighborhood(String neighborhood) {
+    public AddressTestBuilder withNeighborhood(String neighborhood) {
         this.neighborhood = neighborhood;
         return this;
     }
 
-    public AddressBuilder withStreet(String street) {
+    public AddressTestBuilder withStreet(String street) {
         this.street = street;
         return this;
     }
 
-    public AddressBuilder withNumber(String number) {
+    public AddressTestBuilder withNumber(String number) {
         this.number = number;
         return this;
     }
 
-    public AddressBuilder withPostalCode(String postalCode) {
+    public AddressTestBuilder withPostalCode(String postalCode) {
         this.postalCode = postalCode;
         return this;
     }
 
-    public AddressBuilder withDeliveryAddress(boolean deliveryAddress) {
+    public AddressTestBuilder withDeliveryAddress(boolean deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
         return this;
     }
 
-    public static AddressBuilder anAddress() {
-        return new AddressBuilder();
+    public static AddressTestBuilder anAddress() {
+        return new AddressTestBuilder();
     }
 
     public Address build() {

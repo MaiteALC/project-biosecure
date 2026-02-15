@@ -1,6 +1,6 @@
 package br.com.biosecure.model;
 
-import br.com.biosecure.builders.AddressBuilder;
+import br.com.biosecure.builders.AddressTestBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -12,9 +12,9 @@ class AddressTest {
 
     @Test
     void shouldBuildValidAddress() {
-        AddressBuilder.anAddress().build();
+        AddressTestBuilder.anAddress().build();
 
-        Address eifelTower = AddressBuilder.anAddress()
+        Address eifelTower = AddressTestBuilder.anAddress()
                 .withState("Île-de-France") // France don't have states like Brazil, but whatever, it's a test
                 .withCity("Paris")
                 .withNeighborhood("7º arrondissement")
@@ -31,7 +31,7 @@ class AddressTest {
     @ValueSource(strings = {"   ", "a", "197", "loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong string"})
     void shouldThrowException_WhenAddressStringAttributesIsInvalid(String invalid) {
         assertThrows(InvalidAddressException.class, // all of this attributes fail in the same way
-                () -> AddressBuilder.anAddress()
+                () -> AddressTestBuilder.anAddress()
                         .withState(invalid)
                         .withCity(invalid)
                         .withNeighborhood(invalid)
