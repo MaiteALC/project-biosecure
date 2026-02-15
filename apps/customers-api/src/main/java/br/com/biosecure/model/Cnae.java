@@ -1,7 +1,5 @@
 package br.com.biosecure.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
 import lombok.Getter;
@@ -44,8 +42,7 @@ public class Cnae {
         ALLOWED_CNAE_NUMBERS.put("8129-0/00", "Cleaning and pest control activities (Hospital sanitation companies).");
     }
 
-    @JsonCreator
-    public Cnae(@JsonProperty("codigo") String number, @JsonProperty("descricao") String description) {
+    public Cnae(String number, String description) {
         if (number == null || !CNAE_REGEX.matcher(number).matches()) {
             throw new IllegalArgumentException("CNAE number format is invalid");
         }
