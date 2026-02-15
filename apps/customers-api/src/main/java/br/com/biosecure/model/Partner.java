@@ -3,11 +3,11 @@ package br.com.biosecure.model;
 import java.time.LocalDate;
 
 public record Partner (
-        String partnerIdentifier,
-        String partnerName,
-        String partnerCpfOrCnpj,
-        String partnerTypeCode,
-        String partnerType,
+        int identifierCode,
+        String name,
+        String cpfOrCnpj,
+        int typeCode,
+        String type,
         LocalDate entryDate,
         int ageRangeCode
 ) {}
