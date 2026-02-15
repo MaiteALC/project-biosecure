@@ -23,5 +23,9 @@ public record CustomerInputDto(
 
         @Valid
         @NotNull
-        FinancialDataInputDto financialData
+        FinancialDataInputDto financialData,
+
+        @Valid
+        @NotNull
+        TaxDataInputDto taxData
 ) {}
