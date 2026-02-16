@@ -1,6 +1,7 @@
-package br.com.biosecure.external;
+package br.com.biosecure.mappers;
 
 import br.com.biosecure.dto.response.PartnerResponseDto;
+import br.com.biosecure.external.PartnerExternalDto;
 import br.com.biosecure.model.Partner;
 import org.junit.jupiter.api.Test;
 
