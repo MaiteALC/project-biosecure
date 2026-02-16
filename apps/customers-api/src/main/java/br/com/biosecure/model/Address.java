@@ -16,24 +16,24 @@ import java.util.regex.Pattern;
 public class Address {
 
     @Column(name = "state_name", nullable = false)
-    String state;
+    private String state;
 
     @Column(name = "city_name", nullable = false)
-    String city;
+    private String city;
 
     @Column(name = "neighborhood_name", nullable = false)
-    String neighborhood;
+    private String neighborhood;
 
     @Column(name = "street_name", nullable = false)
-    String street;
+    private String street;
 
     @Column(name = "address_number", nullable = false, length = 7)
-    String number;
+    private String number;
 
     @Column(name = "postal_code", nullable = false, length = 9)
-    String postalCode;
+    private String postalCode;
 
-    boolean deliveryAddress;
+    private boolean deliveryAddress;
 
     private static final Pattern POSTAL_CODE_REGEX = Pattern.compile("^[0-9]{5}-?[0-9]{3}$");
 
