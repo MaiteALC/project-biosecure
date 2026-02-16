@@ -45,13 +45,13 @@ public class TaxData {
         this.cnae = cnae;
     }
 
-    public static FiscalDataBuilder builder() {
-        return new FiscalDataBuilder();
+    public static TaxDataBuilder builder() {
+        return new TaxDataBuilder();
     }
 
     @Setter
     @Accessors(fluent = true, chain = true)
-    public static final class FiscalDataBuilder {
+    public static final class TaxDataBuilder {
         private LocalDateTime lastSearchDate;
         private LocalDate activitiesStartDate;
         private RegistrationStatus registrationStatus;
