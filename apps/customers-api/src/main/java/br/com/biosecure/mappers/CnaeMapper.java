@@ -2,16 +2,25 @@ package br.com.biosecure.mappers;
 
 import br.com.biosecure.dto.input.CnaeInputDto;
 import br.com.biosecure.dto.response.CnaeResponseDto;
+import br.com.biosecure.external.CnaeExternalDto;
 import br.com.biosecure.model.Cnae;
 
 public class CnaeMapper {
 
     public static Cnae toEntity(CnaeInputDto dto) {
         if (dto == null) {
-            throw new NullPointerException("A CNAE DTO is required");
+            throw new NullPointerException("A CNAE input DTO is required");
         }
 
-        return new Cnae(dto.code(),  dto.description());
+        return new Cnae(dto.code(), dto.description());
+    }
+
+    public static Cnae toEntity(CnaeExternalDto dto) {
+        if (dto == null) {
+            throw new NullPointerException("A CNAE external DTO is required");
+        }
+
+        return new Cnae(dto.code(), dto.description());
     }
 
     public static CnaeResponseDto toDto(Cnae entity) {
