@@ -14,6 +14,7 @@
         <junit.version>6.0.1</junit.version>
         <lombok.version>1.18.42</lombok.version>
         <postgresql.version>42.7.7</postgresql.version>
+        <hibernate.version>7.2.2.Final</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -32,6 +33,12 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
+                        </path>
+
+                        <path>
+                            <groupId>org.hibernate.orm</groupId>
+                            <artifactId>hibernate-jpamodelgen</artifactId>
+                            <version>${hibernate.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
