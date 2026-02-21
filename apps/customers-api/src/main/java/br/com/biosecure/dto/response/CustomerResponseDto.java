@@ -1,6 +1,5 @@
 package br.com.biosecure.dto.response;
 
-import br.com.biosecure.model.Cnpj;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +13,7 @@ public record CustomerResponseDto (
         String corporateName,
 
         @NotNull(message = "CNPJ number is required")
-        Cnpj cnpj,
+        String cnpj,
 
         @NotBlank(message = "Email is required")
         String email,

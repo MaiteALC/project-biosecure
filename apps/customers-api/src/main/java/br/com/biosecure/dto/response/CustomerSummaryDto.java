@@ -1,6 +1,5 @@
 package br.com.biosecure.dto.response;
 
-import br.com.biosecure.model.Cnpj;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -14,7 +13,7 @@ public record CustomerSummaryDto(
         String email,
 
         @NotNull(message = "CNPJ number is required")
-        Cnpj cnpj,
+        String cnpj,
 
         @NotNull(message = "Registration date is required")
         LocalDate registrationDate

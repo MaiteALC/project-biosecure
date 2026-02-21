@@ -56,7 +56,7 @@ public class CustomerMapper {
 
         FinancialDataResponseDto fd = FinancialDataMapper.toDto(entity.getFinancialData());
 
-        return new CustomerResponseDto(entity.getCorporateName(), entity.getCnpj(), entity.getEmail(), addresses, fd, taxDataDtoList);
+        return new CustomerResponseDto(entity.getCorporateName(), entity.getCnpj().getFormattedNumber(), entity.getEmail(), addresses, fd, taxDataDtoList);
     }
 
     public static CustomerSummaryDto toSummaryDto(Customer entity) {
@@ -64,6 +64,6 @@ public class CustomerMapper {
             throw new NullPointerException("A customer entity is required");
         }
 
-        return new CustomerSummaryDto(entity.getCorporateName(), entity.getEmail(), entity.getCnpj(), entity.getRegistrationDate());
+        return new CustomerSummaryDto(entity.getCorporateName(), entity.getEmail(), entity.getCnpj().getFormattedNumber(), entity.getRegistrationDate());
     }
 }
