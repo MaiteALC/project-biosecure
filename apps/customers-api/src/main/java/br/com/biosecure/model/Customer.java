@@ -130,14 +130,15 @@ public class Customer {
     @Override
     public String toString() {
         return new StringBuilder("Customer = ")
-                .append("[corporate name=").append(corporateName)
-                .append("uuid=").append(id)
-                .append(", CNPJ=").append(cnpj)
+                .append("{corporate name=").append(corporateName)
+                .append(", uuid=").append(id)
+                .append(", CNPJ=").append(cnpj.getFormattedNumber())
                 .append(", email=").append(email)
                 .append(", registrationDate=").append(registrationDate)
                 .append(", ").append(addresses.toString())
                 .append(", ").append(financialData.toString())
-                .append(']').toString();
+                .append(", ").append(taxData.toString())
+                .append('}').toString();
     }
 
     public void setCorporateName(String newName) {
