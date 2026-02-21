@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
-public record CustomerResponseDto(
+public record CustomerResponseDto (
 
         @NotBlank(message = "Corporate name is required")
         String corporateName,
@@ -30,4 +30,5 @@ public record CustomerResponseDto(
         @Valid
         @NotNull
         List<TaxDataResponseDto> taxData
-) {}
+
+) implements CustomerDto {}

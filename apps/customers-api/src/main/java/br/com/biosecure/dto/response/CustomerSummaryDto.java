@@ -18,4 +18,5 @@ public record CustomerSummaryDto(
 
         @NotNull(message = "Registration date is required")
         LocalDate registrationDate
-) {}
+
+) implements CustomerDto {}
