@@ -2,19 +2,26 @@ package br.com.biosecure.model;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 @Embeddable
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cnae {
+
     @Transient
-    private final String unformattedCode;
+    private String unformattedCode;
+
     @Transient
     private String description;
-    private final String formattedCode;
+
+    private String formattedCode;
 
     private final static Pattern CNAE_REGEX = Pattern.compile(
             "^[0-9]{2}\\.?[0-9]{2}-?[0-9]/?[0-9]{2}$"
