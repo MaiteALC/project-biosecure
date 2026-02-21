@@ -80,5 +80,16 @@ public class TaxData {
             return new TaxData(lastSearchDate, activitiesStartDate, registrationStatus, registrationStatusDescription, cnae);
         }
     }
+
+    @Override
+    public String toString() {
+        return new StringBuilder("Tax Data = ")
+                .append("[last search date=").append(lastSearchDate)
+                .append(", activities start date=").append(activitiesStartDate)
+                .append(", registration status=").append(registrationStatus.toString())
+                .append(", status description=").append(statusDescription)
+                .append(", CNAE=").append(cnae.getFormattedCode())
+                .append("]").toString();
+    }
 }
 
