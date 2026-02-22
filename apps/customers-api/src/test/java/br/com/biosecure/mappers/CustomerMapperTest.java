@@ -5,11 +5,13 @@ import br.com.biosecure.dto.input.*;
 import br.com.biosecure.dto.response.CustomerResponseDto;
 import br.com.biosecure.dto.response.CustomerSummaryDto;
 import br.com.biosecure.model.*;
+import br.com.biosecure.queryfilters.IncludeParam;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +22,7 @@ class CustomerMapperTest {
     void shouldConvertToCustomerDtoCorrectly() {
         Customer entity = CustomerTestBuilder.aCustomer().withCorporateName("GOOGLE BRASIL INTERNET LTDA").build();
 
-        CustomerResponseDto dto = CustomerMapper.toDto(entity);
+        CustomerResponseDto dto = CustomerMapper.toDto(entity, Set.of(IncludeParam.FULL));
 
         assertEquals(entity.getCorporateName(), dto.corporateName());
         assertEquals(1, dto.taxData().size());
@@ -76,13 +78,35 @@ class CustomerMapperTest {
 
     @Test
     void shouldThrowException_WhenInputIsNull() {
-        NullPointerException exception = assertThrows(NullPointerException.class, () -> CustomerMapper.toDto(null));
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> CustomerMapper.toDto(null, new HashSet<>()));
         NullPointerException exception2 = assertThrows(NullPointerException.class, () -> CustomerMapper.toSummaryDto(null));
 
         NullPointerException exception3 = assertThrows(NullPointerException.class, () -> CustomerMapper.toEntity(null));
 
+        NullPointerException exception4 = assertThrows(NullPointerException.class, () -> CustomerMapper.toDto(CustomerTestBuilder.aCustomer().build(), null));
+
         assertEquals("A customer entity is required", exception.getMessage());
         assertEquals("A customer entity is required", exception2.getMessage());
         assertEquals("A customer DTO is required", exception3.getMessage());
+        assertEquals("A customer include param is required", exception4.getMessage());
+    }
+
+    @Test
+    void shouldFilterDataCorrectly_WhenThereIsIncludeParam() {
+        Customer customer = CustomerTestBuilder.aCustomer().build();
+
+        Set<IncludeParam> includeParams = new HashSet<>();
+        includeParams.add(IncludeParam.TAX_DATA);
+        includeParams.add(IncludeParam.ADDRESS);
+
+        CustomerResponseDto dto = CustomerMapper.toDto(customer, includeParams);
+
+        assertNotNull(dto);
+        assertNotNull(dto.cnpj());
+
+        assertNotNull(dto.taxData());
+        assertNotNull(dto.addresses());
+
+        assertNull(dto.financialData());
     }
 }

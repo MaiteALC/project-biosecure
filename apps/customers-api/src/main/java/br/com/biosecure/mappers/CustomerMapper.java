@@ -6,6 +6,7 @@ import br.com.biosecure.dto.response.*;
 import br.com.biosecure.model.Address;
 import br.com.biosecure.model.Customer;
 import br.com.biosecure.model.TaxData;
+import br.com.biosecure.queryfilters.IncludeParam;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,24 +38,39 @@ public class CustomerMapper {
         return customerBuilder.build();
     }
 
-    public static CustomerResponseDto toDto(Customer entity) {
+    public static CustomerResponseDto toDto(Customer entity, Set<IncludeParam> includeParams) {
         if (entity == null) {
             throw new NullPointerException("A customer entity is required");
         }
 
-        Set<AddressResponseDto> addresses = new HashSet<>();
-
-        for (Address address : entity.getAddresses()) {
-            addresses.add(AddressMapper.toDto(address));
+        if (includeParams == null) {
+            throw new NullPointerException("A customer include param is required");
         }
 
-        List<TaxDataResponseDto> taxDataDtoList = new ArrayList<>();
+        Set<AddressResponseDto> addresses = null;
+        List<TaxDataResponseDto> taxDataDtoList = null;
 
-        for (TaxData td : entity.getTaxData()) {
-            taxDataDtoList.add(TaxDataMapper.toDto(td));
+        if (includeParams.contains(IncludeParam.ADDRESS) || includeParams.contains(IncludeParam.FULL)) {
+            addresses  = new HashSet<>();
+
+            for (Address address : entity.getAddresses()) {
+                addresses.add(AddressMapper.toDto(address));
+            }
         }
 
-        FinancialDataResponseDto fd = FinancialDataMapper.toDto(entity.getFinancialData());
+        if (includeParams.contains(IncludeParam.TAX_DATA) || includeParams.contains(IncludeParam.FULL)) {
+            taxDataDtoList = new ArrayList<>();
+
+            for (TaxData td : entity.getTaxData()) {
+                taxDataDtoList.add(TaxDataMapper.toDto(td));
+            }
+        }
+
+        FinancialDataResponseDto fd = null;
+
+        if (includeParams.contains(IncludeParam.FINANCIAL_DATA) || includeParams.contains(IncludeParam.FULL)) {
+            fd = FinancialDataMapper.toDto(entity.getFinancialData());
+        }
 
         return new CustomerResponseDto(entity.getCorporateName(), entity.getCnpj().getFormattedNumber(), entity.getEmail(), addresses, fd, taxDataDtoList);
     }
