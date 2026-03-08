@@ -28,7 +28,6 @@ CREATE TABLE IF NOT EXISTS sales.customer_addresses (
 
 CREATE TABLE IF NOT EXISTS sales.customer_financial_data (
   customer_id UUID NOT NULL,
-  activities_start_date DATE NOT NULL,
   cnae_number VARCHAR(9) NOT NULL,
   cnpj_number VARCHAR(18) NOT NULL UNIQUE,
   share_capital NUMERIC(19,2),
@@ -98,33 +97,33 @@ VALUES ('4e1ee8a3-309b-406d-88bd-f2b674bc3dba', 'SP', 'São Paulo', 'Bela Vista'
 
 -- Setting tax data for customers
 INSERT INTO sales.customer_tax_data
-VALUES (current_date, current_date, 'ACTIVE', 'none', '6201-5/01', '73064e16-e2bb-4aae-b7ed-05ecf294611a');
+VALUES (current_date, '1983-12-13', 'ACTIVE', 'none', '6201-5/01', '73064e16-e2bb-4aae-b7ed-05ecf294611a');
 
 INSERT INTO sales.customer_tax_data
-VALUES (current_date, current_date, 'ACTIVE', 'none', '6202-3/00', 'a4439687-bee8-41c5-ac30-ffafd38ada70');
+VALUES (current_date, '2020-12-08', 'ACTIVE', 'none', '6202-3/00', 'a4439687-bee8-41c5-ac30-ffafd38ada70');
 
 INSERT INTO sales.customer_tax_data
-VALUES (current_date, current_date, 'ACTIVE', 'none', '6209-1/00', 'bfa5bca0-f671-476c-8b96-4736f28219b8');
+VALUES (current_date, '1988-09-01', 'ACTIVE', 'none', '6209-1/00', 'bfa5bca0-f671-476c-8b96-4736f28219b8');
 
 INSERT INTO sales.customer_tax_data
-VALUES (current_date, current_date, 'ACTIVE', 'none', '4649-4/02', '2141d74c-9daf-40a4-af39-99d8fd364036');
+VALUES (current_date, '2004-04-30', 'ACTIVE', 'none', '4649-4/02', '2141d74c-9daf-40a4-af39-99d8fd364036');
 
 INSERT INTO sales.customer_tax_data
-VALUES (current_date, current_date, 'ACTIVE', 'none', '4753-9/00', '4e1ee8a3-309b-406d-88bd-f2b674bc3dba');
+VALUES (current_date, '2019-09-12', 'ACTIVE', 'none', '4753-9/00', '4e1ee8a3-309b-406d-88bd-f2b674bc3dba');
 
 
 -- Setting financial data for the customers
 INSERT INTO sales.customer_financial_data
-VALUES ('73064e16-e2bb-4aae-b7ed-05ecf294611a', '1983-12-13', '6201501', '53113791000122', 2962584600.00, 888775380.00, 120488.00);
+VALUES ('73064e16-e2bb-4aae-b7ed-05ecf294611a', '6201501', '53113791000122', 2962584600.00, 888775380.00, 120488.00);
 
 INSERT INTO sales.customer_financial_data
-VALUES ('a4439687-bee8-41c5-ac30-ffafd38ada70', '2020-12-08', '6202300', '40052477000135', 1000.00, 300.00, 100.00);
+VALUES ('a4439687-bee8-41c5-ac30-ffafd38ada70', '6202300', '40052477000135', 1000.00, 300.00, 100.00);
 
 INSERT INTO sales.customer_financial_data
-VALUES ('bfa5bca0-f671-476c-8b96-4736f28219b8', '1988-09-01', '6209100', '59456277000176', 344790530.00, 103437159.00, 2068772.5);
+VALUES ('bfa5bca0-f671-476c-8b96-4736f28219b8', '6209100', '59456277000176', 344790530.00, 103437159.00, 2068772.5);
 
 INSERT INTO sales.customer_financial_data
-VALUES ('2141d74c-9daf-40a4-af39-99d8fd364036', '2004-04-30', '4649402', '00280273000722', 1038408450.00, 415363380.00, 1236122.3);
+VALUES ('2141d74c-9daf-40a4-af39-99d8fd364036', '4649402', '00280273000722', 1038408450.00, 415363380.00, 1236122.3);
 
 INSERT INTO sales.customer_financial_data
-VALUES ('4e1ee8a3-309b-406d-88bd-f2b674bc3dba', '2019-09-12', '4753900', '34852937000107', 500000.00, 180000.00, 38764.00)
+VALUES ('4e1ee8a3-309b-406d-88bd-f2b674bc3dba', '4753900', '34852937000107', 500000.00, 180000.00, 38764.00)
