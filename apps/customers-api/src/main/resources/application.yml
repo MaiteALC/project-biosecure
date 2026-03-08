@@ -2,16 +2,19 @@ server:
   port: 8080
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
   application:
     name: BioSecure - Customers API
 
   datasource:
     driver-class-name: org.postgresql.Driver
 
-    url: jdbc:postgresql://localhost:5432/biosecure_db
+    url: jdbc:postgresql://localhost:5432/${CUSTOMER_DB_NAME}
 
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: ${CUSTOMER_DB_USER}
+    password: ${CUSTOMER_DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -32,5 +35,5 @@ spring:
     default-schema: flyway_history
     create-schemas: true
 
-    user: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD}
+    user: ${CUSTOMER_DB_USER}
+    password: ${CUSTOMER_DB_PASSWORD}
