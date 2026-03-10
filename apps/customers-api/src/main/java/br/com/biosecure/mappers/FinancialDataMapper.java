@@ -19,6 +19,6 @@ public class FinancialDataMapper {
             throw new NullPointerException("A financial data entity is required");
         }
 
-        return new FinancialDataResponseDto(entity.getShareCapital(), entity.getTotalCredit(), entity.getUtilizedCredit());
+        return new FinancialDataResponseDto(entity.getShareCapital(), entity.getTotalCredit(), entity.getUtilizedCredit(), entity.getCustomerId());
     }
 }

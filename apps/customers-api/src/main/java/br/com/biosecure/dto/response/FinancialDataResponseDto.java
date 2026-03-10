@@ -3,6 +3,7 @@ package br.com.biosecure.dto.response;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public record FinancialDataResponseDto(
 
@@ -13,5 +14,8 @@ public record FinancialDataResponseDto(
         BigDecimal totalCredit,
 
         @NotNull(message = "Utilized credit is required")
-        BigDecimal utilizedCredit
+        BigDecimal utilizedCredit,
+
+        @NotNull(message = "Customer ID is required")
+        UUID customerId
 ) {}
