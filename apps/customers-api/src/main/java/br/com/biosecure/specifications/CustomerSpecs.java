@@ -1,6 +1,7 @@
 package br.com.biosecure.specifications;
 
 import br.com.biosecure.model.*;
+import br.com.biosecure.model.Customer_;
 import br.com.biosecure.queryfilters.*;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
