@@ -10,6 +10,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * A Value Object representing a valid CNAE (National Classification of Economic Activities) code.
+ * <p>
+ * By encapsulating this data rather than using a standard {@link String}, this class
+ * guarantees that only structurally valid and correctly formatted codes can enter the system,
+ * preventing invalid states.
+ * <p>
+ * Within the <strong>BioSecure</strong> domain, this data acts as a critical business constraint.
+ * Given our strict field of activity involving biosafety regulations, we use the CNAE to
+ * rigorously identify and authorize whether a legal entity is permitted to be registered
+ * in our platform.
+ *
+ * @see TaxData
+ *
+ * @since 1.0.0
+ * @author MaiteALC
+ */
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

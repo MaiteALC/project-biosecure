@@ -9,6 +9,19 @@ import lombok.experimental.Accessors;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ * A value object belonging to the {@code Customer} aggregate root, representing a physical address
+ * validated by a Brazilian CEP (Postal Code).
+ * <p>
+ * This class is strictly dedicated to storing address information and ensures its structural consistency.
+ * Consequently, preventing invalid data such as state or city names with numeric characters,
+ * or improperly formated postal codes.
+ *
+ * @see Customer
+ *
+ * @since 1.0.0
+ * @author MaiteALC
+ */
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -37,6 +50,14 @@ public class Address {
 
     private static final Pattern POSTAL_CODE_REGEX = Pattern.compile("^[0-9]{5}-?[0-9]{3}$");
 
+    /**
+     * Creates a new {@link AddressBuilder} instance.
+     * <p>
+     * This builder provides a fluent and chainable API to construct a {@link Address}
+     * domain entity step-by-step.
+     *
+     * @return a new, empty instance of {@link AddressBuilder}
+     */
     public static AddressBuilder builder() {
         return new AddressBuilder();
     }
@@ -52,6 +73,13 @@ public class Address {
         private String postalCode;
         private boolean deliveryAddress;
 
+        /**
+         * Completes the instantiation process and enforces domain invariants.
+         *
+         * @return the fully instantiated and validated {@link Address} entity
+         * @throws InvalidAddressException if any provided field fails
+         * domain validation rules during the final construction phase
+         */
         public Address build() {
             NotificationContext addressNotification = new NotificationContext();
 

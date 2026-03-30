@@ -11,6 +11,23 @@ import lombok.experimental.Accessors;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * Encapsulates the public statutory and legal tax profile of a {@link Customer}.
+ * <p>
+ * This class is strictly dedicated to externally verifiable governmental information
+ * required for legal compliance and registration validation (e.g., share capital,
+ * activities start date, and economic activity).
+ * <p>
+ * <strong>Architectural Boundary:</strong> It deliberately excludes proprietary commercial
+ * data regarding the customer's operations within <strong>BioSecure</strong>. For internal
+ * financial metrics and billing, refer to the {@link FinancialData} class.
+ *
+ * @see Customer
+ * @see FinancialData
+ *
+ * @since 1.0.0
+ * @author MaiteALC
+ */
 @Getter
 @NoArgsConstructor
 @Table(name = "customer_tax_data", schema = "sales")
@@ -45,6 +62,14 @@ public class TaxData {
         this.cnae = cnae;
     }
 
+    /**
+     * Creates a new {@link TaxDataBuilder} instance.
+     * <p>
+     * This builder provides a fluent and chainable API to construct a {@link TaxData}
+     * domain entity step-by-step.
+     *
+     * @return a new, empty instance of {@link TaxDataBuilder}
+     */
     public static TaxDataBuilder builder() {
         return new TaxDataBuilder();
     }
@@ -58,6 +83,13 @@ public class TaxData {
         private String registrationStatusDescription;
         private Cnae cnae;
 
+        /**
+         * Completes the instantiation process and enforces domain invariants.
+         *
+         * @return the fully instantiated and validated {@link TaxData} value object
+         * @throws InvalidTaxDataException if any provided field fails
+         * domain validation rules during the final construction phase
+         */
         public TaxData build() {
             NotificationContext notification = new NotificationContext();
 

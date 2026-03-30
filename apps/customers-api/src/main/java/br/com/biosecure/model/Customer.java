@@ -15,6 +15,26 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * An aggregate root that unifies various value objects and entities to represent
+ * a complete and valid customer within the <strong>BioSecure</strong> domain.
+ * <p>
+ * This class acts as a consistency boundary. It guarantees aggregate invariants,
+ * ensuring that any instantiated {@code Customer} is always in a strictly valid
+ * business state, with all its internal relationships properly established.
+ * <p>
+ * In the context of BioSecure, a customer must strictly be a legal entity (corporation)
+ * with a compliant tax status and an authorized {@link Cnae}, as enforced by its
+ * underlying {@link TaxData}.
+ *
+ * @see Address
+ * @see FinancialData
+ * @see TaxData
+ * @see Cnpj
+ *
+ * @since 1.0.0
+ * @author MaiteALC
+ */
 @Entity
 @Table(name = "customers", schema = "sales")
 @NoArgsConstructor
@@ -72,6 +92,14 @@ public class Customer {
         this.registrationDate = LocalDate.now();
     }
 
+    /**
+     * Creates a new {@link CustomerBuilder} instance.
+     * <p>
+     * This builder provides a fluent and chainable API to construct a {@link Customer}
+     * domain entity step-by-step.
+     *
+     * @return a new, empty instance of {@link CustomerBuilder}
+     */
     public static CustomerBuilder builder() {
         return new CustomerBuilder();
     }
@@ -86,6 +114,13 @@ public class Customer {
         private FinancialData financialData;
         private TaxData taxData;
 
+        /**
+         * Completes the instantiation process and enforces domain invariants.
+         *
+         * @return the fully instantiated and validated {@link Customer} entity
+         * @throws InvalidCustomerAttributeException if any provided field fails
+         * domain validation rules during the final construction phase
+         */
         public Customer build() {
             NotificationContext customerNotification = new NotificationContext();
 

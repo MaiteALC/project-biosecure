@@ -11,6 +11,22 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.UUID;
 
+/**
+ * Encapsulates the internal and private financial profile of a {@link Customer}.
+ * <p>
+ * This class is strictly dedicated to data concerning the customer's direct commercial
+ * relationship with <strong>BioSecure</strong> (e.g., internal credit limits, remainder and utilized credit limit).
+ * <p>
+ * <strong>Architectural Boundary:</strong> It deliberately excludes public, statutory,
+ * or governmental information. For publicly verifiable legal records (such as activities start date),
+ * refer to the {@link TaxData} class.
+ *
+ * @see Customer
+ * @see TaxData
+ *
+ * @since 1.0.0
+ * @author MaiteALC
+ */
 @Entity
 @Table(name = "customer_financial_data", schema = "sales")
 @NoArgsConstructor

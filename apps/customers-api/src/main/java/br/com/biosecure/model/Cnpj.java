@@ -7,6 +7,22 @@ import lombok.NoArgsConstructor;
 
 import java.util.regex.Pattern;
 
+/**
+ * A Value Object belonging to the {@link Customer} aggregate root, representing a
+ * Brazilian Corporate Taxpayer Registry (CNPJ) number.
+ * <p>
+ * Using a dedicated domain object instead of a primitive {@link String} avoids <em>Primitive Obsession</em>.
+ * It centralizes governmental formatting rules and mathematical checksum validations, ensuring
+ * that any instantiated {@code Cnpj} is guaranteed to be valid.
+ * <p>
+ * It serves as the primary public identifier used to uniquely recognize and obtain data
+ * about companies, corporations, and legal entities in Brazil.
+ *
+ * @see Customer
+ *
+ * @since 1.0.0
+ * @author MaiteALC
+ */
 @Embeddable
 @NoArgsConstructor
 @Getter
