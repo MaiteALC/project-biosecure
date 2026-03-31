@@ -10,8 +10,43 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A utility class providing static methods to construct Spring Data {@link Specification}s
+ * for the {@link Customer} aggregate root.
+ * <p>
+ * <strong>Design Principle:</strong> By leveraging Spring Specifications, the API enables
+ * dynamic and type-safe query generation. This allows clients to combine multiple filtering
+ * criteria into a single database request, significantly improving data retrieval flexibility.
+ * <p>
+ * To handle the complexity of nested objects and database joins, this class orchestrates
+ * the logic by delegating specific {@code Specification} builds to specialized classes,
+ * such as {@link AddressSpecs}.
+ *
+ * @see Customer
+ * @see AddressSpecs
+ * @see TaxDataSpecs
+ * @see FinancialDataSpecs
+ * @see Specification
+ *
+ * @since 1.0.0
+ * @author MaiteALC
+ */
 public class CustomerSpecs {
 
+    /**
+     * Constructs a dynamic {@link Specification} for the {@link Customer} entity
+     * based on the provided {@link CustomerQueryFilter}.
+     * <p>
+     * It conditionally executes database fetch joins for nested objects (such as
+     * {@code Address} or {@code TaxData}) only if they are explicitly requested
+     * within the {@code includeParams} set. This strategy optimizes database performance
+     * by preventing the N+1 query problem and avoiding unnecessary data retrieval.
+     * @param includeParam a {@link Set} of {@link IncludeParam} determining whether
+     * a nested resource should be eagerly included or strictly used to filter the query results
+     * @param customerFilter the data transfer object containing the filtering criteria
+     * to be applied against the entity graph
+     * @return a fully constructed {@code Specification} ready for repository execution
+     */
     public static Specification<Customer> buildSpecification(Set<IncludeParam> includeParam, CustomerQueryFilter customerFilter) {
 
         return (root, query, criteriaBuilder) -> {
