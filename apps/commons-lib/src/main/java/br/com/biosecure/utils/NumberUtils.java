@@ -4,6 +4,20 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
+/**
+ * A utility class providing static methods to perform common number-related
+ * operations and validations in a practical and standardized way.
+ * <p>
+ * <strong>Validation Strategy:</strong> Instead of employing a traditional fail-fast
+ * approach that throws immediate exceptions on invalid inputs, the validation methods
+ * within this class integrate directly with the <strong>Notification Pattern</strong>.
+ * They accept a {@link NotificationContext} parameter and append validation errors
+ * to it, allowing the caller to safely accumulate multiple failures without interrupting
+ * the execution flow.
+ *
+ * @see StringUtils
+ * @see NotificationContext
+ */
 public class NumberUtils {
     private final static String MESSAGE_FOR_NULL = "The number is null";
     private final static String MESSAGE_FOR_MAX_VALUE = "The number is greater than allowed";

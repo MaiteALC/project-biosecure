@@ -3,6 +3,23 @@ package br.com.biosecure.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A utility class providing static methods to perform common {@link String}-related
+ * validations in a practical and standardized way.
+ * <p>
+ * <strong>Validation Strategy:</strong> Instead of employing a traditional fail-fast
+ * approach that throws immediate exceptions on invalid inputs, the validation methods
+ * within this class integrate directly with the <strong>Notification Pattern</strong>.
+ * They accept a {@link NotificationContext} parameter and append validation errors
+ * to it, allowing the caller to safely accumulate multiple failures without interrupting
+ * the execution flow.
+ *
+ * @see NumberUtils
+ * @see NotificationContext
+ *
+ * @since 1.0.0
+ * @author MaiteALC
+ */
 public class StringUtils {
     private static final String messageForNull = "The string is null.";
     private static final String messageForEmpty = "The string is empty.";
