@@ -4,55 +4,7 @@ echo -e "\e[33m------------------------------------------------\e[0m"
 echo -e "\e[33m Verifying build integrity before the commit...\e[0m"
 echo -e "\e[33m------------------------------------------------\e[0m\n"
 
-STAGED_FILES=$(git diff --name-only --cached --diff-filter=d) # All files include, except the deleted ones
-
-if [ -z "$STAGED_FILES" ]; then
-  exit 0
-fi
-
-MODULES=""
-MODULES_ROOT="../apps"
-
-for file in "${STAGED_FILES[@]}"; do
-  if [ "$file" = "$MODULES_ROOT/pom.xml" ]; then
-      MODULES="ALL"
-      break
-  fi
-
-  DIR=$(echo "$file" | cut -d'/' -f2)
-
-  if [ -f "$MODULES_ROOT/$DIR/pom.xml" ]; then
-    case "$MODULES" in
-      *"$DIR"*)
-        ;;
-
-      *)
-        if [ -z "$MODULES" ]; then
-          MODULES="$DIR"
-        else
-          MODULES="$MODULES,$DIR"
-        fi
-        ;;
-    esac
-  fi
-done
-
-if [ -n "$MODULES" ]; then
-  echo "Changes detected in the modules: $MODULES"
-  echo "Recompiling them..."
-  ../mvnw -f "$MODULES_ROOT/pom.xml" clean compile -pl "$MODULES" -am -B
-
-elif [ "$MODULES" = "ALL" ]; then
-  echo "Changes detected on parent pom.xml"
-  echo "Recompiling the entire project..."
-  ../mvnw -f "$MODULES_ROOT/pom.xml" clean compile -B
-
-else
-  echo -e "\n\e[32m-----------------------------------------------\e[0m"
-  echo -e "\e[32mNo modules changed. Proceeding with the commit.\e[0m"
-  echo -e "\e[32m-----------------------------------------------\e[0m"
-  exit 0
-fi
+./mvnw clean compile -B -q
 
 EXIT_CODE=$?
 
