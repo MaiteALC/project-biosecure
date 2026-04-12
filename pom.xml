@@ -15,12 +15,6 @@
         <version>3.5.10</version>
     </parent>
 
-    <properties>
-        <java.version>21</java.version>
-        <hibernate-jpamodelgen.version>7.2.2.Final</hibernate-jpamodelgen.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -28,20 +22,19 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>21</source>
+                    <target>21</target>
 
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
                         </path>
 
                         <path>
                             <groupId>org.hibernate.orm</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
-                            <version>${hibernate.version}</version>
+                            <version>7.2.2-Final</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
