@@ -7,8 +7,8 @@ import java.time.LocalDate;
 
 public record PartnerResponseDto(
 
-        @NotBlank(message = "Partner identifierCode is required")
-        int identifierCode,
+        @NotNull(message = "Partner identifier code is required")
+        Integer identifierCode,
 
         @NotBlank(message = "Partner name is required")
         String name,
