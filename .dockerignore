@@ -1,5 +1,6 @@
 .env
 settings-docker.xml
+.githooks/
 
 annotations/
 
@@ -15,8 +16,6 @@ Thumbs.db
 
 ### IntelliJ IDEA ###
 .idea/
-apps/*/.idea/
-apps/*/.mvn/
 *.iws
 *.iml
 *.ipr
