@@ -124,7 +124,7 @@ public class CustomerMapper {
             fd = FinancialDataMapper.toDto(entity.getFinancialData());
         }
 
-        return new CustomerResponseDto(entity.getCorporateName(), entity.getCnpj().getFormattedNumber(), entity.getEmail(), addresses, fd, taxDataDtoList);
+        return new CustomerResponseDto(entity.getId(), entity.getCorporateName(), entity.getCnpj().getFormattedNumber(), entity.getEmail(), addresses, fd, taxDataDtoList);
     }
 
     /**
