@@ -136,6 +136,25 @@ docker run --name customers-api-container \
 
 ---
 
+## ⚙️ Environment Variables
+
+The application is highly configurable. You can define the required environment variables in a `.env` file at the root of the project. The `application.yml` (via `spring.config.import` property) and Docker Compose will automatically read the file. Alternatively, you can override any property directly via CLI.
+
+Refer to the table below to see the main variables you might need to modify:
+
+|        Variable         |                                     Description                                      |  
+|:-----------------------:|:------------------------------------------------------------------------------------:|
+|        `DB_USER`        |                       The database username (no default value)                       | 
+|      `DB_PASSWORD`      |                       The database password (no default value)                       |  
+|        `DB_NAME`        |                     The database name (default to customers-db)                      | 
+| `SPRING_DATASOURCE_URL` | PostgreSQL connection URL (default to `jdbc:postgresql://localhost:5432/${DB_NAME}`) |
+|  `MAVEN_SETTINGS_PATH`  |    Path to your Maven XML configuration file (default to `./settings-docker.xml`)    |
+
+
+> **Note:** If you use Docker Compose, the `SPRING_DATASOURCE_URL` will automatically be overwritten to `jdbc:postgresql://customers_db:5432/${DB_NAME}` to use the Docker's internal network.
+
+---
+
 ## 📖 API Documentation
 
     TODO: Swagger UI / OpenAPI specification integration is planned for future releases. 
