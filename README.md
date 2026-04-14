@@ -61,9 +61,79 @@ cd biosecure-customers-api
 ./mvnw spring-boot:run
 ```
 
-🐳 Running with Docker:
+### 🐳 Running with Docker:
 
-    TODO: Instructions for containerized execution will be added soon (Requires specific configuration for GitHub Packages authentication).
+**Configuring the build environment**:
+
+To build the image, Maven downloads all the dependencies inside the container.
+
+This project depends on `commons-lib`, a BioSecure internal library available only on GitHub Packages.
+Maven requires your GitHub credentials to log in and download this depency. Therefore, you need to provide these credentials via an XML file, which will be injected as a secure secret into the container during the build process (detailed in the next step).
+
+Create a `settings-docker.xml` file, preferably in the project root, as the Docker Compose expects.
+
+<details>
+  <summary><b>View settings-docker.xml template</b></summary>
+  <br>
+
+> ⚠️ Important: The `<password>` must be a **Personal Access Token (PAT)** generated in your GitHub account with the `read:packages` scope enabled.
+
+```xml
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>github</id> <!-- this id must be IDENTICAL
+             to the repository id in the project's pom.xml file -->
+            <username>YOUR_GITHUB_USERNAME</username>
+            <password>YOUR_PERSONAL_ACCESS_TOKEN</password>
+        </server>
+    </servers>
+</settings>
+```
+</details>
+
+\
+**Running the container:**
+
+**Option 1: The easy way (Docker Compose) 🌟**
+
+The easiest way to spin up the entire environment (API + PostgreSQL database) is using Docker Compose. Make sure your settings.xml path matches the one defined in the docker-compose.yml secrets section, or provide your custom path (see the Environment Variables section for more details).
+
+```Bash
+docker compose up
+```
+
+**Option 2: Standalone API Container (Manual Run)**
+
+If you prefer to run only the API container and use an external database, you must build the image manually and inject the database credentials via environment variables.
+
+> Note: If you are using a local PostgreSQL instance, remember that localhost inside the container refers to the container itself. You must pass the correct IP address of your host machine, or use specific Docker network flags (like `--network host` on Linux or `host.docker.internal` on macOS/Windows) via the `SPRING_DATASOURCE_URL`.
+
+The pre-built image is not available on DockerHub yet. At this moment, you need to build it locally.
+
+Follow the instructions below to build the image and start the container:
+
+```Bash
+# 1. Build the image and give it a tag. 
+# Do not forget the '.' at the end, and provide the correct path to your XML file!
+docker build -t biosecure-customers-api \
+--secret id=maven_settings,src=/path/to/your_maven_settings.xml .
+
+# 2. Run the container with the image you just build (Example overriding the database variables) 
+# Feel free to give it whatever name you want and map the ports to enable external world communication
+docker run --name customers-api-container \
+  -p 8080:8080 \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://<YOUR_HOST_IP>:5432/your_db_name \
+  -e SPRING_DATASOURCE_USERNAME=your_username \
+  -e SPRING_DATASOURCE_PASSWORD=your_password \
+  -e SPRING_FLYWAY_USER=your_username \
+  -e SPRING_FLYWAY_PASSWORD=your_password \
+  biosecure-customers-api
+```    
+
 ---
 
 ## 📖 API Documentation
