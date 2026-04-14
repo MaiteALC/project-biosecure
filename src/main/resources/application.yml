@@ -11,10 +11,10 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
 
-    url: jdbc:postgresql://localhost:5432/${CUSTOMER_DB_NAME}
+    url: jdbc:postgresql://localhost:5432/${DB_NAME:-customers-db}
 
-    username: ${CUSTOMER_DB_USER}
-    password: ${CUSTOMER_DB_PASSWORD}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -35,5 +35,5 @@ spring:
     default-schema: flyway_history
     create-schemas: true
 
-    user: ${CUSTOMER_DB_USER}
-    password: ${CUSTOMER_DB_PASSWORD}
+    user: ${DB_USER}
+    password: ${DB_PASSWORD}
