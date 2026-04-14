@@ -7,10 +7,11 @@ WORKDIR /app
 
 COPY .mvn/ ./.mvn
 COPY mvnw pom.xml ./
-COPY src ./src
 
 RUN --mount=type=secret,id=maven_settings,target=/root/.m2/settings.xml \
     ./mvnw dependency:go-offline -DskipGitConfig
+
+COPY src ./src
 
 RUN --mount=type=secret,id=maven_settings,target=/root/.m2/settings.xml \
     ./mvnw clean package -DskipTests -DskipGitConfig spring-boot:repackage
