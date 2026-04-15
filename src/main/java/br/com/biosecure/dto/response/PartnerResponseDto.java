@@ -1,6 +1,7 @@
 package br.com.biosecure.dto.response;
 
 import br.com.biosecure.model.Partner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -29,6 +30,7 @@ import java.time.LocalDate;
 public record PartnerResponseDto(
 
         @NotNull(message = "Partner identifier code is required")
+        @JsonProperty("identifier_code")
         Integer identifierCode,
 
         @NotBlank(message = "Partner name is required")
@@ -38,5 +40,6 @@ public record PartnerResponseDto(
         String type,
 
         @NotNull(message = "Entry date is required")
+        @JsonProperty("entry_date")
         LocalDate entryDate
 ) {}

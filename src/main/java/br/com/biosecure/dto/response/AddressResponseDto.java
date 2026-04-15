@@ -1,6 +1,7 @@
 package br.com.biosecure.dto.response;
 
 import br.com.biosecure.model.Address;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -43,7 +44,9 @@ public record AddressResponseDto(
         String number,
 
         @NotBlank(message = "Postal code is required")
+        @JsonProperty("postal_code")
         String postalCode,
 
+        @JsonProperty("is_delivery_address")
         boolean deliveryAddress
 ) {}

@@ -2,6 +2,7 @@ package br.com.biosecure.dto.response;
 
 import br.com.biosecure.mappers.CustomerMapper;
 import br.com.biosecure.model.Customer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -36,6 +37,7 @@ import java.time.LocalDate;
  */
 public record CustomerSummaryDto(
         @NotBlank(message = "Corporate name is required")
+        @JsonProperty("corporate_name")
         String corporateName,
 
         @NotBlank(message = "Email is required")
@@ -45,6 +47,7 @@ public record CustomerSummaryDto(
         String cnpj,
 
         @NotNull(message = "Registration date is required")
+        @JsonProperty("registration_date")
         LocalDate registrationDate
 
 ) implements CustomerDto {}

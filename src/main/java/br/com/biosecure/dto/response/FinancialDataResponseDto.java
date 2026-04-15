@@ -1,6 +1,7 @@
 package br.com.biosecure.dto.response;
 
 import br.com.biosecure.model.FinancialData;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
@@ -29,14 +30,18 @@ import java.util.UUID;
 public record FinancialDataResponseDto(
 
         @NotNull(message = "Share capital is required")
+        @JsonProperty("share_capital")
         BigDecimal shareCapital,
 
         @NotNull(message = "Total credit is required")
+        @JsonProperty("total_credit")
         BigDecimal totalCredit,
 
         @NotNull(message = "Utilized credit is required")
+        @JsonProperty("utilized_credit")
         BigDecimal utilizedCredit,
 
         @NotNull(message = "Customer ID is required")
+        @JsonProperty("customer_id")
         UUID customerId
 ) {}
