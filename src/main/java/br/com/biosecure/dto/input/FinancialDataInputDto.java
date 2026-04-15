@@ -1,6 +1,7 @@
 package br.com.biosecure.dto.input;
 
 import br.com.biosecure.model.FinancialData;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
@@ -24,5 +25,6 @@ import java.math.BigDecimal;
 public record FinancialDataInputDto(
 
         @NotNull(message = "Share capital is required")
+        @JsonProperty("share_capital")
         BigDecimal shareCapital
 ) {}

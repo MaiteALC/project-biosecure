@@ -2,6 +2,7 @@ package br.com.biosecure.dto.input;
 
 import br.com.biosecure.model.RegistrationStatus;
 import br.com.biosecure.model.TaxData;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
@@ -33,14 +34,18 @@ import java.time.LocalDateTime;
 public record TaxDataInputDto(
 
         @NotNull(message = "last search date is required")
+        @JsonProperty("last_search_date")
         LocalDateTime lastSearchDate,
 
         @NotNull(message = "activities start date is required")
+        @JsonProperty("activities_start_date")
         LocalDate activitiesStartDate,
 
         @NotNull(message = "registration status is required")
+        @JsonProperty("registration_status")
         RegistrationStatus registrationStatus,
 
+        @JsonProperty("registration_status_description")
         String registrationStatusDescription,
 
         @Valid
