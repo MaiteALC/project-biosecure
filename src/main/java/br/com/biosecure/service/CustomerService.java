@@ -1,7 +1,7 @@
 package br.com.biosecure.service;
 
 import br.com.biosecure.dto.input.CustomerInputDto;
-import br.com.biosecure.dto.response.CustomerDto;
+import br.com.biosecure.dto.response.CustomerResponseDto;
 import br.com.biosecure.mappers.CustomerMapper;
 import br.com.biosecure.model.Customer;
 import br.com.biosecure.queryfilters.CustomerQueryFilter;
@@ -49,33 +49,33 @@ public class CustomerService {
         return rawParams;
     }
 
-    public List<CustomerDto> searchBySpecification(CustomerQueryFilter queryFilter, Set<IncludeParam> includeParam) {
+    public List<CustomerResponseDto> searchBySpecification(CustomerQueryFilter queryFilter, Set<IncludeParam> includeParam) {
         Set<IncludeParam> resolvedIncludeParam = resolveIncludeParam(includeParam);
 
         Specification<Customer> spec = CustomerSpecs.buildSpecification(resolvedIncludeParam, queryFilter);
 
         List<Customer> customers = customerRepository.findAll(spec);
 
-        List<CustomerDto> customerDtos = new ArrayList<>();
+        List<CustomerResponseDto> customerResponseDtos = new ArrayList<>();
 
         if (!customers.isEmpty()) {
             if (resolvedIncludeParam.contains(IncludeParam.SUMMARIZED)) {
                 for (Customer customer : customers) {
-                    customerDtos.add(CustomerMapper.toSummaryDto(customer));
+                    customerResponseDtos.add(CustomerMapper.toSummaryDto(customer));
                 }
 
-                return customerDtos;
+                return customerResponseDtos;
             }
 
             for (Customer customer : customers) {
-                customerDtos.add(CustomerMapper.toDto(customer, resolvedIncludeParam));
+                customerResponseDtos.add(CustomerMapper.toDto(customer, resolvedIncludeParam));
             }
         }
 
-        return customerDtos;
+        return customerResponseDtos;
     }
 
-    public Optional<CustomerDto> searchById(UUID id, Set<IncludeParam> includeParam) {
+    public Optional<CustomerResponseDto> searchById(UUID id, Set<IncludeParam> includeParam) {
         Set<IncludeParam> resolvedIncludeParam = resolveIncludeParam(includeParam);
 
         Customer customer = customerRepository.findById(id).orElse(null);
@@ -90,27 +90,27 @@ public class CustomerService {
         return Optional.empty();
     }
 
-    public List<CustomerDto> searchByIds(Set<UUID> customerIds, Set<IncludeParam> includeParam) {
+    public List<CustomerResponseDto> searchByIds(Set<UUID> customerIds, Set<IncludeParam> includeParam) {
         Set<IncludeParam> resolvedIncludeParam = resolveIncludeParam(includeParam);
 
         List<Customer> customers = customerRepository.findAllById(customerIds);
-        List<CustomerDto> customerDtos = new ArrayList<>();
+        List<CustomerResponseDto> customerResponseDtos = new ArrayList<>();
 
         if (!customers.isEmpty()) {
             if (resolvedIncludeParam.contains(IncludeParam.SUMMARIZED)) {
                 for (Customer customer : customers) {
-                    customerDtos.add(CustomerMapper.toSummaryDto(customer));
+                    customerResponseDtos.add(CustomerMapper.toSummaryDto(customer));
                 }
 
-                return customerDtos;
+                return customerResponseDtos;
             }
 
             for (Customer customer : customers) {
-                customerDtos.add(CustomerMapper.toDto(customer, resolvedIncludeParam));
+                customerResponseDtos.add(CustomerMapper.toDto(customer, resolvedIncludeParam));
             }
         }
 
-        return customerDtos;
+        return customerResponseDtos;
     }
 
     @Transactional
@@ -121,7 +121,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public CustomerDto registerCustomer(CustomerInputDto inputDto) {
+    public CustomerResponseDto registerCustomer(CustomerInputDto inputDto) {
         Customer entity = CustomerMapper.toEntity(inputDto);
 
         customerRepository.save(entity);
@@ -130,9 +130,9 @@ public class CustomerService {
     }
 
     @Transactional
-    public List<CustomerDto> registerCustomers(List<CustomerInputDto> inputDtos) {
+    public List<CustomerResponseDto> registerCustomers(List<CustomerInputDto> inputDtos) {
         List<Customer> entities = new ArrayList<>();
-        List<CustomerDto> responseDtos = new ArrayList<>();
+        List<CustomerResponseDto> responseDtos = new ArrayList<>();
 
         for (CustomerInputDto dto : inputDtos) {
             Customer entity = CustomerMapper.toEntity(dto);

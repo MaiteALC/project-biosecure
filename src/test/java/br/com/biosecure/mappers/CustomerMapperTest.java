@@ -2,8 +2,8 @@ package br.com.biosecure.mappers;
 
 import br.com.biosecure.builders.CustomerTestBuilder;
 import br.com.biosecure.dto.input.*;
-import br.com.biosecure.dto.response.CustomerResponseDto;
-import br.com.biosecure.dto.response.CustomerSummaryDto;
+import br.com.biosecure.dto.response.CustomerFullResponseDto;
+import br.com.biosecure.dto.response.CustomerSummaryResponseDto;
 import br.com.biosecure.model.*;
 import br.com.biosecure.queryfilters.IncludeParam;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class CustomerMapperTest {
     void shouldConvertToCustomerDtoCorrectly() {
         Customer entity = CustomerTestBuilder.aCustomer().withCorporateName("GOOGLE BRASIL INTERNET LTDA").build();
 
-        CustomerResponseDto dto = CustomerMapper.toDto(entity, Set.of(IncludeParam.FULL));
+        CustomerFullResponseDto dto = CustomerMapper.toDto(entity, Set.of(IncludeParam.FULL));
 
         assertEquals(entity.getCorporateName(), dto.corporateName());
         assertEquals(1, dto.taxData().size());
@@ -36,7 +36,7 @@ class CustomerMapperTest {
                 .withFinancialData(new FinancialData(BigDecimal.valueOf(5_000_000))) // ignored field in summary dto
                 .build();
 
-        CustomerSummaryDto dto = CustomerMapper.toSummaryDto(entity);
+        CustomerSummaryResponseDto dto = CustomerMapper.toSummaryDto(entity);
 
         assertEquals(entity.getCorporateName(), dto.corporateName());
         assertEquals(entity.getEmail(), dto.email());
@@ -99,7 +99,7 @@ class CustomerMapperTest {
         includeParams.add(IncludeParam.TAX_DATA);
         includeParams.add(IncludeParam.ADDRESS);
 
-        CustomerResponseDto dto = CustomerMapper.toDto(customer, includeParams);
+        CustomerFullResponseDto dto = CustomerMapper.toDto(customer, includeParams);
 
         assertNotNull(dto);
         assertNotNull(dto.cnpj());

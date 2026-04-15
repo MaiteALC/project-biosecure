@@ -1,6 +1,6 @@
 package br.com.biosecure.queryfilters;
 
-import br.com.biosecure.dto.response.CustomerSummaryDto;
+import br.com.biosecure.dto.response.CustomerSummaryResponseDto;
 import br.com.biosecure.model.Address;
 import br.com.biosecure.model.Customer;
 import br.com.biosecure.model.FinancialData;
@@ -26,7 +26,7 @@ public enum IncludeParam {
     /** Include the complete entity and all its value objects */
     FULL,
 
-    /** Include only basic fields present in {@link CustomerSummaryDto} */
+    /** Include only basic fields present in {@link CustomerSummaryResponseDto} */
     SUMMARIZED,
 
     /** Include the {@link Address} value object in the response */

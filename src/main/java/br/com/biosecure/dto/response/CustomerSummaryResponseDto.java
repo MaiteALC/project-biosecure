@@ -29,13 +29,13 @@ import java.time.LocalDate;
  * @param email the primary contact email for business inquiries
  * @param registrationDate the ISO-8601 registration date (YYYY-MM-DD)
  *
- * @see CustomerResponseDto
+ * @see CustomerFullResponseDto
  * @see CustomerMapper
  *
  * @since 1.0.0
  * @author MaiteALC
  */
-public record CustomerSummaryDto(
+public record CustomerSummaryResponseDto(
         @NotBlank(message = "Corporate name is required")
         @JsonProperty("corporate_name")
         String corporateName,
@@ -50,4 +50,4 @@ public record CustomerSummaryDto(
         @JsonProperty("registration_date")
         LocalDate registrationDate
 
-) implements CustomerDto {}
+) implements CustomerResponseDto {}

@@ -27,8 +27,8 @@ import java.util.Set;
  *
  * @see Customer
  * @see CustomerInputDto
- * @see CustomerResponseDto
- * @see CustomerSummaryDto
+ * @see CustomerFullResponseDto
+ * @see CustomerSummaryResponseDto
  * @see FinancialDataMapper
  * @see TaxDataMapper
  * @see AddressMapper
@@ -75,7 +75,7 @@ public class CustomerMapper {
     }
 
     /**
-     * Maps a {@link Customer} entity into a {@link CustomerResponseDto}, dynamically
+     * Maps a {@link Customer} entity into a {@link CustomerFullResponseDto}, dynamically
      * attaching related data based on the requested inclusion parameters.
      * <p>
      * The mapping of nested objects (such as Addresses or Tax Data) is conditionally
@@ -90,7 +90,7 @@ public class CustomerMapper {
      *
      * @throws NullPointerException if either the {@code entity} or {@code includeParams} is null
      */
-    public static CustomerResponseDto toDto(Customer entity, Set<IncludeParam> includeParams) {
+    public static CustomerFullResponseDto toDto(Customer entity, Set<IncludeParam> includeParams) {
         if (entity == null) {
             throw new NullPointerException("A customer entity is required");
         }
@@ -124,11 +124,11 @@ public class CustomerMapper {
             fd = FinancialDataMapper.toDto(entity.getFinancialData());
         }
 
-        return new CustomerResponseDto(entity.getId(), entity.getRegistrationDate(), entity.getCorporateName(), entity.getCnpj().getFormattedNumber(), entity.getEmail(), addresses, fd, taxDataDtoList);
+        return new CustomerFullResponseDto(entity.getId(), entity.getRegistrationDate(), entity.getCorporateName(), entity.getCnpj().getFormattedNumber(), entity.getEmail(), addresses, fd, taxDataDtoList);
     }
 
     /**
-     * Converts a {@link Customer} entity into a lightweight {@link CustomerSummaryDto}.
+     * Converts a {@link Customer} entity into a lightweight {@link CustomerSummaryResponseDto}.
      * <p>
      * This method is intended for use cases that require reduced payloads, such as
      * list views or search results, returning only essential identification and
@@ -138,11 +138,11 @@ public class CustomerMapper {
      * @return a summarized version of the customer DTO
      * @throws NullPointerException if the provided {@code entity} is null
      */
-    public static CustomerSummaryDto toSummaryDto(Customer entity) {
+    public static CustomerSummaryResponseDto toSummaryDto(Customer entity) {
         if (entity == null) {
             throw new NullPointerException("A customer entity is required");
         }
 
-        return new CustomerSummaryDto(entity.getCorporateName(), entity.getEmail(), entity.getCnpj().getFormattedNumber(), entity.getRegistrationDate());
+        return new CustomerSummaryResponseDto(entity.getCorporateName(), entity.getEmail(), entity.getCnpj().getFormattedNumber(), entity.getRegistrationDate());
     }
 }
