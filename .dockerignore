@@ -1,6 +1,7 @@
 .env
 settings-docker.xml
 .githooks/
+.git/
 
 annotations/
 
