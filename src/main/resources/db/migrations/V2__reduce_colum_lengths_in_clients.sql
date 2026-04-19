@@ -1,3 +1,0 @@
-ALTER TABLE sales.clients
-    ALTER COLUMN corporate_name TYPE VARCHAR(100),
-    ALTER COLUMN email TYPE VARCHAR(60)

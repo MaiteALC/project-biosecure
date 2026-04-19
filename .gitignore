@@ -1,37 +1,3 @@
-.env
-settings-docker.xml
-
-annotations/
-
-*.log
-
-target/
-out/
-bin/
-
-lib/
-
-Thumbs.db
-
-### IntelliJ IDEA ###
 .idea/
-apps/*/.idea/
-apps/*/.mvn/
-*.iws
-*.iml
-*.ipr
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### VS Code ###
 .vscode/
-
-### Mac OS ###
-.DS_Store
+.DS_Store/
